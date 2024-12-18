@@ -32,7 +32,7 @@ jobs:
         poetry run sphinx-apidoc -o docs auto_prep --force
         poetry run make -C docs clean
         poetry run make -C docs html
-        cp -r docs/_build/* gh-pages/
+        cp -r docs/_build/html/* gh-pages/
 
     - name: Deploy documentation
       if: ${{ github.event_name == 'push' }}
