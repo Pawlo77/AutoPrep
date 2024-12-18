@@ -56,9 +56,9 @@
 The generated report includes:
 
 1. **Title page and table of contents**
-2. **Data Overview**
+2. **Overview**
+   - Platform structure
    - Dataset structure
-   - Feature characteristics
 3. **Exploratory Data Analysis**
    - Distribution plots
    - Correlation matrix
