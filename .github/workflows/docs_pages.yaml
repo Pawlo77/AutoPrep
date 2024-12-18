@@ -39,4 +39,3 @@ jobs:
       with:
         branch: gh-pages
         folder: gh-pages
-        token: ${{ secrets.SECRET_PAT }}
