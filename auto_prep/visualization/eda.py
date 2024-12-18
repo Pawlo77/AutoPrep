@@ -192,6 +192,7 @@ class EDAVisualizer:
             plt.title("Target Variable Distribution")
 
             path = f"{self.output_dir}/target_distribution.png"
+            print(path)
             plt.savefig(path)
             plt.close()
             logger.debug(f"Saved target distribution plot to {path}")

@@ -81,7 +81,7 @@ class TimedLogger(logging.Logger):
 LOG_FORMAT = "%(asctime)s %(levelname)s %(message)s"
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 LOG_LEVEL = logging.INFO
-LOG_DIR = "logs"
+LOG_DIR = None  # don't save logs for now
 
 
 def setup_logger(name: str) -> TimedLogger:
@@ -96,25 +96,25 @@ def setup_logger(name: str) -> TimedLogger:
             of the standard Python logger that adds timing functionality.
     """
     logging.setLoggerClass(TimedLogger)
-    os.makedirs(LOG_DIR, exist_ok=True)
 
     logger = logging.getLogger(name)
     logger.setLevel(LOG_LEVEL)
 
     if not logger.handlers:
-        file_handler = RotatingFileHandler(
-            f"{LOG_DIR}/{name.split('.')[-1]}.log",
-            maxBytes=1024 * 1024,  # 1MB
-            backupCount=5,
-        )
-        file_handler.setLevel(LOG_LEVEL)
-        file_handler.setFormatter(logging.Formatter(LOG_FORMAT, DATE_FORMAT))
+        if LOG_DIR is not None:
+            os.makedirs(LOG_DIR, exist_ok=True)
+            file_handler = RotatingFileHandler(
+                f"{LOG_DIR}/{name.split('.')[-1]}.log",
+                maxBytes=1024 * 1024,  # 1MB
+                backupCount=5,
+            )
+            file_handler.setLevel(LOG_LEVEL)
+            file_handler.setFormatter(logging.Formatter(LOG_FORMAT, DATE_FORMAT))
+            logger.addHandler(file_handler)
 
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setLevel(LOG_LEVEL)
         console_handler.setFormatter(ColoredFormatter(LOG_FORMAT, DATE_FORMAT))
-
-        logger.addHandler(file_handler)
         logger.addHandler(console_handler)
 
     return logger

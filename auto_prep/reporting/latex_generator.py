@@ -32,7 +32,10 @@ class ReportGenerator:
     """
 
     def __init__(
-        self, title: str = "Analysis Report", geometry_options: dict = DEFAULT_GEOMETRY
+        self,
+        title: str = "Analysis Report",
+        geometry_options: dict = DEFAULT_GEOMETRY,
+        default_filepath: str = "raport",
     ):
         """
         Args:
@@ -40,10 +43,13 @@ class ReportGenerator:
                 Defaults to "Analysis Report".
             geometry_options (dict, optional): A dictionary of geometry options
                 for the LaTeX document. Defaults to DEFAULT_GEOMETRY.
+            default_filepath (str): Name of directory to be used for pylatex.
         """
         logger.info("Initializing ReportGenerator with title: %s", title)
         try:
-            self.doc = Document(geometry_options=geometry_options)
+            self.doc = Document(
+                default_filepath=default_filepath, geometry_options=geometry_options
+            )
             self.title = title
 
             # Add necessary packages
@@ -71,7 +77,7 @@ class ReportGenerator:
                 NoEscape(
                     r"""
                 \begin{abstract}
-                This raport has been generated with AutoPrep using
+                This raport has been generated with AutoPrep.
                 \end{abstract}
             """
                 )

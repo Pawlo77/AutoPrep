@@ -1,7 +1,0 @@
-2024-12-18 15:02:46 INFO Initializing AutoMLPipeline with output_dir: reports
-2024-12-18 15:02:46 INFO Starting pipeline run with target column: survived
-2024-12-18 15:02:46 INFO Generating exploratory data analysis
-2024-12-18 15:02:47 INFO Generated dataset summary and EDA
-2024-12-18 15:02:48 INFO Generating analysis report
-2024-12-18 15:02:48 INFO Generating final PDF report
-2024-12-18 15:02:50 INFO Report generation complete

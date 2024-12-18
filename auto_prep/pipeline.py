@@ -39,9 +39,9 @@ class AutoMLPipeline:
             output_dir (str, optional): Directory for saving outputs.
                 Defaults to "reports".
         """
-        logger.info("Initializing AutoMLPipeline with output_dir: %s", output_dir)
         if not os.path.isabs(output_dir):
             output_dir = os.path.abspath(os.path.join(".", output_dir))
+        logger.info("Initializing AutoMLPipeline with output_dir: %s", output_dir)
         self._output_dir = output_dir
         self._figure_dir = os.path.join(self._output_dir, "figures")
 
@@ -54,7 +54,7 @@ class AutoMLPipeline:
             raise
 
         self.visualizer = EDAVisualizer(self._figure_dir)
-        self.report_generator = ReportGenerator()
+        self.report_generator = ReportGenerator(default_filepath=self._output_dir)
         logger.debug("Initialized components")
 
     def run(self, data: pd.DataFrame, target_column: str) -> None:
@@ -434,7 +434,7 @@ class AutoMLPipeline:
 
             # Generate final PDF
             logger.info("Generating final PDF report")
-            self.report_generator.generate(f"{self._output_dir}/analysis_report")
+            self.report_generator.generate(self._output_dir)
             logger.info("Report generation complete")
 
         except Exception as e:
