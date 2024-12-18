@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>auto_prep.utils.config &mdash; AutoPrep  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            AutoPrep
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">auto_prep</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">AutoPrep</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">auto_prep.utils.config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for auto_prep.utils.config</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">pylatex</span> <span class="kn">import</span> <span class="n">NoEscape</span>
+
+<span class="c1"># ANSI color codes</span>
+<span class="n">COLORS</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;DEBUG&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[36m&quot;</span><span class="p">,</span>  <span class="c1"># Cyan</span>
+    <span class="s2">&quot;INFO&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[32m&quot;</span><span class="p">,</span>  <span class="c1"># Green</span>
+    <span class="s2">&quot;WARNING&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[33m&quot;</span><span class="p">,</span>  <span class="c1"># Yellow</span>
+    <span class="s2">&quot;ERROR&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[31m&quot;</span><span class="p">,</span>  <span class="c1"># Red</span>
+    <span class="s2">&quot;CRITICAL&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[41m&quot;</span><span class="p">,</span>  <span class="c1"># Red background</span>
+    <span class="s2">&quot;RESET&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m&quot;</span><span class="p">,</span>  <span class="c1"># Reset color</span>
+<span class="p">}</span>
+
+<span class="n">LOG_FORMAT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
+<span class="n">LOG_DATE_FORMAT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span>
+<span class="n">LOG_LEVEL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+
+<span class="n">DEFAULT_TEX_GEOMETRY</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="s2">&quot;0.5in&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;headheight&quot;</span><span class="p">:</span> <span class="s2">&quot;10pt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;footskip&quot;</span><span class="p">:</span> <span class="s2">&quot;0.2in&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tmargin&quot;</span><span class="p">:</span> <span class="s2">&quot;0.5in&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bmargin&quot;</span><span class="p">:</span> <span class="s2">&quot;0.5in&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">DEFAULT_ABSTRACT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">NoEscape</span><span class="p">(</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    \begin{abstract}</span>
+<span class="sd">    This raport has been generated with AutoPrep.</span>
+<span class="sd">    \end{abstract}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="GlobalConfig">
+<a class="viewcode-back" href="../../../auto_prep.utils.html#auto_prep.utils.config.GlobalConfig">[docs]</a>
+<span class="k">class</span> <span class="nc">GlobalConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Global config class.&quot;&quot;&quot;</span>
+
+    <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">GlobalConfig</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span>
+
+    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">raport_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;raport&quot;</span><span class="p">,</span>
+        <span class="n">raport_title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ML Raport&quot;</span><span class="p">,</span>
+        <span class="n">raport_author</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;AutoPrep&quot;</span><span class="p">,</span>
+        <span class="n">raport_abstract</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_ABSTRACT</span><span class="p">,</span>
+        <span class="n">root_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;raport&quot;</span><span class="p">,</span>
+        <span class="n">return_tex_</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">logger_colors_map</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">COLORS</span><span class="p">,</span>
+        <span class="n">log_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">LOG_FORMAT</span><span class="p">,</span>
+        <span class="n">log_date_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">LOG_DATE_FORMAT</span><span class="p">,</span>
+        <span class="n">log_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">LOG_LEVEL</span><span class="p">,</span>
+        <span class="n">log_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_log_file_size_in_mb</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">tex_geomatry</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">DEFAULT_TEX_GEOMETRY</span><span class="p">,</span>
+        <span class="n">train_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+        <span class="n">test_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">valid_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            raport_name (str) - Raport name. Defaults to &quot;raport.pdf&quot;.</span>
+<span class="sd">            raport_title (str) - Raport title. Defaults to &quot;ML Raport&quot;.</span>
+<span class="sd">            raport_title (str) - Raport author. Defaults to &quot;AutoPrep&quot;.</span>
+<span class="sd">            raport_abstract (str) - Raport abstract section. Can be set to &quot;&quot;.</span>
+<span class="sd">                Defaults to :obj:`DEFAULT_ABSTRACT`.</span>
+<span class="sd">            root_dir (str) - Root directory. Here raport will be</span>
+<span class="sd">                stored and all cache. Defaults to &quot;raport&quot;.</span>
+<span class="sd">            return_tex_ (bool) - If true it will create .tex file</span>
+<span class="sd">                alongsite the pdf. Defaults to True.</span>
+<span class="sd">            logger_colors_map (dict) - Color map for the loggers.</span>
+<span class="sd">                Defaults to :obj:`COLORS`.</span>
+<span class="sd">            log_format (str) - Log format for logging liblary.</span>
+<span class="sd">                Defaults to :obj:`LOG_FORMAT`.</span>
+<span class="sd">            log_date_format (str) - Log date format for logging liblary.</span>
+<span class="sd">                Defaults to :obj:`LOG_DATE_FORMAT`.</span>
+<span class="sd">            log_level (str) - Log level for logging liblary.</span>
+<span class="sd">                Defaults to :obj:`LOG_LEVEL`.</span>
+<span class="sd">            log_dir (str) - Log directory for storing the logs.</span>
+<span class="sd">                If None provided, will default to &quot;logs&quot; in root dir.</span>
+<span class="sd">                -1 means no logging to file.</span>
+<span class="sd">            max_log_file_size_in_mb (int) - Maximum file size in mb for</span>
+<span class="sd">                each logger. Defaults to 5.</span>
+<span class="sd">            tex_geomatry (dict) - Geometry for pylatex.</span>
+<span class="sd">                Defaults to :obj:`DEFAULT_TEX_GEOMETRY`.</span>
+<span class="sd">            train_size (float) - % of traing set size. Defaults to 0.8.</span>
+<span class="sd">            test_size (float) - % of traing set size. Defaults to 0.1.</span>
+<span class="sd">            valid_size (float) - % of traing set size. Defaults to 0.1.</span>
+<span class="sd">            random_state (int) - Random state for sklearn.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">raport_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raport_name</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">),</span> <span class="s2">&quot;raport_name should not be empty&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raport_name</span> <span class="o">=</span> <span class="n">raport_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raport_title</span> <span class="o">=</span> <span class="n">raport_title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raport_author</span> <span class="o">=</span> <span class="n">raport_author</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raport_abstract</span> <span class="o">=</span> <span class="n">raport_abstract</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">=</span> <span class="n">root_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raport_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="n">raport_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charts_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raport_path</span><span class="p">,</span> <span class="s2">&quot;charts&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">charts_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_tex_</span> <span class="o">=</span> <span class="n">return_tex_</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger_colors_map</span> <span class="o">=</span> <span class="n">logger_colors_map</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_format</span> <span class="o">=</span> <span class="n">log_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_date_format</span> <span class="o">=</span> <span class="n">log_date_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="n">log_level</span>
+
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">max_log_file_size_in_mb</span><span class="p">)</span> <span class="o">==</span> <span class="n">max_log_file_size_in_mb</span>
+            <span class="ow">and</span> <span class="n">max_log_file_size_in_mb</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Wrong value for max_log_file_size_in_mb: </span><span class="si">{</span><span class="n">max_log_file_size_in_mb</span><span class="si">}</span><span class="s2">. &quot;</span>
+        <span class="s2">&quot;Should be int &gt; 1.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_log_file_size_in_mb</span> <span class="o">=</span> <span class="n">max_log_file_size_in_mb</span>
+
+        <span class="k">if</span> <span class="n">log_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s2">&quot;logs&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">log_dir</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_dir</span> <span class="o">=</span> <span class="n">log_dir</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tex_geomatry</span> <span class="o">=</span> <span class="n">tex_geomatry</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_size</span> <span class="o">=</span> <span class="n">train_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="n">test_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid_size</span> <span class="o">=</span> <span class="n">valid_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GlobalConfig.update">
+<a class="viewcode-back" href="../../../auto_prep.utils.html#auto_prep.utils.config.GlobalConfig.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates config&#39;s data with kwargs.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">GlobalConfig</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Paweł Pozorski.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
