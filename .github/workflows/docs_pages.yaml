@@ -2,6 +2,9 @@ name: Docs2Pages
 on:
   push:
     tags: '*'
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build-docs:
