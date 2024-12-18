@@ -1,42 +1,36 @@
-name: Docs2Pages
+name: Deploy Sphinx Docs to GitHub Pages
+
 on:
   push:
-    tags: '*'
     branches:
-      - 'dev'
-      - 'master'
+      - main
+      - dev
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
-  build-docs:
+  build:
+    name: Build and Deploy Docs
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-python@v2
-      with:
-        python-version: "3.10"
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-    - uses: abatilo/actions-poetry@v2.1.3
+    - name: Set up Poetry
+      uses: python-poetry/poetry-action@v2
 
-    - name: install
-      run: poetry install -E amazon -E docs
-
-    - name: Build documentation
+    - name: Install Dependencies
       run: |
-        mkdir gh-pages
-        touch gh-pages/.nojekyll
-        cd docs/
-        poetry run sphinx-build -b html . _build
-        cp -r _build/* ../gh-pages/
+        poetry install
 
-    - name: Deploy documentation
-      if: ${{ github.event_name == 'push' }}
-      uses: JamesIves/github-pages-deploy-action@4.1.4
-      with:
-        branch: gh-pages
-        folder: gh-pages
+    - name: Build Documentation
+      run: |
+        poetry run sphinx-build -b html source/ build/
+
+    - name: Deploy to GitHub Pages
+      run: |
+        poetry run ghp-import -n -p -f build/
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
