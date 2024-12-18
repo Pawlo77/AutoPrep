@@ -30,10 +30,9 @@ jobs:
         mkdir gh-pages
         touch gh-pages/.nojekyll
         poetry run sphinx-apidoc -o docs auto_prep --force
-        cd docs/
         poetry run make -C docs clean
         poetry run make -C docs html
-        cp -r _build/* ../gh-pages/
+        cp -r docs/_build/* gh-pages/
 
     - name: Deploy documentation
       if: ${{ github.event_name == 'push' }}
