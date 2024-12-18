@@ -12,45 +12,34 @@ from pylatex import (
     Tabular,
 )
 from pylatex.package import Package
-from pylatex.utils import bold
 
+from ..utils.config import config
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
-DEFAULT_GEOMETRY: dict = {
-    "margin": "0.5in",
-    "headheight": "10pt",
-    "footskip": "0.2in",
-    "tmargin": "0.5in",
-    "bmargin": "0.5in",
-}
 
 
-class ReportGenerator:
+class Report:
     """
     Generates LaTeX reports with analysis results and visualizations.
     """
 
-    def __init__(
-        self,
-        title: str = "Analysis Report",
-        geometry_options: dict = DEFAULT_GEOMETRY,
-        default_filepath: str = "raport",
-    ):
-        """
-        Args:
-            title (str, optional): The title of the report.
-                Defaults to "Analysis Report".
-            geometry_options (dict, optional): A dictionary of geometry options
-                for the LaTeX document. Defaults to DEFAULT_GEOMETRY.
-            default_filepath (str): Name of directory to be used for pylatex.
-        """
-        logger.info("Initializing ReportGenerator with title: %s", title)
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(Report, cls).__new__(cls, *args, **kwargs)
+            cls._instance._initialize()
+        return cls._instance
+
+    def _initialize(self):
+        logger.info("Initializing ReportGenerator with title: %s", config.raport_title)
+
         try:
             self.doc = Document(
-                default_filepath=default_filepath, geometry_options=geometry_options
+                default_filepath=config.root_dir, geometry_options=config.tex_geomatry
             )
-            self.title = title
+            self.title = config.raport_title
 
             # Add necessary packages
             self.doc.packages.append(Package("graphicx"))
@@ -69,19 +58,12 @@ class ReportGenerator:
         Adds the title page and table of contents to the LaTeX document.
         """
         try:
-            self.doc.preamble.append(NoEscape(r"\title{" + self.title + "}"))
-            self.doc.preamble.append(NoEscape(r"\author{AutoPrep}"))
+            logger.debug("Initializing header.")
+            self.doc.preamble.append(NoEscape(r"\title{" + config.raport_title + "}"))
+            self.doc.preamble.append(NoEscape(r"\author{" + config.raport_author + "}"))
             self.doc.preamble.append(NoEscape(r"\date{\today}"))
             self.doc.append(NoEscape(r"\maketitle"))
-            self.doc.append(
-                NoEscape(
-                    r"""
-                \begin{abstract}
-                This raport has been generated with AutoPrep.
-                \end{abstract}
-            """
-                )
-            )
+            self.doc.append(config.raport_abstract)
             self.doc.append(Command("tableofcontents"))
             self.doc.append(NoEscape(r"\newpage"))
         except Exception as e:
@@ -121,31 +103,63 @@ class ReportGenerator:
 
     def add_table(
         self,
-        data: dict,
+        data: dict | list,
         caption: str = None,
         header: List[dict] = ["Category", "Value"],
     ) -> None:
         """Add a table to the document.
 
         Args:
-            data (dict): Dictionary to convert to table.
+            data (dict | list): Data to convert to table.
             caption (str): Table caption. If None, no caption will be set.
             header (List[dict]): Table header. Defaults to ["Category", "Value"].
                 If None, no header will be set.
         """
         try:
+            if isinstance(data, dict):
+                data = list(data.items())
+
             with self.doc.create(Table(position="H")) as table:
                 with table.create(Center()) as centered:
-                    with centered.create(Tabular("l r")) as tabular:
+                    # Determine the number of columns
+                    num_columns = len(header) if header is not None else len(data[0])
+                    # Generate column alignment string (e.g., "l r c" for 3 columns)
+                    alignment = " ".join(["l" for _ in range(num_columns)])
+
+                    with centered.create(Tabular(alignment)) as tabular:
+                        tabular.add_hline()
                         if header is not None:
+                            if len(header) != num_columns:
+                                raise ValueError(
+                                    f"Header length ({len(header)}) does not match "
+                                    f"number of columns ({num_columns})."
+                                )
+                            tabular.add_row(
+                                [NoEscape(f"\\textbf{{{c}}}") for c in header]
+                            )
                             tabular.add_hline()
-                            tabular.add_row([bold(c) for c in header])
+
+                        for row in data:
+                            # Check row length matches the number of columns
+                            if len(row) != num_columns:
+                                raise ValueError(
+                                    f"Row length ({len(row)}) does not match number of "
+                                    f"columns ({num_columns}): {row}"
+                                )
+
+                            # Format row elements
+                            formatted_row = [
+                                (
+                                    f"{value:.4f}"
+                                    if isinstance(value, float)
+                                    else str(value)
+                                )
+                                for value in row
+                            ]
+                            tabular.add_row(formatted_row)
+
                         tabular.add_hline()
-                        for key, value in data.items():
-                            if isinstance(value, float):
-                                value = f"{value:.4f}"
-                            tabular.add_row((str(key), str(value)))
-                        tabular.add_hline()
+
                 if caption is not None:
                     table.add_caption(caption)
         except Exception as e:
@@ -189,19 +203,24 @@ class ReportGenerator:
             logger.error("Failed to add verbatim content: %s", str(e))
             raise
 
-    def generate(self, output_path: str) -> None:
+    def generate(self) -> None:
         """Generate the final PDF report.
 
         Args:
             output_path (str): Path where to save the PDF.
         """
         try:
-            logger.debug(f"Generating PDF at {output_path}")
+            logger.debug(f"Generating PDF at {config.raport_path}")
             self.doc.generate_pdf(
-                output_path, clean=False, clean_tex=False, compiler="pdflatex"
+                config.raport_path, clean=False, clean_tex=False, compiler="pdflatex"
             )
-            self.doc.generate_pdf(output_path, clean_tex=False, compiler="pdflatex")
+            self.doc.generate_pdf(
+                config.raport_path, clean_tex=config.return_tex_, compiler="pdflatex"
+            )
             logger.info("PDF generation complete")
         except Exception as e:
             logger.error(f"Failed to generate PDF: {str(e)}")
             raise
+
+
+raport = Report()

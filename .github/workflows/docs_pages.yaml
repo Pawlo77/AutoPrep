@@ -29,8 +29,10 @@ jobs:
       run: |
         mkdir gh-pages
         touch gh-pages/.nojekyll
+        poetry run sphinx-apidoc -o docs auto_prep --force
         cd docs/
-        poetry run sphinx-build -b html . _build
+        poetry run make -C docs clean
+        poetry run make -C docs html
         cp -r _build/* ../gh-pages/
 
     - name: Deploy documentation

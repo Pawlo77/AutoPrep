@@ -2,6 +2,8 @@
 
 **Auto-Prep** is an automated data preprocessing and analysis pipeline that generates comprehensive LaTeX reports. It handles common preprocessing tasks, creates insightful visualizations, and documents the entire process in a professional PDF report. It focuses on tabular data, supporting numerous explainable AI models. Emphasizing interpretability and ease of use, it includes subsections for each model, explaining their strengths, weaknesses, and providing usage examples.
 
+## [Docs](https://pawlo77.github.io/AutoPrep/)
+
 ## Features
 
 - **Automated data cleaning and preprocessing**
