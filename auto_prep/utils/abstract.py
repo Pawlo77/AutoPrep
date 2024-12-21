@@ -25,6 +25,10 @@ class Step(ABC, BaseEstimator, TransformerMixin):
 
     @abstractmethod
     def to_tex(self) -> dict:
+        """
+            Returns a short description in form of dictionary. 
+            Keys are: name - transformer name, desc - short description, params - class parameters (if None then {}).
+        """
         pass
 
     @abstractmethod
@@ -51,17 +55,4 @@ class NonRequiredStep(Step):
     Non required step that will be only considered for preprocessing
     if class method is_applicable returns True.
     """
-
-    @staticmethod
-    @abstractmethod
-    def is_applicable(dt: pd.Series) -> bool:
-        """
-        Args:
-            dt (pd.Series) - column that is considered to be preprocessed
-                by that transformer.
-
-        Returns:
-            bool - True if it is possible to use this transofmation
-                on passed data.
-        """
-        pass
+    pass
