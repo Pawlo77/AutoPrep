@@ -6,11 +6,27 @@
 AutoPrep documentation
 ======================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+========
+Overview
+========
 
+Auto-Prep is an automated data preprocessing and analysis pipeline that generates comprehensive LaTeX reports. It handles common preprocessing tasks, creates insightful visualizations, and documents the entire process in a professional PDF report. It focuses on tabular data, supporting numerous explainable AI models. Emphasizing interpretability and ease of use, it includes subsections for each model, explaining their strengths, weaknesses, and providing usage examples.
+
+.. note::
+	This project was developed as part of AutoML course at Warsaw University of Technology.
+
+-------------
+Documentation
+-------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 6
    :caption: Contents:
+
+   modules
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`

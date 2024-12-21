@@ -1,19 +1,10 @@
 import logging
-import os
 import sys
 import time
 from logging.handlers import RotatingFileHandler
 from typing import Optional
 
-# ANSI color codes
-COLORS = {
-    "DEBUG": "\033[36m",  # Cyan
-    "INFO": "\033[32m",  # Green
-    "WARNING": "\033[33m",  # Yellow
-    "ERROR": "\033[31m",  # Red
-    "CRITICAL": "\033[41m",  # Red background
-    "RESET": "\033[0m",  # Reset color
-}
+from .config import config
 
 
 class ColoredFormatter(logging.Formatter):
@@ -31,7 +22,10 @@ class ColoredFormatter(logging.Formatter):
         """
         # Add color to levelname
         levelname = record.levelname
-        record.levelname = f"{COLORS[levelname]}{levelname:<8}{COLORS['RESET']}"
+        record.levelname = (
+            f"{config.logger_colors_map[levelname]}"
+            + f"{levelname:<8}{config.logger_colors_map['RESET']}"
+        )
 
         # Add elapsed time if available
         if hasattr(record, "elapsed_time"):
@@ -78,12 +72,6 @@ class TimedLogger(logging.Logger):
             self._current_operation = None
 
 
-LOG_FORMAT = "%(asctime)s %(levelname)s %(message)s"
-DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
-LOG_LEVEL = logging.INFO
-LOG_DIR = None  # don't save logs for now
-
-
 def setup_logger(name: str) -> TimedLogger:
     """
     Sets up a logger with both file and console handlers.
@@ -98,23 +86,26 @@ def setup_logger(name: str) -> TimedLogger:
     logging.setLoggerClass(TimedLogger)
 
     logger = logging.getLogger(name)
-    logger.setLevel(LOG_LEVEL)
+    logger.setLevel(config.log_level)
 
     if not logger.handlers:
-        if LOG_DIR is not None:
-            os.makedirs(LOG_DIR, exist_ok=True)
+        if config.log_dir != -1:
             file_handler = RotatingFileHandler(
-                f"{LOG_DIR}/{name.split('.')[-1]}.log",
-                maxBytes=1024 * 1024,  # 1MB
+                f"{config.log_dir}/{name.split('.')[-1]}.log",
+                maxBytes=1024 * config.max_log_file_size_in_mb,  # 1MB
                 backupCount=5,
             )
-            file_handler.setLevel(LOG_LEVEL)
-            file_handler.setFormatter(logging.Formatter(LOG_FORMAT, DATE_FORMAT))
+            file_handler.setLevel(config.log_level)
+            file_handler.setFormatter(
+                logging.Formatter(config.log_format, config.log_date_format)
+            )
             logger.addHandler(file_handler)
 
         console_handler = logging.StreamHandler(sys.stdout)
-        console_handler.setLevel(LOG_LEVEL)
-        console_handler.setFormatter(ColoredFormatter(LOG_FORMAT, DATE_FORMAT))
+        console_handler.setLevel(config.log_level)
+        console_handler.setFormatter(
+            ColoredFormatter(config.log_format, config.log_date_format)
+        )
         logger.addHandler(console_handler)
 
     return logger

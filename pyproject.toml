@@ -5,7 +5,9 @@ description = "AutoML with enhanced preprocessing and explainability."
 authors = ["Paweł Pozorski <pozorski.paul@gmail.com>"]
 readme = "README.md"
 license = "GPLv3"
+homepage = "https://github.com/Pawlo77/AutoPrep.git"
 repository = "https://github.com/Pawlo77/AutoPrep.git"
+documentation = "https://pawlo77.github.io/AutoPrep/"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
@@ -67,7 +69,7 @@ check = true
 recursive = true
 remove-all-unused-imports = true
 remove-unused-variables = true
-exclude = ["__init__.py"]
+exclude = ["__init__.py", "abstract.py"]
 expand-star-imports = true
 ignore-init-module-imports = true
 
