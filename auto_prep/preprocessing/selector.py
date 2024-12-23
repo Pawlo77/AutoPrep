@@ -1,5 +1,5 @@
 import pandas as pd
-from ..utils.abstract import Numerical, RequiredStep, NonRequiredStep
+from ..utils.abstract import Numerical, RequiredStep, NonRequiredStep, Categorical
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -29,9 +29,10 @@ class VarianceFilter(RequiredStep, Numerical):
         Returns:
             VarianceAndUniqueFilter: The fitted transformer instance.
         """
-        
+        logger.start_operation(f"Fitting VarianceFilter")
         zero_variance = X.var() == 0
         self.dropped_columns = X.columns[zero_variance].tolist()
+        logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -44,6 +45,10 @@ class VarianceFilter(RequiredStep, Numerical):
         Returns:
             pd.DataFrame: The transformed data without dropped columns.
         """
+        logger.start_operation(
+            f"Transforming data by dropping {len(self.dropped_columns)} zero variance columns."
+        )
+        logger.end_operation()
         return X.drop(columns=self.dropped_columns, errors='ignore')
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -56,7 +61,12 @@ class VarianceFilter(RequiredStep, Numerical):
         Returns:
             pd.DataFrame: The transformed data without dropped columns.
         """
+        logger.start_operation(f"Fitting and transforming data with zero variance")
+        logger.end_operation()
         return self.fit(X).transform(X)
+
+    def is_numerical(self)->bool:
+        return True
 
     def to_tex(self) -> dict:
         """
@@ -65,6 +75,78 @@ class VarianceFilter(RequiredStep, Numerical):
         return {
             "name": "VarianceFilter",
             "desc": f"Removes columns with zero variance. Dropped columns: {self.dropped_columns}",
+            "params": {}
+        }
+
+class UniqueFilter(RequiredStep,Categorical):
+    """
+    Transformer to remove categorical columns 100% unique values.
+
+    Attributes:
+        dropped_columns (list): List of dropped columns.
+    """
+
+    def __init__(self):
+        """
+        Initializes the transformer with an empty list of dropped columns.
+        """
+        self.dropped_columns = []
+
+    def fit(self, X: pd.DataFrame) -> "UniqueFilter":
+        """
+        Identifies categorical columns with 100% unique values.
+
+        Args:
+            X (pd.DataFrame): The input feature data.
+
+        Returns:
+            UniqueFilter: The fitted transformer instance.
+        """
+        logger.start_operation("Fitting UniqueFilter")
+        # Select only categorical columns
+        cat_cols = X.select_dtypes(include=['object', 'category'])
+        self.dropped_columns = [col for col in cat_cols.columns if X[col].nunique() == len(X)]
+        logger.end_operation()
+        return self
+
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
+        """
+        Drops the identified categorical columns with 100% unique values based on the fit method.
+
+        Args:
+            X (pd.DataFrame): The feature data.
+
+        Returns:
+            pd.DataFrame: The transformed data without dropped columns.
+        """
+        logger.start_operation(f'Transforming data UniqueFilter by dropping {len(self.dropped_columns)} columns with unique values')
+        logger.end_operation()
+        return X.drop(columns=self.dropped_columns, errors='ignore')
+
+    def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
+        """
+        Fits and transforms the data in one step.
+
+        Args:
+            X (pd.DataFrame): The feature data.
+
+        Returns:
+            pd.DataFrame: The transformed data without dropped columns.
+        """
+        logger.start_operation(f"Fitting and transforming categorical data with 100% unique values")
+        logger.end_operation()
+        return self.fit(X).transform(X)
+    
+    def is_numerical(self)->bool:
+        return False
+
+    def to_tex(self) -> dict:
+        """
+        Returns a description of the transformer in dictionary format.
+        """
+        return {
+            "name": "UniqueFilter",
+            "desc": f"Removes categorical columns with 100% unique values. Dropped columns: {self.dropped_columns}",
             "params": {}
         }
 
