@@ -4,31 +4,24 @@ from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
-class VarianceAndUniqueFilter(RequiredStep, Numerical):
+class VarianceFilter(RequiredStep, Numerical):
     """
-    Transformer to remove columns with zero variance or with at least unique_threshold% unique values.
-    Default threshold is 90%.
+    Transformer to remove numerical columns with zero variance..
 
     Attributes:
-        unique_threshold (float): Percentage threshold for unique values. (0-100)
         dropped_columns (list): List of dropped columns.
     """
 
-    def __init__(self, unique_threshold: float = 90.0):
+    def __init__(self):
         """
-        Initializes the transformer with a specified threshold (%) for unique values.
-
-        Args:
-            unique_threshold (float): Percentage threshold for unique values.
+        Initializes the transformer with empty list of dropped columns.
         """
-        if not (0 <= unique_threshold <= 100):
-            raise ValueError("unique_threshold must be between 0 and 100.")
-        self.unique_threshold = unique_threshold
+        
         self.dropped_columns = []
 
-    def fit(self, X: pd.DataFrame) -> "VarianceAndUniqueFilter":
+    def fit(self, X: pd.DataFrame) -> "VarianceFilter":
         """
-        Identifies columns with zero variance or with high percentage of unique values.
+        Identifies columns with zero variances and adds to dropped_columns list.
 
         Args:
             X (pd.DataFrame): The input feature data.
@@ -36,18 +29,14 @@ class VarianceAndUniqueFilter(RequiredStep, Numerical):
         Returns:
             VarianceAndUniqueFilter: The fitted transformer instance.
         """
-        # Find columns with zero variance
+        
         zero_variance = X.var() == 0
-
-        # Find columns with high percentage of unique values
-        high_unique = (X.nunique() / len(X)) * 100 >= self.unique_threshold
-
-        self.dropped_columns = X.columns[zero_variance | high_unique].tolist()
+        self.dropped_columns = X.columns[zero_variance].tolist()
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
-        Drops the identified columns with zero variance or high percentage of unique values based on the fit method.
+        Drops the identified columns with zero variance based on the fit method.
 
         Args:
             X (pd.DataFrame): The feature data.
@@ -74,9 +63,9 @@ class VarianceAndUniqueFilter(RequiredStep, Numerical):
         Returns a description of the transformer in dictionary format.
         """
         return {
-            "name": "VarianceAndUniqueFilter",
-            "desc": f"Removes columns with zero variance or >= {self.unique_threshold}% unique values. Dropped columns: {self.dropped_columns}",
-            "params": {"unique_threshold": self.unique_threshold}
+            "name": "VarianceFilter",
+            "desc": f"Removes columns with zero variance. Dropped columns: {self.dropped_columns}",
+            "params": {}
         }
 
 
