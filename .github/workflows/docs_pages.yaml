@@ -3,7 +3,10 @@ on:
   push:
     tags: '*'
     branches:
-      - dev
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-docs:

@@ -25,6 +25,11 @@
     pip install auto-prep
     ```
 
+2. Run the example usage:
+    ```bash
+    python example_usage.py
+    ```
+
 ### Using Poetry
 
 1. Ensure you have Poetry installed:
