@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import List
 
 import numpy as np
 from pylatex import NoEscape
@@ -65,6 +66,7 @@ class GlobalConfig:
         test_size: float = 0.1,
         valid_size: float = 0.1,
         random_state: int = 42,
+        raport_decimal_precision: int = 4,
         chart_settings: dict = None,
         *args,
         **kwargs,
@@ -99,6 +101,8 @@ class GlobalConfig:
             test_size (float) - % of traing set size. Defaults to 0.1.
             valid_size (float) - % of traing set size. Defaults to 0.1.
             random_state (int) - Random state for sklearn.
+            raport_decimal_precision (int) - Decimal precision for all float in raport.
+                Will use standard python rounding.
             chart_settings (dict): Settings for customizing chart appearance.
                 Defaults to None, which initializes default settings.
         """
@@ -111,7 +115,7 @@ class GlobalConfig:
         self.raport_abstract = raport_abstract
         os.makedirs(root_dir, exist_ok=True)
         self.root_dir = root_dir
-        self.raport_path = os.path.join(root_dir, raport_name)
+        self.raport_path = os.path.abspath(os.path.join(root_dir, raport_name))
         self.charts_dir = os.path.join(self.raport_path, "charts")
         os.makedirs(self.charts_dir, exist_ok=True)
         self.return_tex_ = return_tex_
@@ -156,6 +160,9 @@ class GlobalConfig:
             "heatmap_cmap": "coolwarm",
             "heatmap_fmt": ".2f",
         }
+
+        self.raport_decimal_precision = raport_decimal_precision
+
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""

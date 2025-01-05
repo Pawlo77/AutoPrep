@@ -5,6 +5,7 @@ import pandas as pd
 import seaborn as sns
 from utils.config import config
 
+from ..utils.config import config
 from ..utils.logging_config import setup_logger
 from ..utils.other import save_chart
 
@@ -22,6 +23,9 @@ class NumericalVisualizer:
     """
 
     order = [
+        "numerical_distribution_chart",
+        "correlation_heatmap_chart",
+        "numerical_features_boxplot_chart",
         "numerical_distribution_chart",
         "correlation_heatmap_chart",
         "numerical_features_boxplot_chart",
@@ -222,3 +226,5 @@ class NumericalVisualizer:
             raise e
         finally:
             logger.end_operation()
+            logger.error(f"Failed to generate boxplot visualisations plot: {str(e)}")
+            raise e

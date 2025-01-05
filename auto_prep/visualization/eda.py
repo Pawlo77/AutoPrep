@@ -28,7 +28,7 @@ class EdaVisualizer:
         "missing_values_chart",
     ]
 
-    # for classification
+# for classification
     @staticmethod
     def target_distribution_chart(
         X: pd.DataFrame,  # noqa: F841
