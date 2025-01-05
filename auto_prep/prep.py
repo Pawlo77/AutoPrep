@@ -51,16 +51,23 @@ class AutoPrep:
 
         self._generate_report()
 
-    def _run(self, data: pd.DataFrame, target_column: str):
+    def _run(self, data: pd.DataFrame, target_column: str, task: str = "auto"):
         """
         Performs all neccessary computations.
 
         Args:
             data (pd.DataFrame): Input dataset to process.
             target_column (str): Name of the target variable column.
+            task (str): Classification or regression. For auto will try to detect it itself.
         """
 
         logger.start_operation("Calculations.")
+
+        if task == "auto":
+            task = AutoPrep._detect_task_type(data, target_column)
+            logger.info(f"Detected task: {task}")
+        else:
+            assert task in ["regression", "classification"], "Unknown task."
 
         try:
             """
@@ -98,7 +105,11 @@ class AutoPrep:
             Preprocessing
             """
             self.preprocessing_handler.run(
-                X_train=X_train, y_train=y_train, X_valid=X_valid, y_valid=y_valid
+                X_train=X_train,
+                y_train=y_train,
+                X_valid=X_valid,
+                y_valid=y_valid,
+                task=task,
             )
 
         except Exception as e:
@@ -130,3 +141,26 @@ class AutoPrep:
 
         raport.generate()
         logger.end_operation()
+
+    @staticmethod
+    def _detect_task_type(df: pd.DataFrame, target_column: str):
+        """
+        Automatically detects whether the target column is for regression or classification.
+
+        Args:
+            df (pd.DataFrame): The input dataset.
+            target_column (str): The name of the target column.
+
+        Returns:
+            str: 'regression' or 'classification' based on the target column.
+        """
+        target = df[target_column]
+
+        if pd.api.types.is_numeric_dtype(target):
+            unique_values = target.nunique()
+
+            if unique_values < config.max_unique_values_classification:
+                return "classification"
+            else:
+                return "regression"
+        return "classification"

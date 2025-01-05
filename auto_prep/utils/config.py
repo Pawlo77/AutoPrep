@@ -4,6 +4,9 @@ from typing import List
 
 import numpy as np
 from pylatex import NoEscape
+from sklearn.base import BaseEstimator
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.metrics import mean_squared_error, roc_auc_score
 
 # ANSI color codes
 COLORS: dict = {
@@ -74,6 +77,15 @@ class GlobalConfig:
         correlation_percent: float = 0.5,
         n_bins: int = 4,
         chart_settings: dict = None,
+        max_unique_values_classification: int = 20,
+        regression_pipeline_scoring_model: BaseEstimator = RandomForestRegressor(
+            n_estimators=100, random_state=42, max_depth=5, n_jobs=-1, warm_start=True
+        ),
+        classification_pipeline_scoring_model: BaseEstimator = RandomForestClassifier(
+            n_estimators=100, random_state=42, max_depth=5, n_jobs=-1, warm_start=True
+        ),
+        regression_pipeline_scoring_func: callable = mean_squared_error,
+        classification_pipeline_scoring_func: callable = roc_auc_score,
     ):
         """
         Args:
@@ -112,7 +124,15 @@ class GlobalConfig:
                 Affects entire process.
             raport_decimal_precision (int) - Decimal precision for all float in raport.
                 Will use standard python rounding.
-
+            max_unique_values_classification (int) - in case of target column being of non numerical dtype,
+                it will calculate number of unique values (in task "auto"). If this number will be lower than
+                that value, it'll perform classification.
+            regression_pipeline_scoring_model (BaseEstimator) - model used for scoring processing pipelines
+                in classification regression task.
+            classification_pipeline_scoring_model (BaseEstimator) - model used for scoring processing pipelines
+                in classification regression task.
+            regression_pipeline_scoring_func (callable) - metric for scoring :obj:`regression_pipeline_scoring_model` output.
+            classification_pipeline_scoring_func (callable) - metric for scoring :obj:`classification_pipeline_scoring_model` output.
             raport_chart_color_pallete (List[str]) - Color palette for basic eda charts.
             correlation_threshold (float) - threshold used for detecting highly correlated features.Default 0.8.
             correlation_percent (float) - % of selected features based on their correlation with the target. Default 0.5.
@@ -205,6 +225,17 @@ class GlobalConfig:
         ), f"Wrong value for n_bins: {n_bins}. "
         "Should be int >= 1."
         self.n_bins = n_bins
+
+        assert (
+            max_unique_values_classification >= 0
+        ), "max_unique_values_classification should be positive integer."
+        self.max_unique_values_classification = max_unique_values_classification
+        self.regression_pipeline_scoring_model = regression_pipeline_scoring_model
+        self.classification_pipeline_scoring_model = (
+            classification_pipeline_scoring_model
+        )
+        self.regression_pipeline_scoring_func = regression_pipeline_scoring_func
+        self.classification_pipeline_scoring_func = classification_pipeline_scoring_func
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""

@@ -1,7 +1,11 @@
+import copy
 import itertools
+from time import time
 from typing import Dict, List
 
+import humanize
 import pandas as pd
+from sklearn.base import BaseEstimator
 from sklearn.pipeline import Pipeline
 
 from ..raporting.raport import Report
@@ -15,7 +19,13 @@ logger = setup_logger(__name__)
 class PreprocessingHandler(ModulesHandler):
     def __init__(self):
         self._pipeline_steps: List[List[Step]] = []
+        self._pipeline_steps_exploded: List[List[Step]] = []
         self._pipelines: List[Pipeline] = []
+        self._fit_durations: List[float] = []
+        self._score_durations: List[float] = []
+        self._fit_time: float = None
+        self._score_time: float = None
+        self._pipelines_scores: List[int] = []
 
     def run(
         self,
@@ -23,6 +33,7 @@ class PreprocessingHandler(ModulesHandler):
         y_train: pd.Series,
         X_valid: pd.DataFrame,
         y_valid: pd.Series,
+        task: str,
     ):
         """
         Performs dataset preprocessing and scoring.
@@ -41,9 +52,11 @@ class PreprocessingHandler(ModulesHandler):
             y_train (pd.Series): Training target dataset.
             X_valid (pd.DataFrame): Validation feature dataset.
             y_valid (pd.Series): Validation target dataset.
+            task (str): classification or regression.
         """
 
         logger.start_operation("Preprocessing.")
+        logger.info("Creating pipelines...")
 
         pipelines = []
         for step_name, package_name in [
@@ -63,23 +76,51 @@ class PreprocessingHandler(ModulesHandler):
 
         logger.debug(f"Extracted pipelines steps: {pipelines}")
 
+        self._pipeline_steps_exploded
         for pipeline_steps in self._pipeline_steps:
-            pipeline_steps_exploded = PreprocessingHandler._explode_steps(
+            current_pipeline_steps_exploded = PreprocessingHandler._explode_steps(
                 pipeline_steps
             )
             logger.debug(
-                f"Exploaded {len(pipeline_steps)} steps into {len(pipeline_steps_exploded)} steps."
+                f"Exploaded {len(pipeline_steps)} steps into {len(current_pipeline_steps_exploded)} steps."
             )
-            for entry in pipeline_steps_exploded:
-                self._pipelines.append(
-                    Pipeline(
-                        entry,
-                    )
-                )
+            for entry in current_pipeline_steps_exploded:
+                self._pipelines.append(Pipeline(entry))
+                self._pipeline_steps_exploded.append(entry)
 
-        logger.debug("Fitting pipelines...")
+        t0 = time()
+        logger.info("Fitting pipelines...")
         for pipeline in self._pipelines:
+            t1 = time()
             pipeline.fit(X_train, y_train)
+            self._fit_durations(time() - t1)
+        self._fit_time = time() - t0
+
+        logger.info("Scoring pipelines...")
+        t0 = time()
+        model = (
+            config.regression_pipeline_scoring_model
+            if task == "regression"
+            else config.classification_pipeline_scoring_model
+        )
+        score_func = (
+            config.regression_pipeline_scoring_func
+            if task == "regression"
+            else config.classification_pipeline_scoring_func
+        )
+        for pipeline in self._pipelines:
+            t1 = time()
+            self._pipelines_scores.append(
+                PreprocessingHandler.score_pipeline_with_model(
+                    pipeline=pipeline,
+                    model=copy.deepcopy(model),
+                    score_func=score_func,
+                    X_val=X_valid,
+                    y_val=y_valid,
+                )
+            )
+            self._score_durations(time() - t1)
+        self._score_time = time() - t0
 
         logger.end_operation()
 
@@ -87,6 +128,27 @@ class PreprocessingHandler(ModulesHandler):
         """Writes overview section to a raport"""
 
         preprocessing_section = raport.add_section("Preprocessing")  # noqa: F841
+
+        pipeline_scores_description = (
+            pd.Series(self._pipelines_scores).describe().to_dict()
+        )
+        prefixed_pipeline_scores_description = {
+            f"scores_{key}": value for key, value in pipeline_scores_description.items()
+        }
+        statistics = {
+            "Unique created pipelines": len(self._pipeline_steps),
+            "All created pipelines (after exploading each step params)": len(
+                self._pipeline_steps_exploded
+            ),
+            "All pipelines fit time": humanize.naturaltime(self._fit_time),
+            "All pipelines score time": humanize.naturaltime(self._score_time),
+            **prefixed_pipeline_scores_description,
+        }
+
+        raport.add_table(
+            statistics,
+            caption="Preprocessing pipelines runtime statistics.",
+        )
 
         pipelines_overview = {}
         for i, pipeline_steps in enumerate(self._pipeline_steps):
@@ -101,6 +163,37 @@ class PreprocessingHandler(ModulesHandler):
         )
 
         return raport
+
+    @staticmethod
+    def score_pipeline_with_model(
+        preprocessing_pipeline: Pipeline,
+        model: BaseEstimator,
+        score_func: callable,
+        X_val: pd.DataFrame,
+        y_val: pd.Series,
+    ) -> float:
+        """
+        Evaluates the performance of a given preprocessing pipeline with a model on validation data.
+
+        Args:
+            preprocessing_pipeline (Pipeline): The preprocessing pipeline to be evaluated.
+            model (BaseEstimator): The model to be used for scoring.
+            score_func (callable): scoring function for model predictions and y_val.
+            X_val (pd.DataFrame): The validation features.
+            y_val (pd.Series): The validation labels.
+
+        Returns:
+            float: The score of the pipeline on the validation data.
+        """
+        full_pipeline = Pipeline(
+            [("preprocessing", preprocessing_pipeline), ("model", model)]
+        )
+
+        full_pipeline.fit(X_val, y_val)
+        y_pred = full_pipeline.predict(X_val)
+
+        score = score_func(y_val, y_pred)
+        return score
 
     @staticmethod
     def _explode_steps(steps: List[Step]) -> List[List[Step]]:
