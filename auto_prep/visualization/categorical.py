@@ -3,9 +3,10 @@ from typing import Tuple
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from utils.config import config
-from utils.logging_config import setup_logger
-from utils.other import save_chart
+
+from ..utils.config import config
+from ..utils.logging_config import setup_logger
+from ..utils.other import save_chart
 
 logger = setup_logger(__name__)
 
