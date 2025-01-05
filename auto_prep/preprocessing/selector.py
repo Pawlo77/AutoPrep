@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor  # noqa F401
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor  # noqa: F401
 
+<<<<<<< HEAD
 from ..utils.abstract import (
     Categorical,
     FeatureImportanceSelector,
@@ -13,12 +14,16 @@ from ..utils.abstract import (
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
 from ..utils.abstract import Categorical, NonRequiredStep, Numerical, RequiredStep
+=======
+from ..utils.abstract import FeatureImportanceSelector, NonRequiredStep, Numerical
+>>>>>>> 6a737746423c50ab8ab5791339b38d9deeade5f8
 from ..utils.logging_config import setup_logger
 from ..utils.config import config
 
 logger = setup_logger(__name__)
 
 
+<<<<<<< HEAD
 class VarianceFilter(RequiredStep, Numerical):
     """
     Transformer to remove numerical columns with zero variance.
@@ -346,6 +351,8 @@ class CorrelationFilter(RequiredStep, Numerical):
         }
 
 
+=======
+>>>>>>> 6a737746423c50ab8ab5791339b38d9deeade5f8
 class CorrelationSelector(NonRequiredStep, Numerical):
     """
     Transformer to select correlation_percent% (rounded to whole number) of features that are most correlated with the target variable.
@@ -446,9 +453,6 @@ class CorrelationSelector(NonRequiredStep, Numerical):
             raise ValueError(f'Failed to fit_transform {X} with CorrelationSelector threshold {self.correlation_percent}: {e}')
         finally:
             logger.end_operation()
-
-    def is_numerical(self) -> bool:
-        return True
 
     def to_tex(self) -> dict:
         """
@@ -564,9 +568,6 @@ class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
             "params": {"k": self.k},
         }
 
-    def is_numerical(self) -> bool:
-        return False
-
 
 class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
     """
@@ -671,6 +672,3 @@ class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
             "desc": f"Selects the top {self.k}% (rounded to whole number) of features most important according to Random Forest model for regression. Number of features that were selected: {len(self.selected_columns)}",
             "params": {"k": self.k},
         }
-
-    def is_numerical(self) -> bool:
-        return True

@@ -1,5 +1,3 @@
-from abc import ABC, abstractmethod
-
 import numpy as np
 import pandas as pd
 import umap
@@ -7,44 +5,10 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
-from ..utils.abstract import NonRequiredStep
 from ..utils.logging_config import setup_logger
+from .abstract import DimentionReducer
 
 logger = setup_logger(__name__)
-
-
-class DimentionReducer(NonRequiredStep, ABC):
-    """
-    Abstract class for dimensionality reduction techniques.
-    """
-
-    def __init__(self):
-        super().__init__()
-        self.reducer = None
-
-    @abstractmethod
-    def fit(self, X, y=None) -> "DimentionReducer":
-        pass
-
-    @abstractmethod
-    def transform(self, X, y=None) -> pd.DataFrame:
-        pass
-
-    @abstractmethod
-    def fit_transform(self, X, y=None) -> pd.DataFrame:
-        pass
-
-    @abstractmethod
-    def is_applicable(X):
-        pass
-
-    @abstractmethod
-    def is_numerical(self) -> bool:
-        pass
-
-    @abstractmethod
-    def to_tex(self) -> dict:
-        pass
 
 
 class PCADimentionReducer(DimentionReducer):
@@ -132,9 +96,6 @@ class PCADimentionReducer(DimentionReducer):
     def is_applicable(X):
         return np.shape(X)[0] > 1 and np.shape(X)[1] > 1
 
-    def is_numerical(self) -> bool:
-        return True
-
     def to_tex(self) -> dict:
         return {"name": "StandarizeAndPCA", "desc": "", "params": {}}
 
@@ -205,9 +166,6 @@ class VIFDimentionReducer(DimentionReducer):
     def is_applicable(X):
         return np.shape(X)[0] > 1 and np.shape(X)[1] > 1
 
-    def is_numerical(self) -> bool:
-        return True
-
     def to_tex(self) -> dict:
         return {
             "name": "VIF",
@@ -261,9 +219,6 @@ class UMAPDimentionReducer(DimentionReducer):
 
     def is_applicable(X):
         return np.shape(X)[0] > 1 and np.shape(X)[1] > 1
-
-    def is_numerical(self) -> bool:
-        return True
 
     def to_tex(self) -> dict:
         return {
