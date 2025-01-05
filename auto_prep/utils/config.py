@@ -67,7 +67,7 @@ class GlobalConfig:
         valid_size: float = 0.1,
         random_state: int = 42,
         raport_decimal_precision: int = 4,
-        raport_chart_color_pallete: List[str] = ["#FF204E"],
+        chart_settings: dict = None,
         *args,
         **kwargs,
     ):
@@ -103,7 +103,8 @@ class GlobalConfig:
             random_state (int) - Random state for sklearn.
             raport_decimal_precision (int) - Decimal precision for all float in raport.
                 Will use standard python rounding.
-            raport_chart_color_pallete (List[str]) - Color palette for basic eda charts.
+            chart_settings (dict): Settings for customizing chart appearance.
+                Defaults to None, which initializes default settings.
         """
         assert (
             isinstance(raport_name, str) and raport_name != ""
@@ -145,11 +146,23 @@ class GlobalConfig:
 
         self.random_state = random_state
         np.random.seed(random_state)
+        
+        self.chart_settings = chart_settings or {
+            "theme": "whitegrid",
+            "title_fontsize": 18,
+            "title_fontweight": "bold",
+            "xlabel_fontsize": 12,
+            "ylabel_fontsize": 12,
+            "tick_label_rotation": 45,
+            "palette": "pastel",
+            "plot_width": 15,
+            "plot_height_per_row": 4,
+            "heatmap_cmap": "coolwarm",
+            "heatmap_fmt": ".2f",
+        }
 
         self.raport_decimal_precision = raport_decimal_precision
 
-        assert len(raport_chart_color_pallete) != 0, "Color palette cannot be empty."
-        self.raport_chart_color_pallete = raport_chart_color_pallete
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""

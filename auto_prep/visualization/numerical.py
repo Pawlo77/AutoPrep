@@ -3,6 +3,7 @@ from typing import Tuple
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from utils.config import config
 
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
@@ -22,6 +23,9 @@ class NumericalVisualizer:
     """
 
     order = [
+        "numerical_distribution_chart",
+        "correlation_heatmap_chart",
+        "numerical_features_boxplot_chart",
         "numerical_distribution_chart",
         "correlation_heatmap_chart",
         "numerical_features_boxplot_chart",
@@ -52,7 +56,19 @@ class NumericalVisualizer:
             num_columns = len(numerical_columns)
             num_rows = (num_columns + 1) // 2
 
-            _, axes = plt.subplots(num_rows, 2, figsize=(15, 4 * num_rows))
+            sns.set_theme(
+                style=config.chart_settings["theme"],
+                palette=config.chart_settings["palette"],
+            )
+
+            _, axes = plt.subplots(
+                num_rows,
+                2,
+                figsize=(
+                    config.chart_settings["plot_width"],
+                    config.chart_settings["plot_height_per_row"] * num_rows,
+                ),
+            )
             axes = axes.flatten()
 
             for i, column in enumerate(numerical_columns):
@@ -60,11 +76,26 @@ class NumericalVisualizer:
                     data=df,
                     x=column,
                     ax=axes[i],
-                    color=config.raport_chart_color_pallete[0],
                 )
-                axes[i].set_title(f"Distribution of {column}")
-                axes[i].set_xlabel(column)
-                axes[i].set_ylabel("Count")
+                axes[i].set_title(
+                    f"Distribution of {column}",
+                    fontsize=config.chart_settings["title_fontsize"],
+                    fontweight=config.chart_settings["title_fontweight"],
+                )
+                axes[i].set_xlabel(
+                    column, fontsize=config.chart_settings["xlabel_fontsize"]
+                )
+                axes[i].set_ylabel(
+                    "Count", fontsize=config.chart_settings["ylabel_fontsize"]
+                )
+                axes[i].tick_params(
+                    axis="x", rotation=config.chart_settings["tick_label_rotation"]
+                )
+                axes[i].tick_params(
+                    axis="both",
+                    which="major",
+                    labelsize=config.chart_settings["xlabel_fontsize"],
+                )
 
             axes[-1].axis("off")
 
@@ -96,14 +127,23 @@ class NumericalVisualizer:
                 return "", ""
             logger.debug(f"Will create heatmap for {numerical_columns} columns.")
 
-            plt.figure(figsize=(15, 10))
+            plt.figure(
+                figsize=(
+                    config.chart_settings["plot_width"],
+                    config.chart_settings["plot_height_per_row"] * 2.5,
+                )
+            )
             sns.heatmap(
                 df[numerical_columns].corr(numeric_only=False),
                 annot=True,
-                cmap="coolwarm",
-                fmt=".2f",
+                cmap=config.chart_settings.get("heatmap_cmap", "coolwarm"),
+                fmt=config.chart_settings.get("heatmap_fmt", ".2f"),
             )
-            plt.title("Correlation Heatmap")
+            plt.title(
+                "Correlation Heatmap",
+                fontsize=config.chart_settings["title_fontsize"],
+                fontweight=config.chart_settings["title_fontweight"],
+            )
             path = save_chart(name="correlation_heatmap.png")
 
             return path, "Correlation heatmap."
@@ -135,7 +175,14 @@ class NumericalVisualizer:
             num_columns = len(numerical_columns)
             num_rows = (num_columns + 1) // 2
 
-            _, axes = plt.subplots(num_rows, 2, figsize=(15, 4 * num_rows))
+            _, axes = plt.subplots(
+                num_rows,
+                2,
+                figsize=(
+                    config.chart_settings["plot_width"],
+                    config.chart_settings["plot_height_per_row"] * num_rows,
+                ),
+            )
             axes = axes.flatten()
 
             try:
@@ -144,10 +191,27 @@ class NumericalVisualizer:
                         data=df,
                         x=column,
                         ax=axes[i],
-                        color=config.raport_chart_color_pallete[0],
+                        palette=config.chart_settings["palette"],
                     )
-                    axes[i].set_title(f"Boxplot of {column}")
-                    axes[i].set_xlabel(column)
+                    axes[i].set_title(
+                        f"Boxplot of {column}",
+                        fontsize=config.chart_settings["title_fontsize"],
+                        fontweight=config.chart_settings["title_fontweight"],
+                    )
+                    axes[i].set_xlabel(
+                        column, fontsize=config.chart_settings["xlabel_fontsize"]
+                    )
+                    axes[i].set_ylabel(
+                        "Value", fontsize=config.chart_settings["ylabel_fontsize"]
+                    )
+                    axes[i].tick_params(
+                        axis="x", rotation=config.chart_settings["tick_label_rotation"]
+                    )
+                    axes[i].tick_params(
+                        axis="both",
+                        which="major",
+                        labelsize=config.chart_settings["xlabel_fontsize"],
+                    )
             except Exception as e:
                 raise Exception(f"Error in column {column}") from e
 
@@ -162,3 +226,5 @@ class NumericalVisualizer:
             raise e
         finally:
             logger.end_operation()
+            logger.error(f"Failed to generate boxplot visualisations plot: {str(e)}")
+            raise e

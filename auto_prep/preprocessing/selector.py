@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor  # noqa F401
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
 from ..utils.abstract import (
     Categorical,

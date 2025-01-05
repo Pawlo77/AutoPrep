@@ -10,6 +10,8 @@ from ..utils.other import save_chart
 
 logger = setup_logger(__name__)
 
+from typing import Tuple
+
 
 class EdaVisualizer:
     """
@@ -26,7 +28,7 @@ class EdaVisualizer:
         "missing_values_chart",
     ]
 
-    # for classification
+# for classification
     @staticmethod
     def target_distribution_chart(
         X: pd.DataFrame,  # noqa: F841
@@ -37,8 +39,14 @@ class EdaVisualizer:
         """
         logger.start_operation("Target distribution visualization.")
         try:
+            y_df = y.to_frame(name="target")
             plt.figure(figsize=(10, 6))
-            sns.countplot(data=y, x=y, color=config.raport_chart_color_pallete[0])
+            sns.countplot(
+                data=y_df,
+                x="target",
+                palette=config.chart_settings["palette"],
+                hue="target",
+            )
             # add percent labels
             total = len(y)
             for p in plt.gca().patches:
@@ -85,7 +93,7 @@ class EdaVisualizer:
             sns.barplot(
                 x=missing.index,
                 y=missing.values,
-                color=config.raport_chart_color_pallete[0],
+                palette=config.chart_settings["palette"],
             )
             plt.xticks(rotation=45)
             plt.title("Percentage of Missing Values by Feature")
