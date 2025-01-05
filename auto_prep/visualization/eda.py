@@ -10,8 +10,6 @@ from ..utils.other import save_chart
 
 logger = setup_logger(__name__)
 
-from typing import Tuple
-
 
 class EdaVisualizer:
     """
@@ -28,7 +26,7 @@ class EdaVisualizer:
         "missing_values_chart",
     ]
 
-# for classification
+    # for classification
     @staticmethod
     def target_distribution_chart(
         X: pd.DataFrame,  # noqa: F841

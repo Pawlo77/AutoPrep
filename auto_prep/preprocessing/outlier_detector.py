@@ -3,8 +3,9 @@ import pandas as pd
 from scipy import stats
 from sklearn.ensemble import IsolationForest
 from statsmodels.regression.linear_model import OLS
-from utils.abstract import Numerical, RequiredStep
-from utils.logging_config import setup_logger
+
+from ..utils.abstract import Numerical, RequiredStep
+from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
@@ -131,12 +132,12 @@ class OutlierDetector(RequiredStep, Numerical):
         threshold = self.kwargs.get("threshold", 4 / X.shape[0])
         return np.where(cooks_distance > threshold)
 
-    def is_numerical(self) -> bool:
-        return False
-
     def to_tex(self) -> dict:
         return {
             "name": "OutlierDetector",
             "desc": "Detects outliers in numerical data using specified method.",
-            "params": {"method": self.method, "kwargs": self.kwargs},
+            "params": {
+                "method": self.method,
+                "kwargs": self.kwargs,
+            },
         }

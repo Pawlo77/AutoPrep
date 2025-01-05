@@ -19,7 +19,7 @@ class EdaRaport:
         self.charts_dt: Dict[str, List[Tuple[str, str]]] = {}
 
     def run(self, X: pd.DataFrame, y: pd.Series):
-        """Performs dataset overview."""
+        """Performs dataset eda analysis."""
 
         logger.start_operation("Eda.")
 
