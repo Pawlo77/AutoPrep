@@ -1,18 +1,34 @@
+<<<<<<< HEAD
 import pandas as pd
 import numpy as np
 from ..utils.abstract import Numerical, NonRequiredStep
+=======
+import numpy as np
+import pandas as pd
+
+from ..utils.abstract import NonRequiredStep, Numerical
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
+<<<<<<< HEAD
 class BinningTransformer(NonRequiredStep,Numerical):
+=======
+
+class BinningTransformer(NonRequiredStep, Numerical):
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
     """
     Transformer for performing binning (using qcut) or equal-width binning (using cut)
     on continuous variables and replacing the values with numeric labels, but only if the number of unique values
     exceeds 50% of the number of samples in the column.
     """
 
+<<<<<<< HEAD
     def __init__(self, n_bins: int = 4,  binning_method: str = 'qcut'):
+=======
+    def __init__(self, n_bins: int = 4, binning_method: str = "qcut"):
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         """
         Initializes the transformer with the number of bins for quantile binning and the binning method to use ('cut' or 'qcut').
 
@@ -20,7 +36,11 @@ class BinningTransformer(NonRequiredStep,Numerical):
             n_bins (int): The number of bins to create (default is 4).
             binning_method (str): The binning method to use ('cut' for equal-width, 'qcut' for quantile binning) (default 'qcut').
         """
+<<<<<<< HEAD
         if binning_method not in ['cut', 'qcut']:
+=======
+        if binning_method not in ["cut", "qcut"]:
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
             raise ValueError("binning_method must be 'cut' or 'qcut'")
 
         self.n_bins = n_bins
@@ -40,12 +60,17 @@ class BinningTransformer(NonRequiredStep,Numerical):
         Returns:
             BinningTransformer: The fitted transformer instance.
         """
+<<<<<<< HEAD
         logger.start_operation(f'Fitting BinningTransformer with {self.n_bins}')
+=======
+        logger.start_operation(f"Fitting BinningTransformer with {self.n_bins}")
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         for column in X.select_dtypes(include=[np.number]).columns:
             unique_values_ratio = len(X[column].unique()) / len(X[column])
             if unique_values_ratio > self.threshold:
                 self.should_bin[column] = True
 
+<<<<<<< HEAD
                 
                 if self.binning_method == 'cut':
                     logger.debug(f'BinningTransformer: calculating bin edges for {column} using cut')
@@ -53,6 +78,22 @@ class BinningTransformer(NonRequiredStep,Numerical):
                 elif self.binning_method == 'qcut':
                     logger.debug(f'BinningTransformer: calculating bin edges for {column} using qcut')
                     self.bin_edges[column] = np.percentile(X[column], np.linspace(0, 100, self.n_bins + 1))
+=======
+                if self.binning_method == "cut":
+                    logger.debug(
+                        f"BinningTransformer: calculating bin edges for {column} using cut"
+                    )
+                    self.bin_edges[column] = np.linspace(
+                        X[column].min(), X[column].max(), self.n_bins + 1
+                    )
+                elif self.binning_method == "qcut":
+                    logger.debug(
+                        f"BinningTransformer: calculating bin edges for {column} using qcut"
+                    )
+                    self.bin_edges[column] = np.percentile(
+                        X[column], np.linspace(0, 100, self.n_bins + 1)
+                    )
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
             else:
                 self.should_bin[column] = False
         logger.end_operation()
@@ -68,6 +109,7 @@ class BinningTransformer(NonRequiredStep,Numerical):
         Returns:
             pd.DataFrame: The transformed data with bin labels.
         """
+<<<<<<< HEAD
         logger.start_operation(f'Transforming BinningTransformer with {self.n_bins}')
         X_transformed = X.copy()  
 
@@ -82,6 +124,34 @@ class BinningTransformer(NonRequiredStep,Numerical):
                     logger.debug(f'BinningTransformer: transforming column : {column} using qcut')
                     X_transformed[column] = pd.qcut(X_transformed[column], q=self.n_bins, labels=False,
                                                     duplicates='drop')
+=======
+        logger.start_operation(f"Transforming BinningTransformer with {self.n_bins}")
+        X_transformed = X.copy()
+
+        for column in X_transformed.columns:
+            if self.should_bin.get(column, False):
+
+                if self.binning_method == "cut":
+                    logger.debug(
+                        f"BinningTransformer: transforming column: {column} using cut"
+                    )
+                    X_transformed[column] = pd.cut(
+                        X_transformed[column],
+                        bins=self.bin_edges[column],
+                        labels=False,
+                        include_lowest=True,
+                    )
+                elif self.binning_method == "qcut":
+                    logger.debug(
+                        f"BinningTransformer: transforming column : {column} using qcut"
+                    )
+                    X_transformed[column] = pd.qcut(
+                        X_transformed[column],
+                        q=self.n_bins,
+                        labels=False,
+                        duplicates="drop",
+                    )
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         logger.end_operation()
         return X_transformed
 
@@ -95,12 +165,23 @@ class BinningTransformer(NonRequiredStep,Numerical):
         Returns:
             pd.DataFrame: The transformed data with bin labels.
         """
+<<<<<<< HEAD
         logger.start_operation(f'Fitting ans transforming data with BinningTransformer n_bins: {self.n_bins}')
         return self.fit(X).transform(X)
 
     def is_numeric(self)->bool:
         return True
     
+=======
+        logger.start_operation(
+            f"Fitting ans transforming data with BinningTransformer n_bins: {self.n_bins}"
+        )
+        return self.fit(X).transform(X)
+
+    def is_numeric(self) -> bool:
+        return True
+
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
     def to_tex(self) -> dict:
         """
         Returns a description of the transformer in dictionary format.
@@ -111,9 +192,14 @@ class BinningTransformer(NonRequiredStep,Numerical):
         return {
             "name": "BinningTransformer",
             "desc": f"Performs {self.binning_method} binning on continuous variables and replaces them with numeric labels. "
+<<<<<<< HEAD
                     f"Number of bins: {self.n_bins}",
             "params": {
                 "n_bins": self.n_bins,
                 "binning_method": self.binning_method
             }
+=======
+            f"Number of bins: {self.n_bins}",
+            "params": {"n_bins": self.n_bins, "binning_method": self.binning_method},
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         }

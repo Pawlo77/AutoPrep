@@ -1,12 +1,33 @@
+<<<<<<< HEAD
 import pandas as pd
 from ..utils.abstract import Numerical, RequiredStep, NonRequiredStep, Categorical
+=======
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor  # noqa F401
+
+from ..utils.abstract import (
+    Categorical,
+    FeatureImportanceSelector,
+    NonRequiredStep,
+    Numerical,
+    RequiredStep,
+)
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
+<<<<<<< HEAD
 class VarianceFilter(RequiredStep, Numerical):
     """
     Transformer to remove numerical columns with zero variance..
+=======
+
+class VarianceFilter(RequiredStep, Numerical):
+    """
+    Transformer to remove numerical columns with zero variance.
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
 
     Attributes:
         dropped_columns (list): List of dropped columns.
@@ -16,7 +37,11 @@ class VarianceFilter(RequiredStep, Numerical):
         """
         Initializes the transformer with empty list of dropped columns.
         """
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         self.dropped_columns = []
 
     def fit(self, X: pd.DataFrame) -> "VarianceFilter":
@@ -29,7 +54,11 @@ class VarianceFilter(RequiredStep, Numerical):
         Returns:
             VarianceAndUniqueFilter: The fitted transformer instance.
         """
+<<<<<<< HEAD
         logger.start_operation(f"Fitting VarianceFilter")
+=======
+        logger.start_operation("Fitting VarianceFilter")
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         zero_variance = X.var() == 0
         self.dropped_columns = X.columns[zero_variance].tolist()
         logger.end_operation()
@@ -49,7 +78,11 @@ class VarianceFilter(RequiredStep, Numerical):
             f"Transforming data by dropping {len(self.dropped_columns)} zero variance columns."
         )
         logger.end_operation()
+<<<<<<< HEAD
         return X.drop(columns=self.dropped_columns, errors='ignore')
+=======
+        return X.drop(columns=self.dropped_columns, errors="ignore")
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -61,11 +94,19 @@ class VarianceFilter(RequiredStep, Numerical):
         Returns:
             pd.DataFrame: The transformed data without dropped columns.
         """
+<<<<<<< HEAD
         logger.start_operation(f"Fitting and transforming data with zero variance")
         logger.end_operation()
         return self.fit(X).transform(X)
 
     def is_numerical(self)->bool:
+=======
+        logger.start_operation("Fitting and transforming data with zero variance")
+        logger.end_operation()
+        return self.fit(X).transform(X)
+
+    def is_numerical(self) -> bool:
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         return True
 
     def to_tex(self) -> dict:
@@ -75,10 +116,18 @@ class VarianceFilter(RequiredStep, Numerical):
         return {
             "name": "VarianceFilter",
             "desc": f"Removes columns with zero variance. Dropped columns: {self.dropped_columns}",
+<<<<<<< HEAD
             "params": {}
         }
 
 class UniqueFilter(RequiredStep,Categorical):
+=======
+            "params": {},
+        }
+
+
+class UniqueFilter(RequiredStep, Categorical):
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
     """
     Transformer to remove categorical columns 100% unique values.
 
@@ -104,8 +153,15 @@ class UniqueFilter(RequiredStep,Categorical):
         """
         logger.start_operation("Fitting UniqueFilter")
         # Select only categorical columns
+<<<<<<< HEAD
         cat_cols = X.select_dtypes(include=['object', 'category'])
         self.dropped_columns = [col for col in cat_cols.columns if X[col].nunique() == len(X)]
+=======
+        cat_cols = X.select_dtypes(include=["object", "category"])
+        self.dropped_columns = [
+            col for col in cat_cols.columns if X[col].nunique() == len(X)
+        ]
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         logger.end_operation()
         return self
 
@@ -119,9 +175,17 @@ class UniqueFilter(RequiredStep,Categorical):
         Returns:
             pd.DataFrame: The transformed data without dropped columns.
         """
+<<<<<<< HEAD
         logger.start_operation(f'Transforming data UniqueFilter by dropping {len(self.dropped_columns)} columns with unique values')
         logger.end_operation()
         return X.drop(columns=self.dropped_columns, errors='ignore')
+=======
+        logger.start_operation(
+            f"Transforming data UniqueFilter by dropping {len(self.dropped_columns)} columns with unique values"
+        )
+        logger.end_operation()
+        return X.drop(columns=self.dropped_columns, errors="ignore")
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -133,11 +197,21 @@ class UniqueFilter(RequiredStep,Categorical):
         Returns:
             pd.DataFrame: The transformed data without dropped columns.
         """
+<<<<<<< HEAD
         logger.start_operation(f"Fitting and transforming categorical data with 100% unique values")
         logger.end_operation()
         return self.fit(X).transform(X)
     
     def is_numerical(self)->bool:
+=======
+        logger.start_operation(
+            "Fitting and transforming categorical data with 100% unique values"
+        )
+        logger.end_operation()
+        return self.fit(X).transform(X)
+
+    def is_numerical(self) -> bool:
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         return False
 
     def to_tex(self) -> dict:
@@ -147,6 +221,7 @@ class UniqueFilter(RequiredStep,Categorical):
         return {
             "name": "UniqueFilter",
             "desc": f"Removes categorical columns with 100% unique values. Dropped columns: {self.dropped_columns}",
+<<<<<<< HEAD
             "params": {}
         }
 
@@ -160,6 +235,21 @@ class CorrelationFilter(RequiredStep,Numerical):
            threshold (float): Correlation threshold above which features are considered highly correlated.
            dropped_columns (list): List of columns that were dropped due to high correlation.
        """
+=======
+            "params": {},
+        }
+
+
+class CorrelationFilter(RequiredStep, Numerical):
+    """
+    Transformer to detect highly correlated features and drop one of them. Pearsons correlation is used.
+    Is a required step in preprocessing.
+
+    Attributes:
+        threshold (float): Correlation threshold above which features are considered highly correlated.
+        dropped_columns (list): List of columns that were dropped due to high correlation.
+    """
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
 
     def __init__(self, threshold: float = 0.8):
         """
@@ -183,13 +273,25 @@ class CorrelationFilter(RequiredStep,Numerical):
         Returns:
             CorrelationFilter: The fitted filter instance.
         """
+<<<<<<< HEAD
         logger.start_operation(f"Fitting CorrelationFilter with threshold {self.threshold}")
+=======
+        logger.start_operation(
+            f"Fitting CorrelationFilter with threshold {self.threshold}"
+        )
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         corr_matrix = X.corr().abs()
         correlated_pairs = set()
         for i in range(len(corr_matrix.columns)):
             for j in range(i + 1, len(corr_matrix.columns)):
                 if corr_matrix.iloc[i, j] > self.threshold:
+<<<<<<< HEAD
                     correlated_pairs.add(corr_matrix.columns[j]) #only the second column of the pair is dropped
+=======
+                    correlated_pairs.add(
+                        corr_matrix.columns[j]
+                    )  # only the second column of the pair is dropped
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
 
         self.dropped_columns = list(correlated_pairs)
         logger.end_operation()
@@ -210,11 +312,21 @@ class CorrelationFilter(RequiredStep,Numerical):
             f"Transforming data by dropping {len(self.dropped_columns)} highly correlated columns."
         )
 
+<<<<<<< HEAD
         X = X.drop(columns=self.dropped_columns, errors='ignore')
 
         if y is not None:
             y_name = y.name if y.name is not None else "y"
             logger.debug(f"Appending target variable '{y_name}' to the transformed data.")
+=======
+        X = X.drop(columns=self.dropped_columns, errors="ignore")
+
+        if y is not None:
+            y_name = y.name if y.name is not None else "y"
+            logger.debug(
+                f"Appending target variable '{y_name}' to the transformed data."
+            )
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
             X[y_name] = y
 
         logger.end_operation()
@@ -231,11 +343,21 @@ class CorrelationFilter(RequiredStep,Numerical):
         Returns:
             pd.DataFrame: The transformed data.
         """
+<<<<<<< HEAD
         logger.start_operation(f"Fitting and transforming data with correlation threshold {self.threshold}")
         result = self.fit(X).transform(X, y)
         logger.end_operation()
         return result
     
+=======
+        logger.start_operation(
+            f"Fitting and transforming data with correlation threshold {self.threshold}"
+        )
+        result = self.fit(X).transform(X, y)
+        logger.end_operation()
+        return result
+
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
     def is_numerical(self) -> bool:
         return True
 
@@ -246,6 +368,7 @@ class CorrelationFilter(RequiredStep,Numerical):
         return {
             "name": "CorrelationFilter",
             "desc": f"Removes one column from pairs of columns correlated above correlation threshold: {self.threshold}.",
+<<<<<<< HEAD
             "params": {"threshold": self.threshold}
         }
     
@@ -258,6 +381,21 @@ class CorrelationSelector(NonRequiredStep, Numerical):
             k (float): The percentage of top features to keep based on their correlation with the target.
             selected_columns (list): List of selected columns based on correlation with the target.
     """
+=======
+            "params": {"threshold": self.threshold},
+        }
+
+
+class CorrelationSelector(NonRequiredStep, Numerical):
+    """
+    Transformer to select k% (rounded to whole number) of features that are most correlated with the target variable.
+
+    Attributes:
+         k (float): The percentage of top features to keep based on their correlation with the target.
+         selected_columns (list): List of selected columns based on correlation with the target.
+    """
+
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
     def __init__(self, k: float = 10.0):
         """
         Initializes the transformer with a specified percentage of top correlated features to keep.
@@ -281,11 +419,21 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         Returns:
             CorrelationSelector: The fitted transformer instance.
         """
+<<<<<<< HEAD
         logger.start_operation(f"Fitting CorrelationSelector with top {self.k}% correlated features.")
 
         corr_with_target = X.corrwith(y).abs()
         sorted_corr = corr_with_target.sort_values(ascending=False)
         num_top_features = max(1,round(np.ceil(len(sorted_corr) * self.k / 100)))
+=======
+        logger.start_operation(
+            f"Fitting CorrelationSelector with top {self.k}% correlated features."
+        )
+
+        corr_with_target = X.corrwith(y).abs()
+        sorted_corr = corr_with_target.sort_values(ascending=False)
+        num_top_features = max(1, round(np.ceil(len(sorted_corr) * self.k / 100)))
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
         self.selected_columns = sorted_corr.head(num_top_features).index.tolist()
 
         logger.end_operation()
@@ -302,13 +450,25 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         Returns:
             pd.DataFrame: The transformed data with only the selected top k% correlated features.
         """
+<<<<<<< HEAD
         logger.start_operation(f"Transforming data by selecting {len(self.selected_columns)} most correlated features.")
+=======
+        logger.start_operation(
+            f"Transforming data by selecting {len(self.selected_columns)} most correlated features."
+        )
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
 
         X_selected = X[self.selected_columns].copy()
 
         if y is not None:
             y_name = y.name if y.name is not None else "y"
+<<<<<<< HEAD
             logger.debug(f"Appending target variable '{y_name}' to the transformed data.")
+=======
+            logger.debug(
+                f"Appending target variable '{y_name}' to the transformed data."
+            )
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
             X_selected[y_name] = y
 
         logger.end_operation()
@@ -325,6 +485,7 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         Returns:
             pd.DataFrame: The transformed data with selected features.
         """
+<<<<<<< HEAD
         logger.start_operation(f"Fitting and transforming data with top {self.k}% correlated features.")
         result = self.fit(X, y).transform(X, y)
         logger.end_operation()
@@ -333,6 +494,17 @@ class CorrelationSelector(NonRequiredStep, Numerical):
     def is_numerical(self) -> bool:
         return True
     
+=======
+        logger.start_operation(
+            f"Fitting and transforming data with top {self.k}% correlated features."
+        )
+        result = self.fit(X, y).transform(X, y)
+        logger.end_operation()
+        return result
+
+    def is_numerical(self) -> bool:
+        return True
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
 
     def to_tex(self) -> dict:
         """
@@ -341,5 +513,226 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         return {
             "name": "CorrelationSelector",
             "desc": f"Selects the top {self.k}% (rounded to whole number) of features most correlated with the target variable. Number of features that were selected: {len(self.selected_columns)}",
+<<<<<<< HEAD
             "params": {"k": self.k}
         }
+=======
+            "params": {"k": self.k},
+        }
+
+
+class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
+    """
+    Transformer to select k% (rounded to whole number) of features
+    that are most important according to Random Forest model for classification.
+
+    Attributes:
+        k (float): The percentage of top features to keep based on their importance.
+        selected_columns (list): List of selected columns based on feature importance.
+    """
+
+    def __init__(self, k: float = 10.0):
+        """
+        Initializes the transformer with a specified percentage of top important features to keep.
+
+        Args:
+            k (float): The percentage of features to retain based on their importance.
+        """
+        super().__init__(k)
+        self.feature_importances_ = None
+
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series
+    ) -> "FeatureImportanceClassificationSelector":
+        """
+        Identifies the feature importances according to the Random Forest model.
+
+        Args:
+            X (pd.DataFrame): The input feature data.
+            y (pd.Series): The target variable.
+
+        Returns:
+            FeatureImportanceClassificationSelector: The fitted transformer instance.
+        """
+        logger.start_operation(
+            f"Fitting FeatureImportanceClassificationSelector with top {self.k}% important features."
+        )
+
+        model = RandomForestClassifier(random_state=42)
+        model.fit(X, y)
+        self.feature_importances_ = model.feature_importances_
+        total_features = len(self.feature_importances_)
+        num_features_to_select = int(np.ceil(total_features * self.k / 100))
+        if num_features_to_select == 0:
+            num_features_to_select = 1
+        indices = np.argsort(self.feature_importances_)[-num_features_to_select:][::-1]
+        self.selected_columns = X.columns[indices].tolist()
+
+        logger.end_operation()
+        return self
+
+    def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
+        """
+        Selects the top k% of features most important according to the Random Forest model.
+
+        Args:
+            X (pd.DataFrame): The feature data.
+            y (pd.Series, optional): The target variable (to append to the result).
+
+        Returns:
+            pd.DataFrame: The transformed data with only the selected top k% important features.
+        """
+        logger.start_operation(
+            f"Transforming data by selecting {len(self.selected_columns)} most important features."
+        )
+
+        X_selected = X[self.selected_columns].copy()
+        if y is not None:
+            if isinstance(y, list):
+                y = pd.Series(y)
+            y_name = y.name if y.name is not None else "y"
+            logger.debug(
+                f"Appending target variable '{y_name}' to the transformed data."
+            )
+            X_selected[y_name] = y.values
+
+        logger.end_operation()
+        return X_selected
+
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
+        """
+        Fits and transforms the data by selecting the top k% most important features. Performs fit and transform in one step.
+
+        Args:
+            X (pd.DataFrame): The feature data.
+            y (pd.Series): The target variable.
+        """
+
+        logger.start_operation(
+            f"Fitting and transforming data with top {self.k}% important features."
+        )
+        result = self.fit(X, y).transform(X, y)
+        logger.end_operation()
+        return result
+
+    def to_tex(self) -> dict:
+        """
+        Returns a short description of the transformer in dictionary format.
+        """
+        return {
+            "name": "FeatureImportanceClassificationSelector",
+            "desc": f"Selects the top {self.k}% (rounded to whole number) of features most important according to Random Forest model for classification. Number of features that were selected: {len(self.selected_columns)}",
+            "params": {"k": self.k},
+        }
+
+    def is_numerical(self) -> bool:
+        return False
+
+
+class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
+    """
+    Transformer to select k% (rounded to whole number) of features
+    that are most important according to Random Forest model for regression.
+
+    Attributes:
+        k (float): The percentage of top features to keep based on their importance.
+        selected_columns (list): List of selected columns based on feature importance.
+    """
+
+    def __init__(self, k: float = 10.0):
+        """
+        Initializes the transformer with a specified percentage of top important features to keep.
+
+        Args:
+            k (float): The percentage of features to retain based on their importance.
+        """
+        super().__init__(k)
+        self.feature_importances_ = None
+
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series
+    ) -> "FeatureImportanceRegressionSelector":
+        """
+        Identifies the feature importances according to the Random Forest model.
+
+        Args:
+            X (pd.DataFrame): The input feature data.
+            y (pd.Series): The target variable.
+
+        Returns:
+            FeatureImportanceRegressionSelector: The fitted transformer instance.
+        """
+        logger.start_operation(
+            f"Fitting FeatureImportanceRegressionSelector with top {self.k}% important features."
+        )
+
+        model = RandomForestClassifier(random_state=42)
+        model.fit(X, y)
+        self.feature_importances_ = model.feature_importances_
+        total_features = len(self.feature_importances_)
+        num_features_to_select = int(np.ceil(total_features * self.k / 100))
+        if num_features_to_select == 0:
+            num_features_to_select = 1
+        indices = np.argsort(self.feature_importances_)[-num_features_to_select:][::-1]
+        self.selected_columns = X.columns[indices].tolist()
+
+        logger.end_operation()
+        return self
+
+    def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
+        """
+        Selects the top k% of features most important according to the Random Forest model.
+
+        Args:
+            X (pd.DataFrame): The feature data.
+            y (pd.Series, optional): The target variable (to append to the result).
+
+        Returns:
+            pd.DataFrame: The transformed data with only the selected top k% important features.
+        """
+        logger.start_operation(
+            f"Transforming data by selecting {len(self.selected_columns)} most important features."
+        )
+
+        X_selected = X[self.selected_columns].copy()
+        if y is not None:
+            if isinstance(y, list):
+                y = pd.Series(y)
+            y_name = y.name if y.name is not None else "y"
+            logger.debug(
+                f"Appending target variable '{y_name}' to the transformed data."
+            )
+            X_selected[y_name] = y.values
+
+        logger.end_operation()
+        return X_selected
+
+    def fit_transform(self, X: pd.DataFrame, y):
+        """
+        Fits and transforms the data by selecting the top k% most important features. Performs fit and transform in one step.
+
+        Args:
+            X (pd.DataFrame): The feature data.
+            y (pd.Series): The target variable.
+        """
+
+        logger.start_operation(
+            f"Fitting and transforming data with top {self.k}% important features."
+        )
+        result = self.fit(X, y).transform(X, y)
+        logger.end_operation()
+        return result
+
+    def to_tex(self) -> dict:
+        """
+        Returns a short description of the transformer in dictionary format.
+        """
+        return {
+            "name": "FeatureImportanceRegressionSelector",
+            "desc": f"Selects the top {self.k}% (rounded to whole number) of features most important according to Random Forest model for regression. Number of features that were selected: {len(self.selected_columns)}",
+            "params": {"k": self.k},
+        }
+
+    def is_numerical(self) -> bool:
+        return True
+>>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
