@@ -771,6 +771,20 @@ files = [
 ]
 
 [[package]]
+name = "humanize"
+version = "4.11.0"
+description = "Python humanize utilities"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "humanize-4.11.0-py3-none-any.whl", hash = "sha256:b53caaec8532bcb2fff70c8826f904c35943f8cecaca29d272d9df38092736c0"},
+    {file = "humanize-4.11.0.tar.gz", hash = "sha256:e66f36020a2d5a974c504bd2555cf770621dbdbb6d82f94a6857c0b1ea2608be"},
+]
+
+[package.extras]
+tests = ["freezegun", "pytest", "pytest-cov"]
+
+[[package]]
 name = "identify"
 version = "2.6.3"
 description = "File identification library for Python"
@@ -2691,4 +2705,4 @@ docs = ["sphinx", "sphinx-rtd-theme"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "9fa822d8a0bddd6d66e2d330b09c761377d6902f06c232d268446326b5a4c016"
+content-hash = "f3fbcdf481ba9875673b9535c899af84304d24cefab915f4294c2909a8966726"

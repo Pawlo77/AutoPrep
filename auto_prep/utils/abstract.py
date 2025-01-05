@@ -26,13 +26,9 @@ class Step(ABC, BaseEstimator, TransformerMixin):
     @abstractmethod
     def to_tex(self) -> dict:
         """
-<<<<<<< HEAD
-            Returns a short description in form of dictionary. 
-            Keys are: name - transformer name, desc - short description, params - class parameters (if None then {}).
-=======
         Returns a short description in form of dictionary.
         Keys are: name - transformer name, desc - short description, params - class parameters (if None then {}).
->>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
+
         """
         pass
 
@@ -60,9 +56,6 @@ class NonRequiredStep(Step):
     Non required step that will be only considered for preprocessing
     if class method is_applicable returns True.
     """
-<<<<<<< HEAD
-    pass
-=======
 
     pass
 
@@ -151,4 +144,3 @@ class FeatureImportanceSelector(ABC, NonRequiredStep):
                 on passed data.
         """
         return True
->>>>>>> ffdd6fe4250538b4becb786eb7ef7b6aa7275c11
