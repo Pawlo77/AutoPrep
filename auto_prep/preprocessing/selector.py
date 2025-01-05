@@ -9,7 +9,12 @@ from ..utils.abstract import (
     Numerical,
     RequiredStep,
 )
+
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+
+from ..utils.abstract import Categorical, NonRequiredStep, Numerical, RequiredStep
 from ..utils.logging_config import setup_logger
+from ..utils.config import config
 
 logger = setup_logger(__name__)
 
@@ -26,7 +31,6 @@ class VarianceFilter(RequiredStep, Numerical):
         """
         Initializes the transformer with empty list of dropped columns.
         """
-
         self.dropped_columns = []
 
     def fit(self, X: pd.DataFrame) -> "VarianceFilter":
@@ -37,13 +41,21 @@ class VarianceFilter(RequiredStep, Numerical):
             X (pd.DataFrame): The input feature data.
 
         Returns:
-            VarianceAndUniqueFilter: The fitted transformer instance.
+            VarianceFilter: The fitted transformer instance.
         """
         logger.start_operation("Fitting VarianceFilter")
-        zero_variance = X.var() == 0
-        self.dropped_columns = X.columns[zero_variance].tolist()
-        logger.end_operation()
-        return self
+        try:
+            zero_variance = X.var() == 0
+            self.dropped_columns = X.columns[zero_variance].tolist()
+            logger.debug(f'Successfully fitted VarianceFilter')
+            return self
+        
+        except Exception as e:
+            logger.error(f'Failed to fit VarianceFilter {e}', exc_info=True)
+            raise ValueError(f'Failed to fit VarianceFilter {e}')
+        
+        finally:
+            logger.end_operation()
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -56,10 +68,19 @@ class VarianceFilter(RequiredStep, Numerical):
             pd.DataFrame: The transformed data without dropped columns.
         """
         logger.start_operation(
-            f"Transforming data by dropping {len(self.dropped_columns)} zero variance columns."
+            f"Transforming data with Variance Filter by dropping {len(self.dropped_columns)} zero variance columns."
         )
-        logger.end_operation()
-        return X.drop(columns=self.dropped_columns, errors="ignore")
+        try:
+            transformed_X= X.drop(columns=self.dropped_columns, errors="ignore")
+            logger.debug(f"Successfully transformed data with VarianceFilter. Final shape: {transformed_X.shape}")
+            return transformed_X
+        
+        except Exception as e:
+            logger.error(f'Failed to transform VarianceFilter {e}', exc_info=True)
+            raise ValueError(f'Failed to transform VarianceFilter {e}')
+        
+        finally:
+            logger.end_operation()
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -71,9 +92,18 @@ class VarianceFilter(RequiredStep, Numerical):
         Returns:
             pd.DataFrame: The transformed data without dropped columns.
         """
-        logger.start_operation("Fitting and transforming data with zero variance")
-        logger.end_operation()
-        return self.fit(X).transform(X)
+        logger.start_operation("Fitting and transforming data with VarianceFilter")
+        try:
+            transformed_X = self.fit(X).transform(X)
+            logger.debug(f"Successfully fit_transformed data with VarianceFilter. Final shape: {transformed_X.shape}")
+            return transformed_X
+        
+        except Exception as e:
+            logger.error(f'Failed to fit_transform VarianceFilter {e}', exc_info=True)
+            raise ValueError(f'Failed to fit_transform VarianceFilter {e}')
+        
+        finally:
+            logger.end_operation()
 
     def is_numerical(self) -> bool:
         return True
@@ -83,9 +113,7 @@ class VarianceFilter(RequiredStep, Numerical):
         Returns a description of the transformer in dictionary format.
         """
         return {
-            "name": "VarianceFilter",
             "desc": f"Removes columns with zero variance. Dropped columns: {self.dropped_columns}",
-            "params": {},
         }
 
 
@@ -114,13 +142,21 @@ class UniqueFilter(RequiredStep, Categorical):
             UniqueFilter: The fitted transformer instance.
         """
         logger.start_operation("Fitting UniqueFilter")
-        # Select only categorical columns
-        cat_cols = X.select_dtypes(include=["object", "category"])
-        self.dropped_columns = [
-            col for col in cat_cols.columns if X[col].nunique() == len(X)
-        ]
-        logger.end_operation()
-        return self
+        try:
+            # Select only categorical columns
+            cat_cols = X.select_dtypes(include=["object", "category"])
+            self.dropped_columns = [
+                col for col in cat_cols.columns if X[col].nunique() == len(X)
+            ]
+            logger.debug('Successfully fitted UniqueFilter')
+            return self
+        
+        except Exception as e:
+            logger.error(f'Failed to fit UniqueFilter : {e}', exc_info=True)
+            raise ValueError(f'Failed to fit UniqueFilter: {e}')
+        
+        finally:
+            logger.end_operation()
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -135,8 +171,17 @@ class UniqueFilter(RequiredStep, Categorical):
         logger.start_operation(
             f"Transforming data UniqueFilter by dropping {len(self.dropped_columns)} columns with unique values"
         )
-        logger.end_operation()
-        return X.drop(columns=self.dropped_columns, errors="ignore")
+        try:
+            transformed_X= X.drop(columns=self.dropped_columns, errors="ignore")
+            logger.debug(f"Successfully transformed UniqueFilter")
+            return transformed_X
+        
+        except Exception as e:
+            logger.error(f'Failed to transform UniqueFilter: {e}', exc_info=True)
+            raise ValueError(f"Failed to transform UniqueFilter: {e}")
+        
+        finally:
+            logger.end_operation()
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -151,8 +196,17 @@ class UniqueFilter(RequiredStep, Categorical):
         logger.start_operation(
             "Fitting and transforming categorical data with 100% unique values"
         )
-        logger.end_operation()
-        return self.fit(X).transform(X)
+        try:
+            transformed_X= self.fit(X).transform(X)
+            logger.debug(f"Successfully fit_transformed UniqueFilter")
+            return transformed_X
+        
+        except Exception as e:
+            logger.error(f'Failed to fit_transform UniqueFilter: {e}', exc_info=True)
+            raise ValueError(f"Failed to fit_transform UniqueFilter: {e}")
+        
+        finally:
+            logger.end_operation()
 
     def is_numerical(self) -> bool:
         return False
@@ -162,9 +216,7 @@ class UniqueFilter(RequiredStep, Categorical):
         Returns a description of the transformer in dictionary format.
         """
         return {
-            "name": "UniqueFilter",
             "desc": f"Removes categorical columns with 100% unique values. Dropped columns: {self.dropped_columns}",
-            "params": {},
         }
 
 
@@ -174,20 +226,17 @@ class CorrelationFilter(RequiredStep, Numerical):
     Is a required step in preprocessing.
 
     Attributes:
-        threshold (float): Correlation threshold above which features are considered highly correlated.
         dropped_columns (list): List of columns that were dropped due to high correlation.
     """
 
-    def __init__(self, threshold: float = 0.8):
+    def __init__(self):
         """
         Initializes the filter with a specified correlation threshold.
 
         Args:
-            threshold (float): Correlation threshold above which features are considered highly correlated.
+            correlation_threshold (float): Correlation threshold above which features are considered highly correlated.
         """
-        if not (0 <= threshold <= 1):
-            raise ValueError("Threshold must be between 0 and 1.")
-        self.threshold = threshold
+        self.correlation_threshold = config.correlation_threshold
         self.dropped_columns = []
 
     def fit(self, X: pd.DataFrame) -> "CorrelationFilter":
@@ -201,20 +250,28 @@ class CorrelationFilter(RequiredStep, Numerical):
             CorrelationFilter: The fitted filter instance.
         """
         logger.start_operation(
-            f"Fitting CorrelationFilter with threshold {self.threshold}"
+            f"Fitting CorrelationFilter with threshold {self.correlation_threshold}"
         )
-        corr_matrix = X.corr().abs()
-        correlated_pairs = set()
-        for i in range(len(corr_matrix.columns)):
-            for j in range(i + 1, len(corr_matrix.columns)):
-                if corr_matrix.iloc[i, j] > self.threshold:
-                    correlated_pairs.add(
-                        corr_matrix.columns[j]
-                    )  # only the second column of the pair is dropped
+        try:
+            corr_matrix = X.corr().abs()
+            correlated_pairs = set()
+            for i in range(len(corr_matrix.columns)):
+                for j in range(i + 1, len(corr_matrix.columns)):
+                    if corr_matrix.iloc[i, j] > self.threshold:
+                        correlated_pairs.add(
+                            corr_matrix.columns[j]
+                        )  # only the second column of the pair is dropped
 
-        self.dropped_columns = list(correlated_pairs)
-        logger.end_operation()
-        return self
+            self.dropped_columns = list(correlated_pairs)
+            logger.debug(f'Successfully fitted CorrelationFilter with threshold: {self.correlation_threshold}')
+            return self
+        
+        except Exception as e:
+            logger.error(f'Failed to fit Correlation fiter with threshold: {self.correlation_threshold}. : {e}', exc_info=True)
+            raise ValueError(f'Failed to fit Correlation fiter with threshold: {self.correlation_threshold}. : {e}')
+        
+        finally:
+            logger.end_operation()
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
@@ -231,17 +288,23 @@ class CorrelationFilter(RequiredStep, Numerical):
             f"Transforming data by dropping {len(self.dropped_columns)} highly correlated columns."
         )
 
-        X = X.drop(columns=self.dropped_columns, errors="ignore")
-
-        if y is not None:
-            y_name = y.name if y.name is not None else "y"
-            logger.debug(
-                f"Appending target variable '{y_name}' to the transformed data."
-            )
-            X[y_name] = y
-
-        logger.end_operation()
-        return X
+        try:
+            X = X.drop(columns=self.dropped_columns, errors="ignore")
+            if y is not None:
+                y_name = y.name if y.name is not None else "y"
+                logger.debug(
+                    f"Appending target variable '{y_name}' to the transformed data."
+                )
+                X[y_name] = y
+            logger.debug(f'Successfully transformed CorrelationFilter')
+            return X
+        
+        except Exception as e:
+            logger.error(f'Failed to transform CorrelationFilter : {e}', exc_info=True)
+            raise ValueError(f'Failed to transform CorrelationFilter : {e}')
+        
+        finally:
+            logger.end_operation()
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
@@ -257,9 +320,18 @@ class CorrelationFilter(RequiredStep, Numerical):
         logger.start_operation(
             f"Fitting and transforming data with correlation threshold {self.threshold}"
         )
-        result = self.fit(X).transform(X, y)
-        logger.end_operation()
-        return result
+        try:
+            result = self.fit(X).transform(X, y)
+            logger.debug('Successfully fit_transformed CorrelationFilter')
+            return result
+        
+        except Exception as e:
+            logger.error(f'Failed to fit_transform CorrelationFilter : {e}', exc_info=True)
+            raise ValueError(f'Failed to fit_transform CorrelationFilter : {e}')
+        
+        finally:
+            logger.end_operation()
+
 
     def is_numerical(self) -> bool:
         return True
@@ -269,36 +341,32 @@ class CorrelationFilter(RequiredStep, Numerical):
         Returns a short description of the transformer in dictionary format.
         """
         return {
-            "name": "CorrelationFilter",
-            "desc": f"Removes one column from pairs of columns correlated above correlation threshold: {self.threshold}.",
-            "params": {"threshold": self.threshold},
+            "desc": f"Removes one column from pairs of columns correlated above correlation threshold.",
+            "params": {"threshold": self.correlation_threshold},
         }
 
 
 class CorrelationSelector(NonRequiredStep, Numerical):
     """
-    Transformer to select k% (rounded to whole number) of features that are most correlated with the target variable.
+    Transformer to select correlation_percent% (rounded to whole number) of features that are most correlated with the target variable.
 
     Attributes:
-         k (float): The percentage of top features to keep based on their correlation with the target.
          selected_columns (list): List of selected columns based on correlation with the target.
     """
 
-    def __init__(self, k: float = 10.0):
+    def __init__(self):
         """
         Initializes the transformer with a specified percentage of top correlated features to keep.
 
         Args:
-            k (float): The percentage of features to retain based on their correlation with the target.
+            correlation_percent (float): The percentage of features to retain based on their correlation with the target.
         """
-        if not (0 <= k <= 100):
-            raise ValueError("k must be between 0 and 100.")
-        self.k = k
+        self.correlation_percent = config.correlation_percent
         self.selected_columns = []
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "CorrelationSelector":
         """
-        Identifies the top k% (rounded to whole value) of features most correlated with the target variable.
+        Identifies the top correlation_percent% (rounded to whole value) of features most correlated with the target variable.
 
         Args:
             X (pd.DataFrame): The input feature data.
@@ -308,20 +376,24 @@ class CorrelationSelector(NonRequiredStep, Numerical):
             CorrelationSelector: The fitted transformer instance.
         """
         logger.start_operation(
-            f"Fitting CorrelationSelector with top {self.k}% correlated features."
+            f"Fitting CorrelationSelector with top {self.correlation_percent}% correlated features."
         )
-
-        corr_with_target = X.corrwith(y).abs()
-        sorted_corr = corr_with_target.sort_values(ascending=False)
-        num_top_features = max(1, round(np.ceil(len(sorted_corr) * self.k / 100)))
-        self.selected_columns = sorted_corr.head(num_top_features).index.tolist()
-
-        logger.end_operation()
-        return self
+        try:
+            corr_with_target = X.corrwith(y).abs()
+            sorted_corr = corr_with_target.sort_values(ascending=False)
+            num_top_features = max(1, round(np.ceil(len(sorted_corr) * self.correlation_percent / 100)))
+            self.selected_columns = sorted_corr.head(num_top_features).index.tolist()
+            logger.debug(f'Successfully fitted CorrelationSelector with {self.correlation_percent}% features')
+            return self
+        except Exception as e:
+            logger.error(f'Failed to fit CorrelationSelector with {self.correlation_percent}: {e}', exc_info=True)
+            raise ValueError(f'Failed to fit CorrelationSelector with {self.correlation_percent}')
+        finally:
+            logger.end_operation()
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
-        Selects the top k% of features most correlated with the target variable.
+        Selects the top correlation_percent% of features most correlated with the target variable.
 
         Args:
             X (pd.DataFrame): The feature data.
@@ -333,18 +405,23 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         logger.start_operation(
             f"Transforming data by selecting {len(self.selected_columns)} most correlated features."
         )
+        try:
 
-        X_selected = X[self.selected_columns].copy()
+            X_selected = X[self.selected_columns].copy()
+            if y is not None:
+                y_name = y.name if y.name is not None else "y"
+                logger.debug(
+                    f"Appending target variable '{y_name}' to the transformed data."
+                )
+                X_selected[y_name] = y
 
-        if y is not None:
-            y_name = y.name if y.name is not None else "y"
-            logger.debug(
-                f"Appending target variable '{y_name}' to the transformed data."
-            )
-            X_selected[y_name] = y
-
-        logger.end_operation()
-        return X_selected
+            logger.debug('Successfully transformed data with CorrelationSelector')
+            return X_selected
+        except Exception as e:
+            logger.error(f'Failed to transform {X} with CorrelationSelector threshold {self.correlation_percent}: {e}', exc_info=True)
+            raise ValueError(f'Failed to transform {X} with CorrelationSelector threshold {self.correlation_percent}: {e}')
+        finally:
+            logger.end_operation()
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
         """
@@ -360,9 +437,15 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         logger.start_operation(
             f"Fitting and transforming data with top {self.k}% correlated features."
         )
-        result = self.fit(X, y).transform(X, y)
-        logger.end_operation()
-        return result
+        try:
+            result = self.fit(X, y).transform(X, y)
+            logger.debug('Successfully fit_transformed data with CorrelationSelector')
+            return result
+        except Exception as e:
+            logger.error(f'Failed to fit_transform {X} with CorrelationSelector threshold {self.correlation_percent}: {e}', exc_info=True)
+            raise ValueError(f'Failed to fit_transform {X} with CorrelationSelector threshold {self.correlation_percent}: {e}')
+        finally:
+            logger.end_operation()
 
     def is_numerical(self) -> bool:
         return True
@@ -372,9 +455,8 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         Returns a short description of the transformer in dictionary format.
         """
         return {
-            "name": "CorrelationSelector",
-            "desc": f"Selects the top {self.k}% (rounded to whole number) of features most correlated with the target variable. Number of features that were selected: {len(self.selected_columns)}",
-            "params": {"k": self.k},
+            "desc": f"Selects the top k% (rounded to whole number) of features most correlated with the target variable. Number of features that were selected: {len(self.selected_columns)}",
+            "params": {"correlation_percent": self.correlation_percent},
         }
 
 
