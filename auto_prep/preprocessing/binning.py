@@ -4,7 +4,6 @@ import pandas as pd
 from ..utils.abstract import NonRequiredStep, Numerical
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
-from ..utils.config import config
 
 logger = setup_logger(__name__)
 
@@ -55,11 +54,9 @@ class BinningTransformer(NonRequiredStep, Numerical):
             BinningTransformer: The fitted transformer instance.
         """
 
-
         logger.start_operation(
             f"Fitting BinningTransformer with {self.n_bins} binning method : {self.binning_method}"
         )
-
 
         try:
             for column in X.select_dtypes(include=[np.number]).columns:
@@ -109,7 +106,6 @@ class BinningTransformer(NonRequiredStep, Numerical):
             pd.DataFrame: The transformed data with bin labels.
         """
 
- 
         logger.start_operation(
             f"Transforming BinningTransformer with {self.n_bins} and binning_method {self.binning_method}"
         )
@@ -153,7 +149,6 @@ class BinningTransformer(NonRequiredStep, Numerical):
         finally:
             logger.end_operation()
 
-
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
         Fits and transforms the data in one step.
@@ -186,10 +181,8 @@ class BinningTransformer(NonRequiredStep, Numerical):
         finally:
             logger.end_operation()
 
-
     def is_numeric(self) -> bool:
         return True
-
 
     def to_tex(self) -> dict:
         """
@@ -199,8 +192,6 @@ class BinningTransformer(NonRequiredStep, Numerical):
             dict: Description of the transformer.
         """
         return {
-
             "desc": "Performs binning on continuous variables and replaces them with numeric labels. ",
-
             "params": {"n_bins": self.n_bins, "binning_method": self.binning_method},
         }

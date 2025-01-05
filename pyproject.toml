@@ -31,10 +31,7 @@ pandas-profiling = "^3.2.0"
 sphinx = "^8.1.3"
 sphinx-rtd-theme = "^3.0.2"
 ghp-import = "^2.1.0"
-<<<<<<< HEAD
-=======
 umap = "^0.1.1"
->>>>>>> 6a737746423c50ab8ab5791339b38d9deeade5f8
 humanize = "^4.11.0"
 
 [tool.poetry.dev-dependencies]

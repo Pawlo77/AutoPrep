@@ -1,5 +1,4 @@
 import pandas as pd
-
 from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
 
 from ..utils.abstract import Numerical, RequiredStep
@@ -73,7 +72,6 @@ class ColumnScaler(RequiredStep, Numerical):
         finally:
             logger.end_operation()
 
-
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Transforms numeric feature data using the fitted scaler.
@@ -115,7 +113,6 @@ class ColumnScaler(RequiredStep, Numerical):
         finally:
             logger.end_operation()
 
-
     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Fits and transforms the feature data using the chosen scaler.
@@ -145,7 +142,6 @@ class ColumnScaler(RequiredStep, Numerical):
         finally:
             logger.end_operation()
 
-
     def is_numerical(self) -> bool:
         return True
 
@@ -159,4 +155,3 @@ class ColumnScaler(RequiredStep, Numerical):
             "desc": "Scales numerical columns using one of 3 scaling methods.",
             "params": {"method": self.method},
         }
-

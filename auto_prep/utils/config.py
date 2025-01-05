@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import List
 
 import numpy as np
 from pylatex import NoEscape
@@ -68,15 +69,11 @@ class GlobalConfig:
         max_datasets_after_preprocessing: int = 3,
         perform_only_required_: bool = False,
         raport_decimal_precision: int = 4,
-
         raport_chart_color_pallete: List[str] = ["#FF204E"],
         correlation_threshold: float = 0.8,
         correlation_percent: float = 0.5,
         n_bins: int = 4,
-
         chart_settings: dict = None,
-        *args,
-        **kwargs,
     ):
         """
         Args:
@@ -117,7 +114,7 @@ class GlobalConfig:
                 Will use standard python rounding.
 
             raport_chart_color_pallete (List[str]) - Color palette for basic eda charts.
-            correlation_threshold (float) - threshold used for detecting highly correlated features.Default 0.8. 
+            correlation_threshold (float) - threshold used for detecting highly correlated features.Default 0.8.
             correlation_percent (float) - % of selected features based on their correlation with the target. Default 0.5.
             n_bins (int) - number of bins to create while binning numerical features.
 
@@ -166,6 +163,7 @@ class GlobalConfig:
         self.random_state = random_state
         np.random.seed(random_state)
 
+        self.raport_chart_color_pallete = raport_chart_color_pallete
         self.chart_settings = chart_settings or {
             "theme": "whitegrid",
             "title_fontsize": 18,
@@ -203,8 +201,7 @@ class GlobalConfig:
         self.correlation_percent = correlation_percent
 
         assert (
-            int(n_bins) == n_bins
-            and n_bins >= 1
+            int(n_bins) == n_bins and n_bins >= 1
         ), f"Wrong value for n_bins: {n_bins}. "
         "Should be int >= 1."
         self.n_bins = n_bins
