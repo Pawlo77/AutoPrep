@@ -1,6 +1,5 @@
 import logging
 import os
-from typing import List
 
 import numpy as np
 from pylatex import NoEscape
@@ -68,6 +67,10 @@ class GlobalConfig:
         random_state: int = 42,
         raport_decimal_precision: int = 4,
         chart_settings: dict = None,
+        correlation_selectors_settings: dict = None,
+        outlier_detector_settings: dict = None,
+        imputer_settings: dict = None,
+        umap_components: int = 50,
         *args,
         **kwargs,
     ):
@@ -105,6 +108,10 @@ class GlobalConfig:
                 Will use standard python rounding.
             chart_settings (dict): Settings for customizing chart appearance.
                 Defaults to None, which initializes default settings.
+            correlation_selectors_settings (dict): Settings for correlation selectors.
+            outlier_detector_settings (dict): Settings for outlier detectors
+            imputer_settings (dict): Settings for imputers
+            umap_components (int): Number of components for UMAP.
         """
         assert (
             isinstance(raport_name, str) and raport_name != ""
@@ -146,7 +153,7 @@ class GlobalConfig:
 
         self.random_state = random_state
         np.random.seed(random_state)
-        
+
         self.chart_settings = chart_settings or {
             "theme": "whitegrid",
             "title_fontsize": 18,
@@ -162,7 +169,23 @@ class GlobalConfig:
         }
 
         self.raport_decimal_precision = raport_decimal_precision
+        self.correlation_selectors_settings = correlation_selectors_settings or {
+            "threshold": 0.8,
+            "k": 10,
+        }
 
+        self.outlier_detector_settings = outlier_detector_settings or {
+            "zscore_threshold": 3,
+            "isol_forest_n_estimators": 100,
+            "cook_threshold": 1,
+        }
+
+        self.imputer_settings = imputer_settings or {
+            "categorical_strategy": "most_frequent",
+            "numerical_strategy": "mean",
+        }
+
+        self.umap_components = umap_components
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""

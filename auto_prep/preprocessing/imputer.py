@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.impute import SimpleImputer
-from utils.logging_config import setup_logger
+
+from ..utils.config import config
+from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
@@ -19,6 +21,7 @@ class NAImputer:
     def __init__(self):
         self.numeric_features = []
         self.categorical_features = []
+        self.cols_to_remove = []
 
     def fit(self, X: pd.DataFrame) -> "NAImputer":
         """
@@ -74,7 +77,7 @@ class NumericalImputer(NAImputer):
 
     def __init__(self):
         super().__init__()
-        self.strategy = "median"
+        self.strategy = config.imputer_settings["numerical_strategy"]
         self.imputer = SimpleImputer(strategy=self.strategy)
 
     def fit(self, X: pd.DataFrame) -> "NumericalImputer":
@@ -87,14 +90,20 @@ class NumericalImputer(NAImputer):
         Returns:
             NumericalImputer: The fitted imputer instance.
         """
-        super().fit(X)
-        self.numeric_features = [
-            col for col in X.columns if pd.api.types.is_numeric_dtype(X[col])
-        ]
+        logger.start_operation(
+            f"Fitting NumericalImputer to data with {X.shape[0]} rows and {X.shape[1]} columns."
+        )
+        try:
+            super().fit(X)
+            self.numeric_features = X.select_dtypes(include="number").columns.tolist()
 
-        logger.debug(f"Identified numeric features: {self.numeric_features}")
-        self.imputer.fit(X[self.numeric_features])
-
+            logger.debug(f"Identified numeric features: {self.numeric_features}")
+            self.imputer.fit(X[self.numeric_features])
+        except Exception as e:
+            logger.error(f"Error in NumericalImputer fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -107,8 +116,15 @@ class NumericalImputer(NAImputer):
         Returns:
             pd.DataFrame: The transformed data with missing numeric values imputed.
         """
-        X = super().transform(X)
-        X[self.numeric_features] = self.imputer.transform(X[self.numeric_features])
+        logger.start_operation("Transforming data.")
+        try:
+            X = super().transform(X)
+            X[self.numeric_features] = self.imputer.transform(X[self.numeric_features])
+        except Exception as e:
+            logger.error(f"Error in NumericalImputer transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return X
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -121,6 +137,13 @@ class NumericalImputer(NAImputer):
         Returns:
             pd.DataFrame: The transformed data with missing numeric values imputed.
         """
+        logger.start_operation("Fitting and transforming data.")
+        try:
+            self.fit(X)
+            X = self.transform(X)
+        except Exception as e:
+            logger.error(f"Error in NumericalImputer fit_transform: {e}")
+            raise e
         return self.fit(X).transform(X)
 
 
@@ -136,7 +159,7 @@ class CategoricalImputer(NAImputer):
 
     def __init__(self):
         super().__init__()
-        self.strategy = "most_frequent"
+        self.strategy = config.imputer_settings["categorical_strategy"]
         self.imputer = SimpleImputer(strategy=self.strategy)
 
     def fit(self, X: pd.DataFrame) -> "CategoricalImputer":
@@ -149,14 +172,24 @@ class CategoricalImputer(NAImputer):
         Returns:
             CategoricalImputer: The fitted imputer instance.
         """
-        super().fit(X)
-        self.categorical_features = [
-            col for col in X.columns if not pd.api.types.is_numeric_dtype(X[col])
-        ]
+        logger.start_operation(
+            f"Fitting CategoricalImputer to data with {X.shape[0]} rows and {X.shape[1]} columns."
+        )
+        try:
+            super().fit(X)
+            self.categorical_features = X.select_dtypes(
+                include="object"
+            ).columns.tolist()
 
-        logger.debug(f"Identified categorical features: {self.categorical_features}")
-        self.imputer.fit(X[self.categorical_features])
-
+            logger.debug(
+                f"Identified categorical features: {self.categorical_features}"
+            )
+            self.imputer.fit(X[self.categorical_features])
+        except Exception as e:
+            logger.error(f"Error in CategoricalImputer fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -169,10 +202,17 @@ class CategoricalImputer(NAImputer):
         Returns:
             pd.DataFrame: The transformed data with missing categorical values imputed.
         """
-        X = super().transform(X)
-        X[self.categorical_features] = self.imputer.transform(
-            X[self.categorical_features]
-        )
+        logger.start_operation("Transforming data.")
+        try:
+            X = super().transform(X)
+            X[self.categorical_features] = self.imputer.transform(
+                X[self.categorical_features]
+            )
+        except Exception as e:
+            logger.error(f"Error in CategoricalImputer transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return X
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -185,4 +225,14 @@ class CategoricalImputer(NAImputer):
         Returns:
             pd.DataFrame: The transformed data with missing categorical values imputed.
         """
-        return self.fit(X).transform(X)
+
+        logger.start_operation("Fitting and transforming data.")
+        try:
+            self.fit(X)
+            X = self.transform(X)
+        except Exception as e:
+            logger.error(f"Error in CategoricalImputer fit_transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
+        return X

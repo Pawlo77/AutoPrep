@@ -4,19 +4,9 @@ import matplotlib.pyplot as plt  # noqa: F401
 import pandas as pd
 import seaborn as sns  # noqa: F401
 
+from ..utils.config import config
 from ..utils.logging_config import setup_logger
 from ..utils.other import save_chart  # noqa: F401
-
-logger = setup_logger(__name__)
-
-from typing import Tuple
-
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns
-from utils.config import config
-from utils.logging_config import setup_logger
-from utils.other import save_chart
 
 logger = setup_logger(__name__)
 

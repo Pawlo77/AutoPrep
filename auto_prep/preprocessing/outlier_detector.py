@@ -3,8 +3,10 @@ import pandas as pd
 from scipy import stats
 from sklearn.ensemble import IsolationForest
 from statsmodels.regression.linear_model import OLS
-from utils.abstract import Numerical, RequiredStep
-from utils.logging_config import setup_logger
+
+from ..utils.abstract import Numerical, RequiredStep
+from ..utils.config import config
+from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
@@ -14,11 +16,14 @@ class OutlierDetector(RequiredStep, Numerical):
     Performs Numerical data outlier detection
     """
 
-    def __init__(self, method, **kwargs):
+    PARAMS_GRID = {
+        "method": ["zscore", "iqr", "isolation_forest", "cooks_distance"],
+    }
+
+    def __init__(self, method: str = "zscore"):
         """
         Args:
             method: The method to use for outlier detection
-            kwargs: Additional parameters for specific methods
         """
         self.available_methods = {
             "zscore": self._zscore_outliers,
@@ -32,9 +37,8 @@ class OutlierDetector(RequiredStep, Numerical):
                 f"{self.available_methods.keys()}"
             )
         self.method = method
-        self.kwargs = kwargs
 
-    def fit(self, X: pd.DataFrame, y=None) -> "OutlierDetector":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "OutlierDetector":
         """Identify feature types in the dataset.
 
         Args:
@@ -48,14 +52,19 @@ class OutlierDetector(RequiredStep, Numerical):
         """
 
         logger.start_operation(f"Numerical data fit ({X.shape[1]} columns).")
-        for column in X.columns:
-            if not pd.api.types.is_numeric_dtype(X[column]):
-                raise ValueError(f"Non numerical feature found: {column}.")
-        logger.end_operation()
+        try:
+            numerical_columns = X.select_dtypes(include=[np.number]).columns
+            if len(numerical_columns) == 0:
+                raise ValueError("Non numerical columns found in input data.")
+        except Exception as e:
+            logger.error(f"Error in Outlier Detection fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
 
         return self
 
-    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
+    def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Applies cleaning and transformation operations to the input data.
 
@@ -65,6 +74,7 @@ class OutlierDetector(RequiredStep, Numerical):
         Returns:
             pd.DataFrame: The cleaned and transformed DataFrame.
         """
+        logger.start_operation("Transforming data.")
         try:
             X = X.copy()
 
@@ -76,9 +86,11 @@ class OutlierDetector(RequiredStep, Numerical):
         except Exception as e:
             logger.error(f"Error in Outlier Detection: {e}")
             raise e
+        finally:
+            logger.end_operation()
         return X
 
-    def _zscore_outliers(self, X):
+    def _zscore_outliers(self, X: pd.DataFrame, y: pd.Series = None) -> tuple:
         """
         Detect outliers using Z-score method
         Args:
@@ -86,11 +98,18 @@ class OutlierDetector(RequiredStep, Numerical):
         Returns:
             Tuple of arrays containing row and column indices of outliers
         """
-        threshold = self.kwargs.get("threshold", 3)
-        z_scores = np.abs(stats.zscore(X, axis=0))
+        logger.start_operation("Detecting outliers using Z-score.")
+        try:
+            threshold = config.outlier_detector_settings["zscore_threshold"]
+            z_scores = np.abs(stats.zscore(X, axis=0))
+        except Exception as e:
+            logger.error(f"Error in Z-score outlier detection: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return np.where(z_scores > threshold)
 
-    def _iqr_outliers(self, X):
+    def _iqr_outliers(self, X: pd.DataFrame, y: pd.Series = None) -> tuple:
         """
         Detect outliers using IQR method
         Args:
@@ -98,12 +117,19 @@ class OutlierDetector(RequiredStep, Numerical):
         Returns:
             Tuple of arrays containing row and column indices of outliers
         """
-        Q1 = np.percentile(X, 25, axis=0)
-        Q3 = np.percentile(X, 75, axis=0)
-        IQR = Q3 - Q1
+        logger.start_operation("Detecting outliers using IQR.")
+        try:
+            Q1 = np.percentile(X, 25, axis=0)
+            Q3 = np.percentile(X, 75, axis=0)
+            IQR = Q3 - Q1
+        except Exception as e:
+            logger.error(f"Error in IQR outlier detection: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return np.where((X < (Q1 - 1.5 * IQR)) | (X > (Q3 + 1.5 * IQR)))
 
-    def _isolation_forest_outliers(self, X):
+    def _isolation_forest_outliers(self, X: pd.DataFrame, y: pd.Series = None) -> tuple:
         """
         Detect outliers using Isolation Forest method
         Args:
@@ -111,12 +137,21 @@ class OutlierDetector(RequiredStep, Numerical):
         Returns:
             Tuple of arrays containing row and column indices of outliers
         """
-        n_estimators = self.kwargs.get("n_estimators", 100)
-        clf = IsolationForest(n_estimators=n_estimators)
-        clf.fit(X)
-        return np.where(clf.predict(X) == -1)
+        logger.start_operation("Detecting outliers using Isolation Forest.")
+        try:
+            n_estimators = config.outlier_detector_settings["isol_forest_n_estimators"]
+            clf = IsolationForest(n_estimators=n_estimators)
+            clf.fit(X)
+            outliers = np.where(clf.predict(X) == -1)
+            logger.debug(f"Found {len(outliers)} outliers.")
+        except Exception as e:
+            logger.error(f"Error in Isolation Forest outlier detection: {e}")
+            raise e
+        finally:
+            logger.end_operation()
+        return outliers
 
-    def _cooks_distance_outliers(self, X, y):
+    def _cooks_distance_outliers(self, X: pd.DataFrame, y: pd.Series) -> tuple:
         """
         Detect outliers using Cook's Distance method
         Args:
@@ -125,10 +160,17 @@ class OutlierDetector(RequiredStep, Numerical):
         Returns:
             Tuple of arrays containing row and column indices of outliers
         """
-        model = OLS(y, X).fit()
-        infl = model.get_influence()
-        cooks_distance, _ = infl.cooks_distance
-        threshold = self.kwargs.get("threshold", 4 / X.shape[0])
+        logger.start_operation("Detecting outliers using Cook's Distance.")
+        try:
+            model = OLS(y, X).fit()
+            infl = model.get_influence()
+            cooks_distance, _ = infl.cooks_distance
+            threshold = config.outlier_detector_settings["cooks_distance_threshold"]
+        except Exception as e:
+            logger.error(f"Error in Cook's Distance outlier detection: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return np.where(cooks_distance > threshold)
 
     def is_numerical(self) -> bool:
@@ -136,7 +178,6 @@ class OutlierDetector(RequiredStep, Numerical):
 
     def to_tex(self) -> dict:
         return {
-            "name": "OutlierDetector",
             "desc": "Detects outliers in numerical data using specified method.",
-            "params": {"method": self.method, "kwargs": self.kwargs},
+            "params": {"method": self.method},
         }

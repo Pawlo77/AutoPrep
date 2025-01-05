@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
+from utils.config import config
 
 from ..utils.abstract import (
     Categorical,
@@ -40,9 +41,14 @@ class VarianceFilter(RequiredStep, Numerical):
             VarianceAndUniqueFilter: The fitted transformer instance.
         """
         logger.start_operation("Fitting VarianceFilter")
-        zero_variance = X.var() == 0
-        self.dropped_columns = X.columns[zero_variance].tolist()
-        logger.end_operation()
+        try:
+            zero_variance = X.var() == 0
+            self.dropped_columns = X.columns[zero_variance].tolist()
+        except Exception as e:
+            logger.error(f"Error in VarianceFilter fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -58,8 +64,14 @@ class VarianceFilter(RequiredStep, Numerical):
         logger.start_operation(
             f"Transforming data by dropping {len(self.dropped_columns)} zero variance columns."
         )
-        logger.end_operation()
-        return X.drop(columns=self.dropped_columns, errors="ignore")
+        try:
+            X = X.drop(columns=self.dropped_columns, errors="ignore")
+        except Exception as e:
+            logger.error(f"Error in VarianceFilter transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
+        return X
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -72,8 +84,15 @@ class VarianceFilter(RequiredStep, Numerical):
             pd.DataFrame: The transformed data without dropped columns.
         """
         logger.start_operation("Fitting and transforming data with zero variance")
-        logger.end_operation()
-        return self.fit(X).transform(X)
+        try:
+            self.fit(X)
+            X = self.transform(X)
+        except Exception as e:
+            logger.error(f"Error in VarianceFilter fit_transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
+        return X
 
     def is_numerical(self) -> bool:
         return True
@@ -83,9 +102,7 @@ class VarianceFilter(RequiredStep, Numerical):
         Returns a description of the transformer in dictionary format.
         """
         return {
-            "name": "VarianceFilter",
-            "desc": f"Removes columns with zero variance. Dropped columns: {self.dropped_columns}",
-            "params": {},
+            "desc": "Removes columns with zero variance",
         }
 
 
@@ -114,12 +131,17 @@ class UniqueFilter(RequiredStep, Categorical):
             UniqueFilter: The fitted transformer instance.
         """
         logger.start_operation("Fitting UniqueFilter")
-        # Select only categorical columns
-        cat_cols = X.select_dtypes(include=["object", "category"])
-        self.dropped_columns = [
-            col for col in cat_cols.columns if X[col].nunique() == len(X)
-        ]
-        logger.end_operation()
+        try:
+            # Select only categorical columns
+            cat_cols = X.select_dtypes(include="object").columns.tolist()
+            self.dropped_columns = [
+                col for col in cat_cols.columns if X[col].nunique() == len(X)
+            ]
+        except Exception as e:
+            logger.error(f"Error in UniqueFilter fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -135,8 +157,14 @@ class UniqueFilter(RequiredStep, Categorical):
         logger.start_operation(
             f"Transforming data UniqueFilter by dropping {len(self.dropped_columns)} columns with unique values"
         )
-        logger.end_operation()
-        return X.drop(columns=self.dropped_columns, errors="ignore")
+        try:
+            X = X.drop(columns=self.dropped_columns, errors="ignore")
+        except Exception as e:
+            logger.error(f"Error in UniqueFilter transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
+        return X
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -151,8 +179,15 @@ class UniqueFilter(RequiredStep, Categorical):
         logger.start_operation(
             "Fitting and transforming categorical data with 100% unique values"
         )
-        logger.end_operation()
-        return self.fit(X).transform(X)
+        try:
+            self.fit(X)
+            X = self.transform(X)
+        except Exception as e:
+            logger.error(f"Error in UniqueFilter fit_transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
+        return X
 
     def is_numerical(self) -> bool:
         return False
@@ -162,9 +197,7 @@ class UniqueFilter(RequiredStep, Categorical):
         Returns a description of the transformer in dictionary format.
         """
         return {
-            "name": "UniqueFilter",
-            "desc": f"Removes categorical columns with 100% unique values. Dropped columns: {self.dropped_columns}",
-            "params": {},
+            "desc": "Removes categorical columns with 100% unique values.",
         }
 
 
@@ -178,16 +211,11 @@ class CorrelationFilter(RequiredStep, Numerical):
         dropped_columns (list): List of columns that were dropped due to high correlation.
     """
 
-    def __init__(self, threshold: float = 0.8):
+    def __init__(self):
         """
         Initializes the filter with a specified correlation threshold.
-
-        Args:
-            threshold (float): Correlation threshold above which features are considered highly correlated.
         """
-        if not (0 <= threshold <= 1):
-            raise ValueError("Threshold must be between 0 and 1.")
-        self.threshold = threshold
+        self.threshold = config.correlation_selectors_settings["threshold"]
         self.dropped_columns = []
 
     def fit(self, X: pd.DataFrame) -> "CorrelationFilter":
@@ -203,17 +231,22 @@ class CorrelationFilter(RequiredStep, Numerical):
         logger.start_operation(
             f"Fitting CorrelationFilter with threshold {self.threshold}"
         )
-        corr_matrix = X.corr().abs()
-        correlated_pairs = set()
-        for i in range(len(corr_matrix.columns)):
-            for j in range(i + 1, len(corr_matrix.columns)):
-                if corr_matrix.iloc[i, j] > self.threshold:
-                    correlated_pairs.add(
-                        corr_matrix.columns[j]
-                    )  # only the second column of the pair is dropped
+        try:
+            corr_matrix = X.corr().abs()
+            correlated_pairs = set()
+            for i in range(len(corr_matrix.columns)):
+                for j in range(i + 1, len(corr_matrix.columns)):
+                    if corr_matrix.iloc[i, j] > self.threshold:
+                        correlated_pairs.add(
+                            corr_matrix.columns[j]
+                        )  # only the second column of the pair is dropped
 
-        self.dropped_columns = list(correlated_pairs)
-        logger.end_operation()
+            self.dropped_columns = list(correlated_pairs)
+        except Exception as e:
+            logger.error(f"Error in CorrelationFilter fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
@@ -230,17 +263,20 @@ class CorrelationFilter(RequiredStep, Numerical):
         logger.start_operation(
             f"Transforming data by dropping {len(self.dropped_columns)} highly correlated columns."
         )
+        try:
+            X = X.drop(columns=self.dropped_columns, errors="ignore")
 
-        X = X.drop(columns=self.dropped_columns, errors="ignore")
-
-        if y is not None:
-            y_name = y.name if y.name is not None else "y"
-            logger.debug(
-                f"Appending target variable '{y_name}' to the transformed data."
-            )
-            X[y_name] = y
-
-        logger.end_operation()
+            if y is not None:
+                y_name = y.name if y.name is not None else "y"
+                logger.debug(
+                    f"Appending target variable '{y_name}' to the transformed data."
+                )
+                X[y_name] = y
+        except Exception as e:
+            logger.error(f"Error in CorrelationFilter transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return X
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
@@ -257,9 +293,15 @@ class CorrelationFilter(RequiredStep, Numerical):
         logger.start_operation(
             f"Fitting and transforming data with correlation threshold {self.threshold}"
         )
-        result = self.fit(X).transform(X, y)
-        logger.end_operation()
-        return result
+        try:
+            self.fit(X)
+            X = self.transform(X, y)
+        except Exception as e:
+            logger.error(f"Error in CorrelationFilter fit_transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
+        return X
 
     def is_numerical(self) -> bool:
         return True
@@ -269,7 +311,6 @@ class CorrelationFilter(RequiredStep, Numerical):
         Returns a short description of the transformer in dictionary format.
         """
         return {
-            "name": "CorrelationFilter",
             "desc": f"Removes one column from pairs of columns correlated above correlation threshold: {self.threshold}.",
             "params": {"threshold": self.threshold},
         }
@@ -284,16 +325,12 @@ class CorrelationSelector(NonRequiredStep, Numerical):
          selected_columns (list): List of selected columns based on correlation with the target.
     """
 
-    def __init__(self, k: float = 10.0):
+    def __init__(self):
         """
         Initializes the transformer with a specified percentage of top correlated features to keep.
 
-        Args:
-            k (float): The percentage of features to retain based on their correlation with the target.
         """
-        if not (0 <= k <= 100):
-            raise ValueError("k must be between 0 and 100.")
-        self.k = k
+        self.k = config.correlation_selectors_settings["k"]
         self.selected_columns = []
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "CorrelationSelector":
@@ -310,13 +347,16 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         logger.start_operation(
             f"Fitting CorrelationSelector with top {self.k}% correlated features."
         )
-
-        corr_with_target = X.corrwith(y).abs()
-        sorted_corr = corr_with_target.sort_values(ascending=False)
-        num_top_features = max(1, round(np.ceil(len(sorted_corr) * self.k / 100)))
-        self.selected_columns = sorted_corr.head(num_top_features).index.tolist()
-
-        logger.end_operation()
+        try:
+            corr_with_target = X.corrwith(y).abs()
+            sorted_corr = corr_with_target.sort_values(ascending=False)
+            num_top_features = max(1, round(np.ceil(len(sorted_corr) * self.k / 100)))
+            self.selected_columns = sorted_corr.head(num_top_features).index.tolist()
+        except Exception as e:
+            logger.error(f"Error in CorrelationSelector fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
@@ -333,17 +373,21 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         logger.start_operation(
             f"Transforming data by selecting {len(self.selected_columns)} most correlated features."
         )
+        try:
 
-        X_selected = X[self.selected_columns].copy()
+            X_selected = X[self.selected_columns].copy()
 
-        if y is not None:
-            y_name = y.name if y.name is not None else "y"
-            logger.debug(
-                f"Appending target variable '{y_name}' to the transformed data."
-            )
-            X_selected[y_name] = y
-
-        logger.end_operation()
+            if y is not None:
+                y_name = y.name if y.name is not None else "y"
+                logger.debug(
+                    f"Appending target variable '{y_name}' to the transformed data."
+                )
+                X_selected[y_name] = y
+        except Exception as e:
+            logger.error(f"Error in CorrelationSelector transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return X_selected
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
@@ -360,9 +404,15 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         logger.start_operation(
             f"Fitting and transforming data with top {self.k}% correlated features."
         )
-        result = self.fit(X, y).transform(X, y)
-        logger.end_operation()
-        return result
+        try:
+            self.fit(X, y)
+            X = self.transform(X, y)
+        except Exception as e:
+            logger.error(f"Error in CorrelationSelector fit_transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
+        return X
 
     def is_numerical(self) -> bool:
         return True
@@ -372,7 +422,6 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         Returns a short description of the transformer in dictionary format.
         """
         return {
-            "name": "CorrelationSelector",
             "desc": f"Selects the top {self.k}% (rounded to whole number) of features most correlated with the target variable. Number of features that were selected: {len(self.selected_columns)}",
             "params": {"k": self.k},
         }
@@ -388,14 +437,12 @@ class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
         selected_columns (list): List of selected columns based on feature importance.
     """
 
-    def __init__(self, k: float = 10.0):
+    def __init__(self):
         """
         Initializes the transformer with a specified percentage of top important features to keep.
 
-        Args:
-            k (float): The percentage of features to retain based on their importance.
         """
-        super().__init__(k)
+        super().__init__()
         self.feature_importances_ = None
 
     def fit(
@@ -414,18 +461,23 @@ class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
         logger.start_operation(
             f"Fitting FeatureImportanceClassificationSelector with top {self.k}% important features."
         )
-
-        model = RandomForestClassifier(random_state=42)
-        model.fit(X, y)
-        self.feature_importances_ = model.feature_importances_
-        total_features = len(self.feature_importances_)
-        num_features_to_select = int(np.ceil(total_features * self.k / 100))
-        if num_features_to_select == 0:
-            num_features_to_select = 1
-        indices = np.argsort(self.feature_importances_)[-num_features_to_select:][::-1]
-        self.selected_columns = X.columns[indices].tolist()
-
-        logger.end_operation()
+        try:
+            model = RandomForestClassifier(random_state=42)
+            model.fit(X, y)
+            self.feature_importances_ = model.feature_importances_
+            total_features = len(self.feature_importances_)
+            num_features_to_select = int(np.ceil(total_features * self.k / 100))
+            if num_features_to_select == 0:
+                num_features_to_select = 1
+            indices = np.argsort(self.feature_importances_)[-num_features_to_select:][
+                ::-1
+            ]
+            self.selected_columns = X.columns[indices].tolist()
+        except Exception as e:
+            logger.error(f"Error in FeatureImportanceClassificationSelector fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
@@ -442,18 +494,23 @@ class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
         logger.start_operation(
             f"Transforming data by selecting {len(self.selected_columns)} most important features."
         )
-
-        X_selected = X[self.selected_columns].copy()
-        if y is not None:
-            if isinstance(y, list):
-                y = pd.Series(y)
-            y_name = y.name if y.name is not None else "y"
-            logger.debug(
-                f"Appending target variable '{y_name}' to the transformed data."
+        try:
+            X_selected = X[self.selected_columns].copy()
+            if y is not None:
+                if isinstance(y, list):
+                    y = pd.Series(y)
+                y_name = y.name if y.name is not None else "y"
+                logger.debug(
+                    f"Appending target variable '{y_name}' to the transformed data."
+                )
+                X_selected[y_name] = y.values
+        except Exception as e:
+            logger.error(
+                f"Error in FeatureImportanceClassificationSelector transform: {e}"
             )
-            X_selected[y_name] = y.values
-
-        logger.end_operation()
+            raise e
+        finally:
+            logger.end_operation()
         return X_selected
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
@@ -468,16 +525,23 @@ class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
         logger.start_operation(
             f"Fitting and transforming data with top {self.k}% important features."
         )
-        result = self.fit(X, y).transform(X, y)
-        logger.end_operation()
-        return result
+        try:
+            self.fit(X, y)
+            X = self.transform(X, y)
+        except Exception as e:
+            logger.error(
+                f"Error in FeatureImportanceClassificationSelector fit_transform: {e}"
+            )
+            raise e
+        finally:
+            logger.end_operation()
+        return X
 
     def to_tex(self) -> dict:
         """
         Returns a short description of the transformer in dictionary format.
         """
         return {
-            "name": "FeatureImportanceClassificationSelector",
             "desc": f"Selects the top {self.k}% (rounded to whole number) of features most important according to Random Forest model for classification. Number of features that were selected: {len(self.selected_columns)}",
             "params": {"k": self.k},
         }
@@ -496,14 +560,12 @@ class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
         selected_columns (list): List of selected columns based on feature importance.
     """
 
-    def __init__(self, k: float = 10.0):
+    def __init__(self):
         """
         Initializes the transformer with a specified percentage of top important features to keep.
 
-        Args:
-            k (float): The percentage of features to retain based on their importance.
         """
-        super().__init__(k)
+        super().__init__()
         self.feature_importances_ = None
 
     def fit(
@@ -522,18 +584,23 @@ class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
         logger.start_operation(
             f"Fitting FeatureImportanceRegressionSelector with top {self.k}% important features."
         )
-
-        model = RandomForestClassifier(random_state=42)
-        model.fit(X, y)
-        self.feature_importances_ = model.feature_importances_
-        total_features = len(self.feature_importances_)
-        num_features_to_select = int(np.ceil(total_features * self.k / 100))
-        if num_features_to_select == 0:
-            num_features_to_select = 1
-        indices = np.argsort(self.feature_importances_)[-num_features_to_select:][::-1]
-        self.selected_columns = X.columns[indices].tolist()
-
-        logger.end_operation()
+        try:
+            model = RandomForestClassifier(random_state=42)
+            model.fit(X, y)
+            self.feature_importances_ = model.feature_importances_
+            total_features = len(self.feature_importances_)
+            num_features_to_select = int(np.ceil(total_features * self.k / 100))
+            if num_features_to_select == 0:
+                num_features_to_select = 1
+            indices = np.argsort(self.feature_importances_)[-num_features_to_select:][
+                ::-1
+            ]
+            self.selected_columns = X.columns[indices].tolist()
+        except Exception as e:
+            logger.error(f"Error in FeatureImportanceRegressionSelector fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
@@ -550,18 +617,22 @@ class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
         logger.start_operation(
             f"Transforming data by selecting {len(self.selected_columns)} most important features."
         )
+        try:
 
-        X_selected = X[self.selected_columns].copy()
-        if y is not None:
-            if isinstance(y, list):
-                y = pd.Series(y)
-            y_name = y.name if y.name is not None else "y"
-            logger.debug(
-                f"Appending target variable '{y_name}' to the transformed data."
-            )
-            X_selected[y_name] = y.values
-
-        logger.end_operation()
+            X_selected = X[self.selected_columns].copy()
+            if y is not None:
+                if isinstance(y, list):
+                    y = pd.Series(y)
+                y_name = y.name if y.name is not None else "y"
+                logger.debug(
+                    f"Appending target variable '{y_name}' to the transformed data."
+                )
+                X_selected[y_name] = y.values
+        except Exception as e:
+            logger.error(f"Error in FeatureImportanceRegressionSelector transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return X_selected
 
     def fit_transform(self, X: pd.DataFrame, y):
@@ -576,16 +647,23 @@ class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
         logger.start_operation(
             f"Fitting and transforming data with top {self.k}% important features."
         )
-        result = self.fit(X, y).transform(X, y)
-        logger.end_operation()
-        return result
+        try:
+            self.fit(X, y)
+            X = self.transform(X, y)
+        except Exception as e:
+            logger.error(
+                f"Error in FeatureImportanceRegressionSelector fit_transform: {e}"
+            )
+            raise e
+        finally:
+            logger.end_operation()
+        return X
 
     def to_tex(self) -> dict:
         """
         Returns a short description of the transformer in dictionary format.
         """
         return {
-            "name": "FeatureImportanceRegressionSelector",
             "desc": f"Selects the top {self.k}% (rounded to whole number) of features most important according to Random Forest model for regression. Number of features that were selected: {len(self.selected_columns)}",
             "params": {"k": self.k},
         }
