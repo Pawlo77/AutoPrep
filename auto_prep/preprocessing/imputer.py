@@ -3,6 +3,7 @@ from sklearn.impute import SimpleImputer
 
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
+from ..utils.abstract import Categorical
 
 logger = setup_logger(__name__)
 
@@ -146,8 +147,20 @@ class NumericalImputer(NAImputer):
             raise e
         return self.fit(X).transform(X)
 
+    def to_tex(self) -> dict:
+        """
+        Returns a description of the transformer in dictionary format.
+        """
+        return {
+            "name": "NumericalImputer",
+            "desc": "Imputes numerical missing data.",
+            "params": {
+                "strategy": self.strategy,
+            },
+        }
 
-class CategoricalImputer(NAImputer):
+
+class CategoricalImputer(Categorical, NAImputer):
     """
     Imputer for categorical columns. This class fills missing values in categorical columns
     with the most frequent value in the respective column.

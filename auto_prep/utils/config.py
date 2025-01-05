@@ -65,14 +65,17 @@ class GlobalConfig:
         test_size: float = 0.1,
         valid_size: float = 0.1,
         random_state: int = 42,
+        max_datasets_after_preprocessing: int = 3,
+        perform_only_required_: bool = False,
         raport_decimal_precision: int = 4,
         chart_settings: dict = None,
         correlation_selectors_settings: dict = None,
         outlier_detector_settings: dict = None,
         imputer_settings: dict = None,
         umap_components: int = 50,
-        *args,
-        **kwargs,
+        correlation_threshold: float = 0.8,
+        correlation_percent: float = 0.5,
+        n_bins: int = 4,
     ):
         """
         Args:
@@ -104,14 +107,27 @@ class GlobalConfig:
             test_size (float) - % of traing set size. Defaults to 0.1.
             valid_size (float) - % of traing set size. Defaults to 0.1.
             random_state (int) - Random state for sklearn.
+            max_datasets_after_preprocessing (int) - Maximum number of datasets that will be left
+                after preprocessing steps. On them further models will be trained. Strongly
+                affects performance.
+            perform_only_required_ (bool) - weather or not to perform only required steps.
+                Affects entire process.
             raport_decimal_precision (int) - Decimal precision for all float in raport.
                 Will use standard python rounding.
+
             chart_settings (dict): Settings for customizing chart appearance.
                 Defaults to None, which initializes default settings.
             correlation_selectors_settings (dict): Settings for correlation selectors.
             outlier_detector_settings (dict): Settings for outlier detectors
             imputer_settings (dict): Settings for imputers
             umap_components (int): Number of components for UMAP.
+            correlation_threshold (float) - threshold used for detecting highly correlated features.Default 0.8.
+            correlation_percent (float) - % of selected features based on their correlation with the target. Default 0.5.
+            n_bins (int) - number of bins to create while binning numerical features.
+
+            chart_settings (dict): Settings for customizing chart appearance.
+                Defaults to None, which initializes default settings.
+
         """
         assert (
             isinstance(raport_name, str) and raport_name != ""
@@ -168,7 +184,47 @@ class GlobalConfig:
             "heatmap_fmt": ".2f",
         }
 
+        assert (
+            max_datasets_after_preprocessing > 0
+        ), "Values smaller than 1 are forbidden."
+        self.max_datasets_after_preprocessing = max_datasets_after_preprocessing
+        self.perform_only_required_ = perform_only_required_
+
+        self.chart_settings = chart_settings or {
+            "theme": "whitegrid",
+            "title_fontsize": 18,
+            "title_fontweight": "bold",
+            "xlabel_fontsize": 12,
+            "ylabel_fontsize": 12,
+            "tick_label_rotation": 45,
+            "palette": "pastel",
+            "plot_width": 15,
+            "plot_height_per_row": 4,
+            "heatmap_cmap": "coolwarm",
+            "heatmap_fmt": ".2f",
+        }
+
         self.raport_decimal_precision = raport_decimal_precision
+
+        self.root_project_dir = os.path.abspath("./..")
+
+        assert 0 <= correlation_threshold <= 1, (
+            f"Invalid value for correlation_threshold: {correlation_threshold}. "
+            "It must be a float between 0 and 1."
+        )
+        self.correlation_threshold = correlation_threshold
+
+        assert 0 <= correlation_percent <= 1, (
+            f"Invalid value for correlation_selector_percent: {correlation_percent}. "
+            "It must be a float between 0 and 1."
+        )
+        self.correlation_percent = correlation_percent
+
+        assert (
+            int(n_bins) == n_bins and n_bins >= 1
+        ), f"Wrong value for n_bins: {n_bins}. "
+        "Should be int >= 1."
+        self.n_bins = n_bins
         self.correlation_selectors_settings = correlation_selectors_settings or {
             "threshold": 0.8,
             "k": 10,

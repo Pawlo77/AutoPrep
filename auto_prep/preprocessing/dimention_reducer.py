@@ -8,6 +8,7 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 from ..utils.abstract import DimentionReducer
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
+from .abstract import DimentionReducer
 
 logger = setup_logger(__name__)
 
@@ -111,9 +112,6 @@ class PCADimentionReducer(DimentionReducer):
     def is_applicable(X):
         return np.shape(X)[0] > 1 and np.shape(X)[1] > 1
 
-    def is_numerical(self) -> bool:
-        return True
-
     def to_tex(self) -> dict:
         return {
             "desc": "Combines data standardization and PCA with automatic selection of the number of components to preserve 95% of the variance.",
@@ -208,9 +206,6 @@ class VIFDimentionReducer(DimentionReducer):
     def is_applicable(X):
         return np.shape(X)[0] > 1 and np.shape(X)[1] > 1
 
-    def is_numerical(self) -> bool:
-        return True
-
     def to_tex(self) -> dict:
         return {
             "desc": "Removes columns with high variance inflation factor (VIF > 10).",
@@ -284,9 +279,6 @@ class UMAPDimentionReducer(DimentionReducer):
 
     def is_applicable(X):
         return np.shape(X)[0] > 1 and np.shape(X)[1] > 1
-
-    def is_numerical(self) -> bool:
-        return True
 
     def to_tex(self) -> dict:
         return {

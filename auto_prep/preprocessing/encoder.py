@@ -134,9 +134,6 @@ class ColumnEncoder(RequiredStep, Categorical):
         logger.end_operation()
         return result
 
-    def is_numerical(self) -> bool:
-        return False
-
     def to_tex(self) -> dict:
         return {
             "desc": "Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or LabelEncoder (for columns with >=5 unique values).",

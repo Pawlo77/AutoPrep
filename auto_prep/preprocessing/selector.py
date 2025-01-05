@@ -1,15 +1,9 @@
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from utils.config import config
+from sklearn.ensemble import RandomForestClassifier  # noqa F401
 
-from ..utils.abstract import (
-    Categorical,
-    FeatureImportanceSelector,
-    NonRequiredStep,
-    Numerical,
-    RequiredStep,
-)
+from ..utils.abstract import FeatureImportanceSelector, NonRequiredStep, Numerical, RequiredStep, Categorical
+from ..utils.config import config
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -102,7 +96,7 @@ class VarianceFilter(RequiredStep, Numerical):
         Returns a description of the transformer in dictionary format.
         """
         return {
-            "desc": "Removes columns with zero variance",
+            "desc": "Removes columns with zero variance.",
         }
 
 
@@ -133,7 +127,7 @@ class UniqueFilter(RequiredStep, Categorical):
         logger.start_operation("Fitting UniqueFilter")
         try:
             # Select only categorical columns
-            cat_cols = X.select_dtypes(include="object").columns.tolist()
+            cat_cols = X.select_dtypes(include=["object"]).columns.tolist()
             self.dropped_columns = [
                 col for col in cat_cols.columns if X[col].nunique() == len(X)
             ]
@@ -181,13 +175,12 @@ class UniqueFilter(RequiredStep, Categorical):
         )
         try:
             self.fit(X)
-            X = self.transform(X)
         except Exception as e:
             logger.error(f"Error in UniqueFilter fit_transform: {e}")
             raise e
         finally:
             logger.end_operation()
-        return X
+        return self.fit(X).transform(X)
 
     def is_numerical(self) -> bool:
         return False
@@ -197,7 +190,7 @@ class UniqueFilter(RequiredStep, Categorical):
         Returns a description of the transformer in dictionary format.
         """
         return {
-            "desc": "Removes categorical columns with 100% unique values.",
+            "desc": "Removes categorical columns with 100% unique values. ",
         }
 
 
@@ -211,11 +204,16 @@ class CorrelationFilter(RequiredStep, Numerical):
         dropped_columns (list): List of columns that were dropped due to high correlation.
     """
 
-    def __init__(self):
+    def __init__(self, threshold: float = 0.8):
         """
         Initializes the filter with a specified correlation threshold.
+
+        Args:
+            threshold (float): Correlation threshold above which features are considered highly correlated.
         """
-        self.threshold = config.correlation_selectors_settings["threshold"]
+        if not (0 <= threshold <= 1):
+            raise ValueError("Threshold must be between 0 and 1.")
+        self.threshold = threshold
         self.dropped_columns = []
 
     def fit(self, X: pd.DataFrame) -> "CorrelationFilter":
@@ -318,10 +316,9 @@ class CorrelationFilter(RequiredStep, Numerical):
 
 class CorrelationSelector(NonRequiredStep, Numerical):
     """
-    Transformer to select k% (rounded to whole number) of features that are most correlated with the target variable.
+    Transformer to select correlation_percent% (rounded to whole number) of features that are most correlated with the target variable.
 
     Attributes:
-         k (float): The percentage of top features to keep based on their correlation with the target.
          selected_columns (list): List of selected columns based on correlation with the target.
     """
 
@@ -329,13 +326,15 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         """
         Initializes the transformer with a specified percentage of top correlated features to keep.
 
+        Args:
+            k (float): The percentage of features to retain based on their correlation with the target.
         """
         self.k = config.correlation_selectors_settings["k"]
         self.selected_columns = []
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "CorrelationSelector":
         """
-        Identifies the top k% (rounded to whole value) of features most correlated with the target variable.
+        Identifies the top correlation_percent% (rounded to whole value) of features most correlated with the target variable.
 
         Args:
             X (pd.DataFrame): The input feature data.
@@ -345,7 +344,7 @@ class CorrelationSelector(NonRequiredStep, Numerical):
             CorrelationSelector: The fitted transformer instance.
         """
         logger.start_operation(
-            f"Fitting CorrelationSelector with top {self.k}% correlated features."
+            f"Fitting CorrelationSelector with top {self.correlation_percent}% correlated features."
         )
         try:
             corr_with_target = X.corrwith(y).abs()
@@ -354,14 +353,14 @@ class CorrelationSelector(NonRequiredStep, Numerical):
             self.selected_columns = sorted_corr.head(num_top_features).index.tolist()
         except Exception as e:
             logger.error(f"Error in CorrelationSelector fit: {e}")
-            raise e
+            raise e 
         finally:
             logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
-        Selects the top k% of features most correlated with the target variable.
+        Selects the top correlation_percent% of features most correlated with the target variable.
 
         Args:
             X (pd.DataFrame): The feature data.
@@ -546,9 +545,6 @@ class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
             "params": {"k": self.k},
         }
 
-    def is_numerical(self) -> bool:
-        return False
-
 
 class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
     """
@@ -667,6 +663,3 @@ class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
             "desc": f"Selects the top {self.k}% (rounded to whole number) of features most important according to Random Forest model for regression. Number of features that were selected: {len(self.selected_columns)}",
             "params": {"k": self.k},
         }
-
-    def is_numerical(self) -> bool:
-        return True

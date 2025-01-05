@@ -173,9 +173,6 @@ class OutlierDetector(RequiredStep, Numerical):
             logger.end_operation()
         return np.where(cooks_distance > threshold)
 
-    def is_numerical(self) -> bool:
-        return False
-
     def to_tex(self) -> dict:
         return {
             "desc": "Detects outliers in numerical data using specified method.",
