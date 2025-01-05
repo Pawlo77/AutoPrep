@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple
 import pandas as pd
 
 from ..utils.logging_config import setup_logger
-from ..visualization.categical import CategoricalVisualizer
+from ..visualization.categorical import CategoricalVisualizer
 from ..visualization.eda import EdaVisualizer
 from ..visualization.numerical import NumericalVisualizer
 from .raport import Report
