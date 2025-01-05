@@ -27,7 +27,7 @@ class ColumnEncoder(RequiredStep, Categorical):
         self.encoders = {}  # Dictionary to store encoder for each column
         self.columns = []  # List to store columns that are encoded
 
-    def fit(self, X: pd.DataFrame) -> "ColumnEncoder":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "ColumnEncoder":
         """
         Fits the encoder to the categorical features in the data.
 
@@ -35,7 +35,7 @@ class ColumnEncoder(RequiredStep, Categorical):
             X (pd.DataFrame): The feature data to fit the encoder to.
 
         Returns:
-            MultiColumnEncoder: The fitted encoder instance.
+            ColumnEncoder: The fitted encoder instance.
 
         The encoder will choose between OneHotEncoder and LabelEncoder based on the
         number of unique values in each column. OneHotEncoder is used for columns
@@ -43,7 +43,7 @@ class ColumnEncoder(RequiredStep, Categorical):
         5 or more unique values.
         """
         logger.start_operation(
-            f"Fitting MultiColumnEncoder to data with {X.shape[0]} rows and {X.shape[1]} columns."
+            f"Fitting ColumnEncoder to data with {X.shape[0]} rows and {X.shape[1]} columns."
         )
         try:
             categorical_columns = X.select_dtypes(include=["object"]).columns.tolist()
@@ -65,7 +65,7 @@ class ColumnEncoder(RequiredStep, Categorical):
                     self.encoders[column].fit(X[column])
                 self.columns.append(column)
         except Exception as e:
-            logger.error(f"Error in MultiColumnEncoder fit: {e}")
+            logger.error(f"Error in ColumnEncoder fit: {e}")
             raise e
         finally:
             logger.end_operation()
@@ -110,7 +110,7 @@ class ColumnEncoder(RequiredStep, Categorical):
                 )
                 X[y_name] = y
         except Exception as e:
-            logger.error(f"Error in MultiColumnEncoder transform: {e}")
+            logger.error(f"Error in ColumnEncoder transform: {e}")
             raise e
         finally:
             logger.end_operation()

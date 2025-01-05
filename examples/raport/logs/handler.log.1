@@ -1,56 +1,52 @@
-2025-01-05 01:56:25 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 01:56:25 DEBUG auto_prep.preprocessing.handler: → Imputing.
-2025-01-05 01:56:25 DEBUG auto_prep.preprocessing.handler: ✓ Imputing.
-2025-01-05 01:56:54 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 01:56:54 DEBUG auto_prep.preprocessing.handler: → Imputing.
-2025-01-05 01:56:54 DEBUG auto_prep.preprocessing.handler: ✓ Imputing.
-2025-01-05 01:57:42 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 01:57:42 DEBUG auto_prep.preprocessing.handler: → Imputing.
-2025-01-05 01:57:42 DEBUG auto_prep.preprocessing.handler: ✓ Imputing.
-2025-01-05 01:58:53 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 01:58:53 DEBUG auto_prep.preprocessing.handler: → Imputing.
-2025-01-05 01:58:53 DEBUG auto_prep.preprocessing.handler: ✓ Imputing.
-2025-01-05 01:59:16 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 01:59:16 DEBUG auto_prep.preprocessing.handler: → Imputing.
-2025-01-05 01:59:16 DEBUG auto_prep.preprocessing.handler: ✓ Imputing.
-2025-01-05 02:00:53 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 02:00:53 DEBUG auto_prep.preprocessing.handler: → Imputing.
-2025-01-05 02:00:53 DEBUG auto_prep.preprocessing.handler: ✓ Imputing.
-2025-01-05 02:08:25 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 02:09:16 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 02:09:54 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 02:09:55 DEBUG auto_prep.preprocessing.handler: ✓ Preprocessing.
-2025-01-05 11:43:49 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 11:44:09 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 11:44:23 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 11:44:23 DEBUG auto_prep.preprocessing.handler: [[<class 'auto_prep.preprocessing.imputer.NumericalImputer'>, <class 'auto_prep.preprocessing.encoder.ColumnEncoder'>, <class 'auto_prep.preprocessing.binning.BinningTransformer'>, <class 'auto_prep.preprocessing.outlier_detector.OutlierDetector'>], [<class 'auto_prep.preprocessing.imputer.CategoricalImputer'>, <class 'auto_prep.preprocessing.encoder.ColumnEncoder'>, <class 'auto_prep.preprocessing.binning.BinningTransformer'>, <class 'auto_prep.preprocessing.outlier_detector.OutlierDetector'>]]
-2025-01-05 11:44:23 DEBUG auto_prep.preprocessing.handler: ✓ Preprocessing.
-2025-01-05 11:55:08 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 11:57:35 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 11:59:24 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 20:02:45 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 20:23:07 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 20:37:36 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 21:09:36 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 21:14:27 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 21:30:35 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 21:30:35 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
-2025-01-05 21:31:26 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 21:31:26 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
-2025-01-05 21:32:58 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 21:32:58 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
-2025-01-05 21:32:58 DEBUG auto_prep.preprocessing.handler: NumericalImputer - no PARAMS_GRID found.
-2025-01-05 21:32:58 DEBUG auto_prep.preprocessing.handler: ColumnEncoder - no PARAMS_GRID found.
-2025-01-05 21:32:58 DEBUG auto_prep.preprocessing.handler: OutlierDetector - no PARAMS_GRID found.
-2025-01-05 21:35:45 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 21:35:45 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
-2025-01-05 21:35:45 DEBUG auto_prep.preprocessing.handler: NumericalImputer - no PARAMS_GRID found.
-2025-01-05 21:35:45 DEBUG auto_prep.preprocessing.handler: ColumnEncoder - no PARAMS_GRID found.
-2025-01-05 21:35:45 DEBUG auto_prep.preprocessing.handler: OutlierDetector - no PARAMS_GRID found.
-2025-01-05 21:35:45 CRITICAL auto_prep.preprocessing.handler: OutlierDetector.__init__() missing 1 required positional argument: 'method'
-2025-01-05 21:36:59 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
-2025-01-05 21:36:59 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
-2025-01-05 21:36:59 DEBUG auto_prep.preprocessing.handler: NumericalImputer - no PARAMS_GRID found.
-2025-01-05 21:36:59 DEBUG auto_prep.preprocessing.handler: ColumnEncoder - no PARAMS_GRID found.
-2025-01-05 21:36:59 DEBUG auto_prep.preprocessing.handler: OutlierDetector - no PARAMS_GRID found.
-2025-01-05 21:38:02 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
+2025-01-05 21:38:02 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
+2025-01-05 21:38:02 DEBUG auto_prep.preprocessing.handler: Exploding for step NumericalImputer.
+2025-01-05 21:38:02 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler.
+2025-01-05 21:38:02 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder.
+2025-01-05 21:38:02 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer.
+2025-01-05 21:38:02 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector.
+2025-01-05 21:38:32 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
+2025-01-05 21:38:32 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
+2025-01-05 21:38:32 DEBUG auto_prep.preprocessing.handler: Exploding for step NumericalImputer. Begining with 0
+2025-01-05 21:38:32 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 1
+2025-01-05 21:38:32 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder. Begining with 3
+2025-01-05 21:38:32 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer. Begining with 3
+2025-01-05 21:38:32 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector. Begining with 6
+2025-01-05 22:20:08 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
+2025-01-05 22:20:08 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 22:20:08 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
+2025-01-05 22:20:08 DEBUG auto_prep.preprocessing.handler: Exploding for step NumericalImputer. Begining with 0
+2025-01-05 22:20:08 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 1
+2025-01-05 22:20:08 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder. Begining with 3
+2025-01-05 22:20:08 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer. Begining with 3
+2025-01-05 22:20:08 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector. Begining with 6
+2025-01-05 22:46:57 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
+2025-01-05 22:46:57 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 22:46:57 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
+2025-01-05 22:46:57 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 0
+2025-01-05 22:46:57 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder. Begining with 3
+2025-01-05 22:46:57 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer. Begining with 3
+2025-01-05 22:46:57 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector. Begining with 6
+2025-01-05 22:46:57 DEBUG auto_prep.preprocessing.handler: Exploaded 4 steps into 24 steps.
+2025-01-05 22:46:57 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-05 22:49:47 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
+2025-01-05 22:49:47 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 22:49:47 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
+2025-01-05 22:49:47 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 0
+2025-01-05 22:49:47 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder. Begining with 3
+2025-01-05 22:49:47 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer. Begining with 3
+2025-01-05 22:49:47 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector. Begining with 6
+2025-01-05 22:49:47 DEBUG auto_prep.preprocessing.handler: Exploaded 4 steps into 24 steps.
+2025-01-05 22:49:47 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-05 22:52:04 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
+2025-01-05 22:52:04 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 22:52:04 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
+2025-01-05 22:52:04 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 0
+2025-01-05 22:52:04 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder. Begining with 3
+2025-01-05 22:52:04 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer. Begining with 3
+2025-01-05 22:52:04 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector. Begining with 6
+2025-01-05 22:52:04 DEBUG auto_prep.preprocessing.handler: Exploaded 4 steps into 24 steps.
+2025-01-05 22:52:04 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-05 22:52:25 DEBUG auto_prep.preprocessing.handler: → Preprocessing.
+2025-01-05 22:52:25 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 22:52:25 DEBUG auto_prep.preprocessing.handler: Extracted pipelines steps: []
+2025-01-05 22:52:25 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 0

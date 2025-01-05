@@ -44,7 +44,7 @@ class ColumnScaler(RequiredStep, Numerical):
                 "Invalid scaler_type. Choose from : 'minmax', 'standard', 'robust'."
             )
 
-    def fit(self, X: pd.DataFrame) -> "ColumnScaler":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "ColumnScaler":
         """
         Fits the chosen scaler to the numerical features in the data.
 

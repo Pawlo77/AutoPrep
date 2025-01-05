@@ -30,7 +30,7 @@ class VarianceFilter(RequiredStep, Numerical):
 
         self.dropped_columns = []
 
-    def fit(self, X: pd.DataFrame) -> "VarianceFilter":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "VarianceFilter":
         """
         Identifies columns with zero variances and adds to dropped_columns list.
 
@@ -73,7 +73,7 @@ class VarianceFilter(RequiredStep, Numerical):
             logger.end_operation()
         return X
 
-    def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Fits and transforms the data in one step.
 
@@ -120,7 +120,7 @@ class UniqueFilter(RequiredStep, Categorical):
         """
         self.dropped_columns = []
 
-    def fit(self, X: pd.DataFrame) -> "UniqueFilter":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "UniqueFilter":
         """
         Identifies categorical columns with 100% unique values.
 
@@ -166,7 +166,7 @@ class UniqueFilter(RequiredStep, Categorical):
             logger.end_operation()
         return X
 
-    def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Fits and transforms the data in one step.
 
@@ -222,7 +222,7 @@ class CorrelationFilter(RequiredStep, Numerical):
         self.threshold = threshold
         self.dropped_columns = []
 
-    def fit(self, X: pd.DataFrame) -> "CorrelationFilter":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "CorrelationFilter":
         """
         Identifies highly correlated features. Adds the second one from the pair to the list of columns to be dropped.
 
@@ -338,7 +338,7 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         self.k = config.correlation_selectors_settings["k"]
         self.selected_columns = []
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "CorrelationSelector":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "CorrelationSelector":
         """
         Identifies the top correlation_percent% (rounded to whole value) of features most correlated with the target variable.
 

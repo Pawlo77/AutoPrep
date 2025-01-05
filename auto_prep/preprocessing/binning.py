@@ -9,7 +9,6 @@ logger = setup_logger(__name__)
 
 
 class BinningTransformer(NonRequiredStep, Numerical):
-
     """
     Transformer for performing binning (using qcut) or equal-width binning (using cut)
     on continuous variables and replacing the values with numeric labels, but only if the number of unique values
@@ -27,7 +26,6 @@ class BinningTransformer(NonRequiredStep, Numerical):
     }
 
     def __init__(self, binning_method: str = "qcut"):
-
         """
         Initializes the transformer with the number of bins for quantile binning and the binning method to use ('cut' or 'qcut').
 
@@ -42,7 +40,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
         self.bin_edges = {}  # Dictionary to store the bin edges for each column
         self.binning_method = binning_method
 
-    def fit(self, X: pd.DataFrame) -> "BinningTransformer":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "BinningTransformer":
         """
         Fits the transformer by calculating the bin edges for each continuous column if the number of unique values
         exceeds the threshold of 50%.
@@ -149,7 +147,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
         finally:
             logger.end_operation()
 
-    def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Fits and transforms the data in one step.
 

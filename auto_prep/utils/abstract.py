@@ -379,7 +379,7 @@ class FeatureImportanceSelector(NonRequiredStep):
         self.k = k
         self.selected_columns = []
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "FeatureImportanceSelector":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "FeatureImportanceSelector":
         """
         Identifies the top k% (rounded to whole value) of features most important according to the model.
 

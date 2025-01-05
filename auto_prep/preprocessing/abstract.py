@@ -139,7 +139,7 @@ class NAImputer(RequiredStep, ABC):
         self.numeric_features = []
         self.categorical_features = []
 
-    def fit(self, X: pd.DataFrame) -> "NAImputer":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "NAImputer":
         """
         Identifies columns with more than 50% missing values and removes them
         from the dataset.

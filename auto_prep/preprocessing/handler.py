@@ -98,7 +98,7 @@ class PreprocessingHandler(ModulesHandler):
         for pipeline in self._pipelines:
             t1 = time()
             pipeline.fit(X_train, y_train)
-            self._fit_durations(time() - t1)
+            self._fit_durations.append(time() - t1)
         self._fit_time = time() - t0
 
         logger.info("Scoring pipelines...")
@@ -124,7 +124,7 @@ class PreprocessingHandler(ModulesHandler):
                     y_val=y_valid,
                 )
             )
-            self._score_durations(time() - t1)
+            self._score_durations.append(time() - t1)
         self._pipelines_scores = pd.Series(self._pipelines_scores)
 
         self._best_pipelines_idx = (
@@ -271,11 +271,12 @@ class PreprocessingHandler(ModulesHandler):
             if grid is not None:
                 all_possibilities = PreprocessingHandler._exploade_grid(grid)
                 steps_to_add = [
-                    step(**possibility) for possibility in all_possibilities
+                    (step.__name__, step(**possibility))
+                    for possibility in all_possibilities
                 ]
             else:
                 try:
-                    steps_to_add = [step()]
+                    steps_to_add = [(step.__name__, step())]
                 except Exception as e:
                     if "missing" in str(e) and "required positional argument" in str(e):
                         raise Exception(
@@ -284,12 +285,12 @@ class PreprocessingHandler(ModulesHandler):
                     raise e
 
             if len(exploaded_steps) == 0:
-                exploaded_steps = [[step] for step in steps_to_add]
+                exploaded_steps = [[entry] for entry in steps_to_add]
             else:
                 new_exploaded_steps = []
-                for step in exploaded_steps:
-                    for step_to_add in steps_to_add:
-                        new_exploaded_steps.append([*step, step_to_add])
+                for entry in exploaded_steps:
+                    for entry_to_add in steps_to_add:
+                        new_exploaded_steps.append([*entry, entry_to_add])
                 exploaded_steps = new_exploaded_steps
 
         return exploaded_steps

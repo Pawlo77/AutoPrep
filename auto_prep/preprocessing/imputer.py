@@ -24,7 +24,7 @@ class NAImputer:
         self.categorical_features = []
         self.cols_to_remove = []
 
-    def fit(self, X: pd.DataFrame) -> "NAImputer":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "NAImputer":
         """
         Identifies columns with more than 50% missing values and removes them
         from the dataset.
@@ -81,7 +81,7 @@ class NumericalImputer(NAImputer):
         self.strategy = config.imputer_settings["numerical_strategy"]
         self.imputer = SimpleImputer(strategy=self.strategy)
 
-    def fit(self, X: pd.DataFrame) -> "NumericalImputer":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "NumericalImputer":
         """
         Identifies numeric columns and fits the imputer.
 
@@ -128,7 +128,7 @@ class NumericalImputer(NAImputer):
             logger.end_operation()
         return X
 
-    def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Fits and transforms the input data by imputing missing values in numeric columns.
 
@@ -175,7 +175,7 @@ class CategoricalImputer(Categorical, NAImputer):
         self.strategy = config.imputer_settings["categorical_strategy"]
         self.imputer = SimpleImputer(strategy=self.strategy)
 
-    def fit(self, X: pd.DataFrame) -> "CategoricalImputer":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "CategoricalImputer":
         """
         Identifies categorical columns and fits the imputer.
 
@@ -228,7 +228,7 @@ class CategoricalImputer(Categorical, NAImputer):
             logger.end_operation()
         return X
 
-    def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Fits and transforms the input data by imputing missing values in categorical columns.
 
