@@ -199,10 +199,13 @@ class ModulesHandler(ABC):
         logger.debug(f"After required steps - {len(new_pipelines)}")
 
         if not required_only_:
-            new_pipelines = ModulesHandler._explode_pipelines_steps(
-                steps=ModulesHandler._get_non_required_steps(),
-                new_steps=new_steps,
-                pipelines=new_pipelines,
+            # keep those from required only and those extended with non-required steps
+            new_pipelines.extend(
+                ModulesHandler._explode_pipelines_steps(
+                    steps=ModulesHandler._get_non_required_steps(),
+                    new_steps=new_steps,
+                    pipelines=new_pipelines,
+                )
             )
             logger.debug(f"After non-required steps - {len(new_pipelines)}")
 

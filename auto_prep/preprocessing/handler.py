@@ -50,7 +50,8 @@ class PreprocessingHandler(ModulesHandler):
         - binning
         - outlier detection
         - filtering out features (ex those with 0 variance)
-        - feature selection / dimentionality reduction
+        - dimentionality reduction
+        - feature selection
 
         Args:
             X_train (pd.DataFrame): Training feature dataset.
@@ -70,6 +71,8 @@ class PreprocessingHandler(ModulesHandler):
             ("Encoding data.", ".encoder"),
             ("Binning data.", ".binning"),
             ("Outlier detection.", ".outlier_detector"),
+            ("Dinemtionality reduction.", ".dimention_reducer"),
+            ("Features selection.", ".selector"),
         ]:
             self._pipeline_steps = ModulesHandler.construct_pipelines_steps_helper(
                 step_name,
