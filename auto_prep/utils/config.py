@@ -1,6 +1,5 @@
 import logging
 import os
-from typing import List
 
 import numpy as np
 from pylatex import NoEscape
@@ -72,11 +71,14 @@ class GlobalConfig:
         max_datasets_after_preprocessing: int = 3,
         perform_only_required_: bool = False,
         raport_decimal_precision: int = 4,
-        raport_chart_color_pallete: List[str] = ["#FF204E"],
+        chart_settings: dict = None,
+        correlation_selectors_settings: dict = None,
+        outlier_detector_settings: dict = None,
+        imputer_settings: dict = None,
+        umap_components: int = 50,
         correlation_threshold: float = 0.8,
         correlation_percent: float = 0.5,
         n_bins: int = 4,
-        chart_settings: dict = None,
         max_unique_values_classification: int = 20,
         regression_pipeline_scoring_model: BaseEstimator = RandomForestRegressor(
             n_estimators=100, random_state=42, max_depth=5, n_jobs=-1, warm_start=True
@@ -124,6 +126,22 @@ class GlobalConfig:
                 Affects entire process.
             raport_decimal_precision (int) - Decimal precision for all float in raport.
                 Will use standard python rounding.
+            chart_settings (dict): Settings for customizing chart appearance.
+                Defaults to None, which initializes default settings.
+            correlation_selectors_settings (dict): Settings for correlation selectors.
+            outlier_detector_settings (dict): Settings for outlier detectors
+            imputer_settings (dict): Settings for imputers
+            umap_components (int): Number of components for UMAP.
+            max_unique_values_classification (int) - in case of target column being of non numerical dtype,
+                it will calculate number of unique values (in task "auto"). If this number will be lower than
+                that value, it'll perform classification.
+            regression_pipeline_scoring_model (BaseEstimator) - model used for scoring processing pipelines
+                in classification regression task.
+            classification_pipeline_scoring_model (BaseEstimator) - model used for scoring processing pipelines
+                in classification regression task.
+            regression_pipeline_scoring_func (callable) - metric for scoring :obj:`regression_pipeline_scoring_model` output.
+            classification_pipeline_scoring_func (callable) - metric for scoring :obj:`classification_pipeline_scoring_model` output.
+            raport_chart_color_pallete (List[str]) - Color palette for basic eda charts.
             max_unique_values_classification (int) - in case of target column being of non numerical dtype,
                 it will calculate number of unique values (in task "auto"). If this number will be lower than
                 that value, it'll perform classification.
@@ -137,10 +155,6 @@ class GlobalConfig:
             correlation_threshold (float) - threshold used for detecting highly correlated features.Default 0.8.
             correlation_percent (float) - % of selected features based on their correlation with the target. Default 0.5.
             n_bins (int) - number of bins to create while binning numerical features.
-
-            chart_settings (dict): Settings for customizing chart appearance.
-                Defaults to None, which initializes default settings.
-
         """
         assert (
             isinstance(raport_name, str) and raport_name != ""
@@ -185,7 +199,6 @@ class GlobalConfig:
         self.random_state = random_state
         np.random.seed(random_state)
 
-        self.raport_chart_color_pallete = raport_chart_color_pallete
         self.chart_settings = chart_settings or {
             "theme": "whitegrid",
             "title_fontsize": 18,
@@ -205,6 +218,20 @@ class GlobalConfig:
         ), "Values smaller than 1 are forbidden."
         self.max_datasets_after_preprocessing = max_datasets_after_preprocessing
         self.perform_only_required_ = perform_only_required_
+
+        self.chart_settings = chart_settings or {
+            "theme": "whitegrid",
+            "title_fontsize": 18,
+            "title_fontweight": "bold",
+            "xlabel_fontsize": 12,
+            "ylabel_fontsize": 12,
+            "tick_label_rotation": 45,
+            "palette": "pastel",
+            "plot_width": 15,
+            "plot_height_per_row": 4,
+            "heatmap_cmap": "coolwarm",
+            "heatmap_fmt": ".2f",
+        }
 
         self.raport_decimal_precision = raport_decimal_precision
 
@@ -227,6 +254,23 @@ class GlobalConfig:
         ), f"Wrong value for n_bins: {n_bins}. "
         "Should be int >= 1."
         self.n_bins = n_bins
+        self.correlation_selectors_settings = correlation_selectors_settings or {
+            "threshold": 0.8,
+            "k": 10,
+        }
+
+        self.outlier_detector_settings = outlier_detector_settings or {
+            "zscore_threshold": 3,
+            "isol_forest_n_estimators": 100,
+            "cook_threshold": 1,
+        }
+
+        self.imputer_settings = imputer_settings or {
+            "categorical_strategy": "most_frequent",
+            "numerical_strategy": "mean",
+        }
+
+        self.umap_components = umap_components
 
         assert (
             max_unique_values_classification >= 0

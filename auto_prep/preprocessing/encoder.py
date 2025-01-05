@@ -45,10 +45,9 @@ class ColumnEncoder(RequiredStep, Categorical):
         logger.start_operation(
             f"Fitting MultiColumnEncoder to data with {X.shape[0]} rows and {X.shape[1]} columns."
         )
-
-        for column in X.columns:
-            # Check if column is categorical (either object type or categorical dtype)
-            if X[column].dtype == "object" or X[column].dtype.name == "category":
+        try:
+            categorical_columns = X.select_dtypes(include=["object"]).columns.tolist()
+            for column in categorical_columns:
                 unique_vals = len(X[column].unique())
                 if unique_vals < 5:
                     # OneHotEncoder for columns with less than 5 unique values
@@ -65,8 +64,11 @@ class ColumnEncoder(RequiredStep, Categorical):
                     self.encoders[column] = LabelEncoder()
                     self.encoders[column].fit(X[column])
                 self.columns.append(column)
-
-        logger.end_operation()
+        except Exception as e:
+            logger.error(f"Error in MultiColumnEncoder fit: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return self
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
@@ -84,29 +86,34 @@ class ColumnEncoder(RequiredStep, Categorical):
             f"Transforming data with {X.shape[0]} rows and {X.shape[1]} columns."
         )
 
-        for column in self.columns:
-            if isinstance(self.encoders[column], OneHotEncoder):
-                logger.debug(f"Applying OneHotEncoder to column {column}.")
-                encoded_data = self.encoders[column].transform(X[[column]])
-                ohe_columns = [
-                    f"{column}_{cat}" for cat in self.encoders[column].categories_[0]
-                ]
-                encoded_df = pd.DataFrame(
-                    encoded_data, columns=ohe_columns, index=X.index
+        try:
+            for column in self.columns:
+                if isinstance(self.encoders[column], OneHotEncoder):
+                    logger.debug(f"Applying OneHotEncoder to column {column}.")
+                    encoded_data = self.encoders[column].transform(X[[column]])
+                    ohe_columns = [
+                        f"{column}_{cat}"
+                        for cat in self.encoders[column].categories_[0]
+                    ]
+                    encoded_df = pd.DataFrame(
+                        encoded_data, columns=ohe_columns, index=X.index
+                    )
+                    X = pd.concat([X.drop(column, axis=1), encoded_df], axis=1)
+                else:
+                    logger.debug(f"Applying LabelEncoder to column {column}.")
+                    X[column] = self.encoders[column].transform(X[column])
+
+            if y is not None:
+                y_name = y.name if y.name is not None else "y"
+                logger.debug(
+                    f"Appending target variable '{y_name}' to the transformed data."
                 )
-                X = pd.concat([X.drop(column, axis=1), encoded_df], axis=1)
-            else:
-                logger.debug(f"Applying LabelEncoder to column {column}.")
-                X[column] = self.encoders[column].transform(X[column])
-
-        if y is not None:
-            y_name = y.name if y.name is not None else "y"
-            logger.debug(
-                f"Appending target variable '{y_name}' to the transformed data."
-            )
-            X[y_name] = y
-
-        logger.end_operation()
+                X[y_name] = y
+        except Exception as e:
+            logger.error(f"Error in MultiColumnEncoder transform: {e}")
+            raise e
+        finally:
+            logger.end_operation()
         return X
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
@@ -129,7 +136,5 @@ class ColumnEncoder(RequiredStep, Categorical):
 
     def to_tex(self) -> dict:
         return {
-            "name": "ColumnEncoder",
-            "desc": "Encodes categorical columns using OneHotEncoder or LabelEncoder.",
-            "params": {},
+            "desc": "Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or LabelEncoder (for columns with >=5 unique values).",
         }
