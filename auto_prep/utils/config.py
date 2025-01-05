@@ -68,6 +68,9 @@ class GlobalConfig:
         random_state: int = 42,
         raport_decimal_precision: int = 4,
         raport_chart_color_pallete: List[str] = ["#FF204E"],
+        correlation_threshold: float = 0.8,
+        correlation_percent: float = 0.5,
+        n_bins: int = 4,
         *args,
         **kwargs,
     ):
@@ -104,6 +107,9 @@ class GlobalConfig:
             raport_decimal_precision (int) - Decimal precision for all float in raport.
                 Will use standard python rounding.
             raport_chart_color_pallete (List[str]) - Color palette for basic eda charts.
+            correlation_threshold (float) - threshold used for detecting highly correlated features.Default 0.8. 
+            correlation_percent (float) - % of selected features based on their correlation with the target. Default 0.5.
+            n_bins (int) - number of bins to create while binning numerical features.
         """
         assert (
             isinstance(raport_name, str) and raport_name != ""
@@ -150,6 +156,25 @@ class GlobalConfig:
 
         assert len(raport_chart_color_pallete) != 0, "Color palette cannot be empty."
         self.raport_chart_color_pallete = raport_chart_color_pallete
+
+        assert 0 <= correlation_threshold <= 1, (
+            f"Invalid value for correlation_threshold: {correlation_threshold}. "
+            "It must be a float between 0 and 1."
+        )
+        self.correlation_threshold = correlation_threshold
+
+        assert 0 <= correlation_percent <= 1, (
+            f"Invalid value for correlation_selector_percent: {correlation_percent}. "
+            "It must be a float between 0 and 1."
+        )
+        self.correlation_percent = correlation_percent
+
+        assert (
+            int(n_bins) == n_bins
+            and n_bins >= 1
+        ), f"Wrong value for n_bins: {n_bins}. "
+        "Should be int >= 1."
+        self.n_bins = n_bins
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""
