@@ -1,11 +1,10 @@
 import importlib
 import inspect
 import os
-import pandas as pd
 from abc import ABC, abstractmethod
 from typing import Dict, List
 
-
+import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
 from ..utils.config import config
@@ -322,7 +321,8 @@ class ModulesHandler(ABC):
         logger.debug(f"Retrieved follwing combinations - {combinations}")
 
         return combinations
-    
+
+
 class DimentionReducer(NonRequiredStep, ABC):
     """
     Abstract class for dimensionality reduction techniques.
@@ -355,6 +355,7 @@ class DimentionReducer(NonRequiredStep, ABC):
     @abstractmethod
     def to_tex(self) -> dict:
         pass
+
 
 class FeatureImportanceSelector(NonRequiredStep):
     """

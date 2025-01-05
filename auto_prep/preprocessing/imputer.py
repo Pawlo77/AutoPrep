@@ -1,9 +1,9 @@
 import pandas as pd
 from sklearn.impute import SimpleImputer
 
+from ..utils.abstract import Categorical
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
-from ..utils.abstract import Categorical
 
 logger = setup_logger(__name__)
 

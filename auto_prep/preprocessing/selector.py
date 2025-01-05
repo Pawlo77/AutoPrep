@@ -2,7 +2,13 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier  # noqa F401
 
-from ..utils.abstract import FeatureImportanceSelector, NonRequiredStep, Numerical, RequiredStep, Categorical
+from ..utils.abstract import (
+    Categorical,
+    FeatureImportanceSelector,
+    NonRequiredStep,
+    Numerical,
+    RequiredStep,
+)
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
 
@@ -353,7 +359,7 @@ class CorrelationSelector(NonRequiredStep, Numerical):
             self.selected_columns = sorted_corr.head(num_top_features).index.tolist()
         except Exception as e:
             logger.error(f"Error in CorrelationSelector fit: {e}")
-            raise e 
+            raise e
         finally:
             logger.end_operation()
         return self
