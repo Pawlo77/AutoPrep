@@ -62,9 +62,20 @@ class PreprocessingHandler(ModulesHandler):
         """
 
         logger.start_operation("Preprocessing.")
+
+        self._model = (
+            config.regression_pipeline_scoring_model
+            if task == "regression"
+            else config.classification_pipeline_scoring_model
+        )
+        self._score_func = (
+            config.regression_pipeline_scoring_func
+            if task == "regression"
+            else config.classification_pipeline_scoring_func
+        )
+
         logger.info("Creating pipelines...")
 
-        pipelines = []
         for step_name, package_name in [
             ("Imputting missing data.", ".imputer"),
             ("Scaling data.", ".scaler"),
@@ -82,9 +93,9 @@ class PreprocessingHandler(ModulesHandler):
                 required_only_=config.perform_only_required_,
             )
 
-        logger.debug(f"Extracted pipelines steps: {pipelines}")
+        logger.info(f"Extracted {len(self._pipeline_steps)} pipelines.")
+        logger.debug(f"Extracted pipelines: {self._pipeline_steps}")
 
-        self._pipeline_steps_exploded
         for pipeline_steps in self._pipeline_steps:
             current_pipeline_steps_exploded = PreprocessingHandler._explode_steps(
                 pipeline_steps
@@ -96,6 +107,8 @@ class PreprocessingHandler(ModulesHandler):
                 self._pipelines.append(Pipeline(entry))
                 self._pipeline_steps_exploded.append(entry)
 
+        logger.info(f"Exploaded into {len(self._pipelines)} pipelines.")
+
         t0 = time()
         logger.info("Fitting pipelines...")
         for pipeline in self._pipelines:
@@ -106,16 +119,6 @@ class PreprocessingHandler(ModulesHandler):
 
         logger.info("Scoring pipelines...")
         t0 = time()
-        self._model = (
-            config.regression_pipeline_scoring_model
-            if task == "regression"
-            else config.classification_pipeline_scoring_model
-        )
-        self._score_func = (
-            config.regression_pipeline_scoring_func
-            if task == "regression"
-            else config.classification_pipeline_scoring_func
-        )
         for pipeline in self._pipelines:
             t1 = time()
             self._pipelines_scores.append(

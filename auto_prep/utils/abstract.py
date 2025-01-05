@@ -2,7 +2,7 @@ import importlib
 import inspect
 import os
 from abc import ABC, abstractmethod
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
@@ -51,8 +51,7 @@ class RequiredStep(Step):
 
 class NonRequiredStep(Step):
     """
-    Non required step that will be only considered for preprocessing
-    if class method is_applicable returns True.
+    Non required step that will be only considered for preprocessing.
     """
 
     pass
@@ -145,6 +144,7 @@ class ModulesHandler(ABC):
         """
         logger.start_operation(step_name)
         pipelines = ModulesHandler.construct_pipelines_steps(
+            step_name,
             package_name,
             called_from,
             pipelines=pipelines,
@@ -155,6 +155,7 @@ class ModulesHandler(ABC):
 
     @staticmethod
     def construct_pipelines_steps(
+        step_name: str,
         module_name: str,
         called_from: str,
         pipelines: List[List[Step]] = [],
@@ -170,6 +171,7 @@ class ModulesHandler(ABC):
         flag is `False`, non-required steps are also added to the pipelines.
 
         Args:
+            step_name (str): The name of the step, used for logging purposes.
             module_name (str): The name of the module from which to load and group classes.
             called_from (str) - python file from which this method is called. Required
                 for relative imports.
@@ -186,28 +188,37 @@ class ModulesHandler(ABC):
         logger.start_operation("Constructing new pipelines.")
 
         package = ModulesHandler.get_subpackage(called_from)
-        new_steps = ModulesHandler._load_and_group_classes(module_name, package=package)
+        new_steps, _ = ModulesHandler._load_and_group_classes(
+            module_name, package=package
+        )
+        logger.debug(f"New steps: {new_steps}")
         new_pipelines = []
 
         logger.debug(f"Starting with {len(pipelines)} pipelines")
 
-        new_pipelines = ModulesHandler._explode_pipelines_steps(
+        new_pipelines, num_required = ModulesHandler._explode_pipelines_steps(
             steps=ModulesHandler._get_required_steps(),
             new_steps=new_steps,
             pipelines=pipelines,
         )
         logger.debug(f"After required steps - {len(new_pipelines)}")
 
+        num_non_required = 0
         if not required_only_:
-            # keep those from required only and those extended with non-required steps
-            new_pipelines.extend(
-                ModulesHandler._explode_pipelines_steps(
-                    steps=ModulesHandler._get_non_required_steps(),
-                    new_steps=new_steps,
-                    pipelines=new_pipelines,
-                )
+            non_required, num_non_required = ModulesHandler._explode_pipelines_steps(
+                steps=ModulesHandler._get_non_required_steps(),
+                new_steps=new_steps,
+                pipelines=new_pipelines,
             )
+
+            # keep those from required only and those extended with non-required steps
+            if num_non_required > 0:  # there were some non-required steps
+                new_pipelines.extend(non_required)
             logger.debug(f"After non-required steps - {len(new_pipelines)}")
+
+        logger.info(
+            f"Extracted {num_required + num_non_required} steps for {step_name} ({num_required} required, {num_non_required} non required)"
+        )
 
         logger.end_operation()
         return new_pipelines
@@ -217,7 +228,7 @@ class ModulesHandler(ABC):
         steps: List[str],
         new_steps: Dict[str, List[object]],
         pipelines: List[List[Step]],
-    ) -> List[List[Step]]:
+    ) -> Union[List[List[Step]], int]:
         """
         Explodes the given pipelines by adding new steps to them based on the
         provided `steps` and `new_steps`. This method creates new pipelines where
@@ -234,27 +245,29 @@ class ModulesHandler(ABC):
             List[List[Step]: A list of new pipelines created by adding the new steps
                 to the existing pipelines. If pipelines are empty, it will just return
                 new found steps.
+            int: number of unique objects extracted.
         """
         new_pipelines = []
+        num = 0
 
         if len(pipelines) == 0:
             for step in steps:
                 if step in new_steps.keys():
                     for cls in new_steps[step]:
+                        num += 1
                         new_pipelines.append([cls])
-            return new_pipelines
+            return new_pipelines, num
 
-        has_new_steps_ = False
         for step in steps:
             if step in new_steps.keys():
                 for cls in new_steps[step]:
+                    num += 1
                     for pipeline in pipelines:
-                        has_new_steps_ = True
                         new_pipelines.append([*pipeline, cls])
 
-        if has_new_steps_:
-            return new_pipelines
-        return pipelines
+        if num > 0:
+            return new_pipelines, num
+        return pipelines, num
 
     @staticmethod
     def _get_required_steps() -> List[str]:
@@ -275,7 +288,7 @@ class ModulesHandler(ABC):
     @staticmethod
     def _load_and_group_classes(
         module_name: str, package: str
-    ) -> Dict[str, List[object]]:
+    ) -> Union[Dict[str, List[object]], int]:
         """
         Import all objects from module_name that extends any of interfaces from
         :obj:`ModulesHandler.supported_interfaces` and groups them into steps
@@ -287,6 +300,7 @@ class ModulesHandler(ABC):
                 for relative imports.
         Returns:
             Dict[List[object]] - objects groupped into pre-defined groups.
+            int - number of unique objects extracted.
         Raises:
             ValueError - if any of imported classes fits into more than one group.
         """
@@ -323,10 +337,10 @@ class ModulesHandler(ABC):
 
         logger.debug(f"Retrieved follwing combinations - {combinations}")
 
-        return combinations
+        return combinations, len(groupped)
 
 
-class DimentionReducer(NonRequiredStep, ABC):
+class DimentionReducer(NonRequiredStep, Numerical, ABC):
     """
     Abstract class for dimensionality reduction techniques.
     """
@@ -348,19 +362,11 @@ class DimentionReducer(NonRequiredStep, ABC):
         pass
 
     @abstractmethod
-    def is_applicable(X: pd.DataFrame) -> bool:
-        pass
-
-    @abstractmethod
-    def is_numerical(self) -> bool:
-        pass
-
-    @abstractmethod
     def to_tex(self) -> dict:
         pass
 
 
-class FeatureImportanceSelector(NonRequiredStep):
+class FeatureImportanceSelector(NonRequiredStep, Numerical):
     """
     Transformer to select k% (rounded to whole number) of features
     that are most important according to Random Forest model.
@@ -421,15 +427,3 @@ class FeatureImportanceSelector(NonRequiredStep):
         """
         self.fit(X, y)
         return self.transform(X)
-
-    def is_applicable(self, dt: pd.Series) -> bool:
-        """
-        Args:
-            dt (pd.Series) - column that is considered to be preprocessed
-                by that transformer.
-
-        Returns:
-            bool - True if it is possible to use this transofmation
-                on passed data.
-        """
-        return True

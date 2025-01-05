@@ -1,72 +1,15 @@
 import pandas as pd
 from sklearn.impute import SimpleImputer
 
-from ..utils.abstract import Categorical
+from ..utils.abstract import Categorical, Numerical
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
+from .abstract import NAImputer
 
 logger = setup_logger(__name__)
 
 
-class NAImputer:
-    """
-    Base class for imputing missing values. Provides functionality
-    to identify columns with missing values and determine the strategy to handle them
-    (remove columns with >50% missing data).
-
-    Attributes:
-        numeric_features (list): A list of numeric feature names.
-        categorical_features (list): A list of categorical feature names.
-    """
-
-    def __init__(self):
-        self.numeric_features = []
-        self.categorical_features = []
-        self.cols_to_remove = []
-
-    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "NAImputer":
-        """
-        Identifies columns with more than 50% missing values and removes them
-        from the dataset.
-
-        Args:
-            X (pd.DataFrame): The input data with missing values.
-
-        Returns:
-            NAImputer: The fitted imputer instance.
-        """
-        logger.start_operation(
-            f"Fitting NAImputer to data with {X.shape[0]} rows and {X.shape[1]} columns."
-        )
-
-        # Removing columns with >50% missing values
-        missing_threshold = 0.5
-        cols_to_remove = [
-            col for col in X.columns if X[col].isnull().mean() > missing_threshold
-        ]
-        logger.debug(
-            f"Columns to be removed due to >50% missing values: {cols_to_remove}"
-        )
-        # Update internal state but do not modify input DataFrame
-        self.cols_to_remove = cols_to_remove
-
-        logger.end_operation()
-        return self
-
-    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
-        """
-        Removes previously identified columns with >50% missing values.
-
-        Args:
-            X (pd.DataFrame): The input data to transform.
-
-        Returns:
-            pd.DataFrame: The transformed data.
-        """
-        return X.drop(columns=self.cols_to_remove, errors="ignore")
-
-
-class NumericalImputer(NAImputer):
+class NumericalImputer(NAImputer, Numerical):
     """
     Imputer for numerical columns. This class fills missing values in numerical columns
     with the median of the respective column.
@@ -249,3 +192,15 @@ class CategoricalImputer(Categorical, NAImputer):
         finally:
             logger.end_operation()
         return X
+
+    def to_tex(self) -> dict:
+        """
+        Returns a description of the transformer in dictionary format.
+        """
+        return {
+            "name": "CategoricalImputer",
+            "desc": "Imputes categorical missing data.",
+            "params": {
+                "strategy": self.strategy,
+            },
+        }

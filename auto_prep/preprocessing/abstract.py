@@ -8,6 +8,64 @@ from ..utils.logging_config import setup_logger
 logger = setup_logger(__name__)
 
 
+class NAImputer(RequiredStep, ABC):
+    """
+    Base class for imputing missing values. Provides functionality
+    to identify columns with missing values and determine the strategy to handle them
+    (remove columns with >50% missing data).
+
+    Attributes:
+        numeric_features (list): A list of numeric feature names.
+        categorical_features (list): A list of categorical feature names.
+    """
+
+    def __init__(self):
+        self.numeric_features = []
+        self.categorical_features = []
+        self.cols_to_remove = []
+
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "NAImputer":
+        """
+        Identifies columns with more than 50% missing values and removes them
+        from the dataset.
+
+        Args:
+            X (pd.DataFrame): The input data with missing values.
+
+        Returns:
+            NAImputer: The fitted imputer instance.
+        """
+        logger.start_operation(
+            f"Fitting NAImputer to data with {X.shape[0]} rows and {X.shape[1]} columns."
+        )
+
+        # Removing columns with >50% missing values
+        missing_threshold = 0.5
+        cols_to_remove = [
+            col for col in X.columns if X[col].isnull().mean() > missing_threshold
+        ]
+        logger.debug(
+            f"Columns to be removed due to >50% missing values: {cols_to_remove}"
+        )
+        # Update internal state but do not modify input DataFrame
+        self.cols_to_remove = cols_to_remove
+
+        logger.end_operation()
+        return self
+
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
+        """
+        Removes previously identified columns with >50% missing values.
+
+        Args:
+            X (pd.DataFrame): The input data to transform.
+
+        Returns:
+            pd.DataFrame: The transformed data.
+        """
+        return X.drop(columns=self.cols_to_remove, errors="ignore")
+
+
 class FeatureImportanceSelector(NonRequiredStep, ABC):
     """
     Transformer to select k% (rounded to whole number) of features
@@ -78,21 +136,6 @@ class FeatureImportanceSelector(NonRequiredStep, ABC):
         self.fit(X, y)
         return self.transform(X)
 
-    def is_applicable(
-        self,
-        dt: pd.DataFrame,  # noqa: F841
-    ):
-        """
-        Args:
-            dt (pd.Series) - column that is considered to be preprocessed
-                by that transformer.
-
-        Returns:
-            bool - True if it is possible to use this transofmation
-                on passed data.
-        """
-        return True
-
 
 class DimentionReducer(NonRequiredStep, ABC):
     """
@@ -116,66 +159,5 @@ class DimentionReducer(NonRequiredStep, ABC):
         pass
 
     @abstractmethod
-    def is_applicable(X):
-        pass
-
-    @abstractmethod
     def to_tex(self) -> dict:
         pass
-
-
-class NAImputer(RequiredStep, ABC):
-    """
-    Base class for imputing missing values. Provides functionality
-    to identify columns with missing values and determine the strategy to handle them
-    (remove columns with >50% missing data).
-
-    Attributes:
-        numeric_features (list): A list of numeric feature names.
-        categorical_features (list): A list of categorical feature names.
-    """
-
-    def __init__(self):
-        self.numeric_features = []
-        self.categorical_features = []
-
-    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "NAImputer":
-        """
-        Identifies columns with more than 50% missing values and removes them
-        from the dataset.
-
-        Args:
-            X (pd.DataFrame): The input data with missing values.
-
-        Returns:
-            NAImputer: The fitted imputer instance.
-        """
-        logger.start_operation(
-            f"Fitting NAImputer to data with {X.shape[0]} rows and {X.shape[1]} columns."
-        )
-
-        # Removing columns with >50% missing values
-        missing_threshold = 0.5
-        cols_to_remove = [
-            col for col in X.columns if X[col].isnull().mean() > missing_threshold
-        ]
-        logger.debug(
-            f"Columns to be removed due to >50% missing values: {cols_to_remove}"
-        )
-        # Update internal state but do not modify input DataFrame
-        self.cols_to_remove = cols_to_remove
-
-        logger.end_operation()
-        return self
-
-    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
-        """
-        Removes previously identified columns with >50% missing values.
-
-        Args:
-            X (pd.DataFrame): The input data to transform.
-
-        Returns:
-            pd.DataFrame: The transformed data.
-        """
-        return X.drop(columns=self.cols_to_remove, errors="ignore")

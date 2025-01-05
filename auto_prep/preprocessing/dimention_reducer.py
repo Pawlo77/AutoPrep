@@ -108,9 +108,6 @@ class PCADimentionReducer(DimentionReducer):
         finally:
             return self.transform(X)
 
-    def is_applicable(X):
-        return np.shape(X)[0] > 1 and np.shape(X)[1] > 1
-
     def to_tex(self) -> dict:
         return {
             "desc": "Combines data standardization and PCA with automatic selection of the number of components to preserve 95% of the variance.",
@@ -202,9 +199,6 @@ class VIFDimentionReducer(DimentionReducer):
             logger.end_operation()
         return self.transform(X)
 
-    def is_applicable(X):
-        return np.shape(X)[0] > 1 and np.shape(X)[1] > 1
-
     def to_tex(self) -> dict:
         return {
             "desc": "Removes columns with high variance inflation factor (VIF > 10).",
@@ -275,9 +269,6 @@ class UMAPDimentionReducer(DimentionReducer):
         finally:
             logger.end_operation()
         return X
-
-    def is_applicable(X):
-        return np.shape(X)[0] > 1 and np.shape(X)[1] > 1
 
     def to_tex(self) -> dict:
         return {

@@ -1,51 +1,54 @@
-2025-01-05 22:52:04 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
-2025-01-05 22:52:04 DEBUG auto_prep.utils.abstract: Importing classes from .outlier_detector
-2025-01-05 22:52:04 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.outlier_detector.OutlierDetector'>]
-2025-01-05 22:52:04 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'NumericalRequired': [<class 'auto_prep.preprocessing.outlier_detector.OutlierDetector'>]}
-2025-01-05 22:52:04 DEBUG auto_prep.utils.abstract: Starting with 1 pipelines
-2025-01-05 22:52:04 DEBUG auto_prep.utils.abstract: After required steps - 1
-2025-01-05 22:52:04 DEBUG auto_prep.utils.abstract: After non-required steps - 1
-2025-01-05 22:52:04 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Imputting missing data.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Importing classes from .imputer
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.imputer.CategoricalImputer'>, <class 'auto_prep.preprocessing.imputer.NAImputer'>, <class 'auto_prep.preprocessing.imputer.NumericalImputer'>]
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {}
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Starting with 0 pipelines
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: After required steps - 0
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: After non-required steps - 0
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Scaling data.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Importing classes from .scaler
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.scaler.ColumnScaler'>]
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'NumericalRequired': [<class 'auto_prep.preprocessing.scaler.ColumnScaler'>]}
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Starting with 0 pipelines
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: After required steps - 1
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: After non-required steps - 1
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Encoding data.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Importing classes from .encoder
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.encoder.ColumnEncoder'>]
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'CategoricalRequired': [<class 'auto_prep.preprocessing.encoder.ColumnEncoder'>]}
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Starting with 1 pipelines
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: After required steps - 1
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: After non-required steps - 1
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Binning data.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Importing classes from .binning
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.binning.BinningTransformer'>]
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'NumericalNonRequired': [<class 'auto_prep.preprocessing.binning.BinningTransformer'>]}
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Starting with 1 pipelines
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: After required steps - 1
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: After non-required steps - 1
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Outlier detection.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Importing classes from .outlier_detector
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.outlier_detector.OutlierDetector'>]
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'NumericalRequired': [<class 'auto_prep.preprocessing.outlier_detector.OutlierDetector'>]}
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: Starting with 1 pipelines
-2025-01-05 22:52:25 DEBUG auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: New steps: {'CategoricalRequired': [<class 'auto_prep.preprocessing.imputer.CategoricalImputer'>]}
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Starting with 0 pipelines
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: CategoricalImputer
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Extracted 1 steps for .scaler.
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: New steps: {'NumericalRequired': [<class 'auto_prep.preprocessing.scaler.ColumnScaler'>]}
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: ColumnScaler
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Extracted 1 steps for .encoder.
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: New steps: {'CategoricalRequired': [<class 'auto_prep.preprocessing.encoder.ColumnEncoder'>]}
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: ColumnEncoder
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Extracted 1 steps for .binning.
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: New steps: {'NumericalNonRequired': [<class 'auto_prep.preprocessing.binning.BinningTransformer'>]}
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: BinningTransformer
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Extracted 1 steps for .outlier_detector.
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: New steps: {'NumericalRequired': [<class 'auto_prep.preprocessing.outlier_detector.OutlierDetector'>]}
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: OutlierDetector
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Extracted 3 steps for .dimention_reducer.
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: New steps: {}
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Extracted 6 steps for .selector.
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: New steps: {'NumericalRequired': [<class 'auto_prep.preprocessing.selector.CorrelationFilter'>, <class 'auto_prep.preprocessing.selector.VarianceFilter'>], 'NumericalNonRequired': [<class 'auto_prep.preprocessing.selector.CorrelationSelector'>], 'CategoricalRequired': [<class 'auto_prep.preprocessing.selector.UniqueFilter'>]}
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: CorrelationFilter
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: VarianceFilter
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: UniqueFilter
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: After required steps - 3
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: CorrelationSelector
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: CorrelationSelector
+2025-01-06 00:06:29 CRITICAL auto_prep.utils.abstract: CorrelationSelector
+2025-01-06 00:07:26 INFO auto_prep.utils.abstract: Extracted 2 steps for .imputer.
+2025-01-06 00:07:26 CRITICAL auto_prep.utils.abstract: New steps: {'CategoricalRequired': [<class 'auto_prep.preprocessing.imputer.CategoricalImputer'>], 'NumericalRequired': [<class 'auto_prep.preprocessing.imputer.NumericalImputer'>]}
+2025-01-06 00:07:26 INFO auto_prep.utils.abstract: Starting with 0 pipelines
+2025-01-06 00:07:26 CRITICAL auto_prep.utils.abstract: NumericalImputer
+2025-01-06 00:07:26 CRITICAL auto_prep.utils.abstract: CategoricalImputer
+2025-01-06 00:07:26 INFO auto_prep.utils.abstract: After required steps - 2
+2025-01-06 00:07:26 INFO auto_prep.utils.abstract: Extracted 1 steps for .scaler.
+2025-01-06 00:07:26 CRITICAL auto_prep.utils.abstract: New steps: {'NumericalRequired': [<class 'auto_prep.preprocessing.scaler.ColumnScaler'>]}
+2025-01-06 00:07:26 INFO auto_prep.utils.abstract: Starting with 2 pipelines
+2025-01-06 00:07:26 CRITICAL auto_prep.utils.abstract: ColumnScaler
+2025-01-06 00:07:26 CRITICAL auto_prep.utils.abstract: ColumnScaler
+2025-01-06 00:07:26 INFO auto_prep.utils.abstract: After required steps - 2
+2025-01-06 00:07:26 INFO auto_prep.utils.abstract: Extracted 1 steps for .encoder.
+2025-01-06 00:07:26 CRITICAL auto_prep.utils.abstract: New steps: {'CategoricalRequired': [<class 'auto_prep.preprocessing.encoder.ColumnEncoder'>]}
+2025-01-06 00:07:26 INFO auto_prep.utils.abstract: Starting with 2 pipelines
+2025-01-06 00:07:26 CRITICAL auto_prep.utils.abstract: ColumnEncoder
