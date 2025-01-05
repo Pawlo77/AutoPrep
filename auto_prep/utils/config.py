@@ -79,16 +79,6 @@ class GlobalConfig:
         correlation_threshold: float = 0.8,
         correlation_percent: float = 0.5,
         n_bins: int = 4,
-        chart_settings: dict = None,
-        max_unique_values_classification: int = 20,
-        regression_pipeline_scoring_model: BaseEstimator = RandomForestRegressor(
-            n_estimators=100, random_state=42, max_depth=5, n_jobs=-1, warm_start=True
-        ),
-        classification_pipeline_scoring_model: BaseEstimator = RandomForestClassifier(
-            n_estimators=100, random_state=42, max_depth=5, n_jobs=-1, warm_start=True
-        ),
-        regression_pipeline_scoring_func: callable = mean_squared_error,
-        classification_pipeline_scoring_func: callable = roc_auc_score,
         max_unique_values_classification: int = 20,
         regression_pipeline_scoring_model: BaseEstimator = RandomForestRegressor(
             n_estimators=100, random_state=42, max_depth=5, n_jobs=-1, warm_start=True
