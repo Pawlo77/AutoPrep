@@ -2,14 +2,13 @@ import numpy as np
 import pandas as pd
 
 from ..utils.abstract import NonRequiredStep, Numerical
-from ..utils.logging_config import setup_logger
 from ..utils.config import config
+from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
 
 class BinningTransformer(NonRequiredStep, Numerical):
-
     """
     Transformer for performing binning (using qcut) or equal-width binning (using cut)
     on continuous variables and replacing the values with numeric labels, but only if the number of unique values
@@ -20,13 +19,12 @@ class BinningTransformer(NonRequiredStep, Numerical):
         should_bin (dict) : dictionary to track which columns should be binned.
         bin_edges (dict) : dictionary to store the bin edged for each column.
     """
-    PARAMS_GRID={
-        'binning_method': {'qcut','cut'},
+
+    PARAMS_GRID = {
+        "binning_method": {"qcut", "cut"},
     }
 
-
     def __init__(self, binning_method: str = "qcut"):
-
         """
         Initializes the transformer with the number of bins for quantile binning and the binning method to use ('cut' or 'qcut').
 
@@ -53,7 +51,9 @@ class BinningTransformer(NonRequiredStep, Numerical):
             BinningTransformer: The fitted transformer instance.
         """
 
-        logger.start_operation(f"Fitting BinningTransformer with {self.n_bins} binning method : {self.binning_method}")
+        logger.start_operation(
+            f"Fitting BinningTransformer with {self.n_bins} binning method : {self.binning_method}"
+        )
 
         try:
             for column in X.select_dtypes(include=[np.number]).columns:
@@ -77,11 +77,16 @@ class BinningTransformer(NonRequiredStep, Numerical):
                         )
                 else:
                     self.should_bin[column] = False
-            logger.debug('Successfully fitted BinningTransformer.')
+            logger.debug("Successfully fitted BinningTransformer.")
             return self
         except Exception as e:
-            logger.error(f'Failed to fit BinningTransformer with method {self.binning_method}: {e}', exc_info=True)
-            raise ValueError(f'Failed to fit BinningTransformer with method {self.binning_method}: {e}')
+            logger.error(
+                f"Failed to fit BinningTransformer with method {self.binning_method}: {e}",
+                exc_info=True,
+            )
+            raise ValueError(
+                f"Failed to fit BinningTransformer with method {self.binning_method}: {e}"
+            )
         finally:
             logger.end_operation()
 
@@ -96,8 +101,10 @@ class BinningTransformer(NonRequiredStep, Numerical):
             pd.DataFrame: The transformed data with bin labels.
         """
 
-        logger.start_operation(f"Transforming BinningTransformer with {self.n_bins} and binning_method {self.binning_method}")
-        
+        logger.start_operation(
+            f"Transforming BinningTransformer with {self.n_bins} and binning_method {self.binning_method}"
+        )
+
         try:
             X_transformed = X.copy()
             for column in X_transformed.columns:
@@ -124,14 +131,18 @@ class BinningTransformer(NonRequiredStep, Numerical):
                             duplicates="drop",
                         )
 
-            logger.debug('Successfully transformed data with BinningTransformer')
+            logger.debug("Successfully transformed data with BinningTransformer")
             return X_transformed
         except Exception as e:
-            logger.error(f'Failed to transform BinningTransformer with method {self.binning_method}: {e}', exc_info=True)
-            raise ValueError(f'Failed to transform BinningTransformer with method {self.binning_method}: {e}')
+            logger.error(
+                f"Failed to transform BinningTransformer with method {self.binning_method}: {e}",
+                exc_info=True,
+            )
+            raise ValueError(
+                f"Failed to transform BinningTransformer with method {self.binning_method}: {e}"
+            )
         finally:
             logger.end_operation()
-
 
     def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -149,19 +160,23 @@ class BinningTransformer(NonRequiredStep, Numerical):
         )
         try:
             transformed_X = self.fit(X).transform(X)
-            logger.debug(f"Successfully fit_transformed data data with BinningTransformer n_bins: {self.n_bins} and binning_method: {self.binning_method}")
+            logger.debug(
+                f"Successfully fit_transformed data data with BinningTransformer n_bins: {self.n_bins} and binning_method: {self.binning_method}"
+            )
             return transformed_X
         except Exception as e:
-            logger.error(f'Failed to fit_transform BinningTransformer with method {self.binning_method}: {e}', exc_info=True)
-            raise ValueError(f'Failed to fit_transform BinningTransformer with method {self.binning_method}: {e}')
+            logger.error(
+                f"Failed to fit_transform BinningTransformer with method {self.binning_method}: {e}",
+                exc_info=True,
+            )
+            raise ValueError(
+                f"Failed to fit_transform BinningTransformer with method {self.binning_method}: {e}"
+            )
         finally:
             logger.end_operation()
-            
-        
 
     def is_numeric(self) -> bool:
         return True
-
 
     def to_tex(self) -> dict:
         """
@@ -171,6 +186,6 @@ class BinningTransformer(NonRequiredStep, Numerical):
             dict: Description of the transformer.
         """
         return {
-            "desc": f"Performs binning on continuous variables and replaces them with numeric labels. ",
+            "desc": "Performs binning on continuous variables and replaces them with numeric labels. ",
             "params": {"n_bins": self.n_bins, "binning_method": self.binning_method},
         }

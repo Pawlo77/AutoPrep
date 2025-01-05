@@ -1,33 +1,35 @@
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler
+from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
+
 from ..utils.abstract import Numerical, RequiredStep
 from ..utils.logging_config import setup_logger
-from ..utils.config import config
 
 logger = setup_logger(__name__)
 
+
 class ColumnScaler(RequiredStep, Numerical):
     """
-        Scaler for all numerical features. This class applies scaling technique based on users choice to
-        all numerical features.
+    Scaler for all numerical features. This class applies scaling technique based on users choice to
+    all numerical features.
 
-        Available scaling methods: MinMaxScaler, StandardScaler, RobustScaler from sklearn.
+    Available scaling methods: MinMaxScaler, StandardScaler, RobustScaler from sklearn.
 
-        Attributes:
-            scaler (object): fitted scaler instance.
-        """
+    Attributes:
+        scaler (object): fitted scaler instance.
+    """
+
     PARAMS_GRID = {
-        'method':['standard','minmax','robust'], 
+        "method": ["standard", "minmax", "robust"],
     }
 
-    def __init__(self, method: str = 'standard'):
+    def __init__(self, method: str = "standard"):
         """
-            Initializes the scaler with the specified scaling type. Default : StandardScaler
+        Initializes the scaler with the specified scaling type. Default : StandardScaler
 
-            Args:
-                method (str): The type of scaler to use ('minmax', 'standard', or 'robust').
+        Args:
+            method (str): The type of scaler to use ('minmax', 'standard', or 'robust').
         """
-        
+
         self.method = method
 
         if self.method == "minmax":
@@ -37,7 +39,9 @@ class ColumnScaler(RequiredStep, Numerical):
         elif self.method == "robust":
             self.scaler = RobustScaler()
         else:
-            raise ValueError("Invalid scaler_type. Choose from : 'minmax', 'standard', 'robust'.")
+            raise ValueError(
+                "Invalid scaler_type. Choose from : 'minmax', 'standard', 'robust'."
+            )
 
     def fit(self, X: pd.DataFrame) -> "ColumnScaler":
         """
@@ -53,18 +57,17 @@ class ColumnScaler(RequiredStep, Numerical):
             f"Fitting ColumnScaler with type '{self.method}' to data with {X.shape[0]} rows and {X.shape[1]} columns."
         )
         try:
-            numerical_cols = X.select_dtypes(include=['number']).columns
+            numerical_cols = X.select_dtypes(include=["number"]).columns
             if numerical_cols.empty:
                 raise ValueError("Scaler: No numerical columns found in the dataset.")
             self.scaler.fit(X[numerical_cols])
-            logger.debug(f'Successfully fitted ColumnScaler with method {self.method}')
+            logger.debug(f"Successfully fitted ColumnScaler with method {self.method}")
             return self
         except Exception as e:
             logger.error(f"Failed to fit ColumnScaler: {e}", exc_info=True)
             raise ValueError(f"An error occurred while fitting ColumnScaler: {e}")
         finally:
             logger.end_operation()
-
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
@@ -83,8 +86,10 @@ class ColumnScaler(RequiredStep, Numerical):
 
         try:
             X_transformed = X.copy()
-            numerical_cols = X_transformed.select_dtypes(include=['number']).columns
-            X_transformed[numerical_cols] = self.scaler.transform(X_transformed[numerical_cols])
+            numerical_cols = X_transformed.select_dtypes(include=["number"]).columns
+            X_transformed[numerical_cols] = self.scaler.transform(
+                X_transformed[numerical_cols]
+            )
 
             if y is not None:
                 y_name = y.name if y.name is not None else "y"
@@ -92,15 +97,16 @@ class ColumnScaler(RequiredStep, Numerical):
                     f"Appending target variable '{y_name}' to the transformed data."
                 )
                 X_transformed[y_name] = y
-            logger.debug(f'Successfully transformed ColumnScaler with method {self.method}')
+            logger.debug(
+                f"Successfully transformed ColumnScaler with method {self.method}"
+            )
             return X_transformed
-        
+
         except Exception as e:
-            logger.error(f'Failed to transform ColumnScaler {e}', exc_info=True)
+            logger.error(f"Failed to transform ColumnScaler {e}", exc_info=True)
             raise ValueError(f"An error occurred while transforming ColumnScaler: {e}")
         finally:
             logger.end_operation()
-
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
@@ -113,18 +119,21 @@ class ColumnScaler(RequiredStep, Numerical):
         Returns:
             pd.DataFrame: The transformed feature data.
         """
-        logger.start_operation(f"Fitting and transforming data using '{self.method}' scaler.")
+        logger.start_operation(
+            f"Fitting and transforming data using '{self.method}' scaler."
+        )
         try:
             result = self.fit(X).transform(X, y)
-            logger.debug(f'Successfully fit_transformed data with ColumnScaler method : {self.method}')
+            logger.debug(
+                f"Successfully fit_transformed data with ColumnScaler method : {self.method}"
+            )
             return result
-        
+
         except Exception as e:
-            logger.error(f'Failed to fit_transform ColumnScaler {e}', exc_info=True)
+            logger.error(f"Failed to fit_transform ColumnScaler {e}", exc_info=True)
             raise ValueError(f"An error occurred while fit_transform ColumnScaler: {e}")
         finally:
             logger.end_operation()
-
 
     def is_numerical(self) -> bool:
         return True
@@ -132,9 +141,9 @@ class ColumnScaler(RequiredStep, Numerical):
     def to_tex(self) -> dict:
         """
         This method returns a short description of the Scaler that was used in a form of dictionary.
-       
+
         """
         return {
-            "desc": f"Scales numerical columns using one of 3 scaling methods.",
-            "params": {"method": self.method}
+            "desc": "Scales numerical columns using one of 3 scaling methods.",
+            "params": {"method": self.method},
         }
