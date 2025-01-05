@@ -36,7 +36,6 @@ class Step(ABC, BaseEstimator, TransformerMixin):
         """
         Returns a short description in form of dictionary.
         Keys are: name - transformer name, desc - short description, params - class parameters (if None then {}).
-
         """
         pass
 

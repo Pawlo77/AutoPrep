@@ -9,10 +9,12 @@ logger = setup_logger(__name__)
 
 
 class BinningTransformer(NonRequiredStep, Numerical):
+
     """
     Transformer for performing binning (using qcut) or equal-width binning (using cut)
     on continuous variables and replacing the values with numeric labels, but only if the number of unique values
     exceeds 50% of the number of samples in the column.
+
 
     Attributes:
         threshold (float) : percent of unique values in a column in order to classify for binning. Default : 0.5
@@ -25,6 +27,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
     }
 
     def __init__(self, binning_method: str = "qcut"):
+
         """
         Initializes the transformer with the number of bins for quantile binning and the binning method to use ('cut' or 'qcut').
 
@@ -77,6 +80,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
                         )
                 else:
                     self.should_bin[column] = False
+
             logger.debug("Successfully fitted BinningTransformer.")
             return self
         except Exception as e:
@@ -87,6 +91,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
             raise ValueError(
                 f"Failed to fit BinningTransformer with method {self.binning_method}: {e}"
             )
+
         finally:
             logger.end_operation()
 
@@ -160,6 +165,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
         )
         try:
             transformed_X = self.fit(X).transform(X)
+
             logger.debug(
                 f"Successfully fit_transformed data data with BinningTransformer n_bins: {self.n_bins} and binning_method: {self.binning_method}"
             )

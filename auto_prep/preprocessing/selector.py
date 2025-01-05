@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor  # noqa: F401
 
 from ..utils.abstract import FeatureImportanceSelector, NonRequiredStep, Numerical
+from ..utils.config import config
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -10,28 +11,25 @@ logger = setup_logger(__name__)
 
 class CorrelationSelector(NonRequiredStep, Numerical):
     """
-    Transformer to select k% (rounded to whole number) of features that are most correlated with the target variable.
+    Transformer to select correlation_percent% (rounded to whole number) of features that are most correlated with the target variable.
 
     Attributes:
-         k (float): The percentage of top features to keep based on their correlation with the target.
          selected_columns (list): List of selected columns based on correlation with the target.
     """
 
-    def __init__(self, k: float = 10.0):
+    def __init__(self):
         """
         Initializes the transformer with a specified percentage of top correlated features to keep.
 
         Args:
-            k (float): The percentage of features to retain based on their correlation with the target.
+            correlation_percent (float): The percentage of features to retain based on their correlation with the target.
         """
-        if not (0 <= k <= 100):
-            raise ValueError("k must be between 0 and 100.")
-        self.k = k
+        self.correlation_percent = config.correlation_percent
         self.selected_columns = []
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "CorrelationSelector":
         """
-        Identifies the top k% (rounded to whole value) of features most correlated with the target variable.
+        Identifies the top correlation_percent% (rounded to whole value) of features most correlated with the target variable.
 
         Args:
             X (pd.DataFrame): The input feature data.
@@ -41,20 +39,33 @@ class CorrelationSelector(NonRequiredStep, Numerical):
             CorrelationSelector: The fitted transformer instance.
         """
         logger.start_operation(
-            f"Fitting CorrelationSelector with top {self.k}% correlated features."
+            f"Fitting CorrelationSelector with top {self.correlation_percent}% correlated features."
         )
-
-        corr_with_target = X.corrwith(y).abs()
-        sorted_corr = corr_with_target.sort_values(ascending=False)
-        num_top_features = max(1, round(np.ceil(len(sorted_corr) * self.k / 100)))
-        self.selected_columns = sorted_corr.head(num_top_features).index.tolist()
-
-        logger.end_operation()
-        return self
+        try:
+            corr_with_target = X.corrwith(y).abs()
+            sorted_corr = corr_with_target.sort_values(ascending=False)
+            num_top_features = max(
+                1, round(np.ceil(len(sorted_corr) * self.correlation_percent / 100))
+            )
+            self.selected_columns = sorted_corr.head(num_top_features).index.tolist()
+            logger.debug(
+                f"Successfully fitted CorrelationSelector with {self.correlation_percent}% features"
+            )
+            return self
+        except Exception as e:
+            logger.error(
+                f"Failed to fit CorrelationSelector with {self.correlation_percent}: {e}",
+                exc_info=True,
+            )
+            raise ValueError(
+                f"Failed to fit CorrelationSelector with {self.correlation_percent}"
+            )
+        finally:
+            logger.end_operation()
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
-        Selects the top k% of features most correlated with the target variable.
+        Selects the top correlation_percent% of features most correlated with the target variable.
 
         Args:
             X (pd.DataFrame): The feature data.
@@ -66,18 +77,28 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         logger.start_operation(
             f"Transforming data by selecting {len(self.selected_columns)} most correlated features."
         )
+        try:
 
-        X_selected = X[self.selected_columns].copy()
+            X_selected = X[self.selected_columns].copy()
+            if y is not None:
+                y_name = y.name if y.name is not None else "y"
+                logger.debug(
+                    f"Appending target variable '{y_name}' to the transformed data."
+                )
+                X_selected[y_name] = y
 
-        if y is not None:
-            y_name = y.name if y.name is not None else "y"
-            logger.debug(
-                f"Appending target variable '{y_name}' to the transformed data."
+            logger.debug("Successfully transformed data with CorrelationSelector")
+            return X_selected
+        except Exception as e:
+            logger.error(
+                f"Failed to transform {X} with CorrelationSelector threshold {self.correlation_percent}: {e}",
+                exc_info=True,
             )
-            X_selected[y_name] = y
-
-        logger.end_operation()
-        return X_selected
+            raise ValueError(
+                f"Failed to transform {X} with CorrelationSelector threshold {self.correlation_percent}: {e}"
+            )
+        finally:
+            logger.end_operation()
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
         """
@@ -93,18 +114,28 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         logger.start_operation(
             f"Fitting and transforming data with top {self.k}% correlated features."
         )
-        result = self.fit(X, y).transform(X, y)
-        logger.end_operation()
-        return result
+        try:
+            result = self.fit(X, y).transform(X, y)
+            logger.debug("Successfully fit_transformed data with CorrelationSelector")
+            return result
+        except Exception as e:
+            logger.error(
+                f"Failed to fit_transform {X} with CorrelationSelector threshold {self.correlation_percent}: {e}",
+                exc_info=True,
+            )
+            raise ValueError(
+                f"Failed to fit_transform {X} with CorrelationSelector threshold {self.correlation_percent}: {e}"
+            )
+        finally:
+            logger.end_operation()
 
     def to_tex(self) -> dict:
         """
         Returns a short description of the transformer in dictionary format.
         """
         return {
-            "name": "CorrelationSelector",
-            "desc": f"Selects the top {self.k}% (rounded to whole number) of features most correlated with the target variable. Number of features that were selected: {len(self.selected_columns)}",
-            "params": {"k": self.k},
+            "desc": f"Selects the top k% (rounded to whole number) of features most correlated with the target variable. Number of features that were selected: {len(self.selected_columns)}",
+            "params": {"correlation_percent": self.correlation_percent},
         }
 
 

@@ -39,6 +39,7 @@ class ColumnScaler(RequiredStep, Numerical):
         elif self.method == "robust":
             self.scaler = RobustScaler()
         else:
+
             raise ValueError(
                 "Invalid scaler_type. Choose from : 'minmax', 'standard', 'robust'."
             )
@@ -57,11 +58,13 @@ class ColumnScaler(RequiredStep, Numerical):
             f"Fitting ColumnScaler with type '{self.method}' to data with {X.shape[0]} rows and {X.shape[1]} columns."
         )
         try:
+
             numerical_cols = X.select_dtypes(include=["number"]).columns
             if numerical_cols.empty:
                 raise ValueError("Scaler: No numerical columns found in the dataset.")
             self.scaler.fit(X[numerical_cols])
             logger.debug(f"Successfully fitted ColumnScaler with method {self.method}")
+
             return self
         except Exception as e:
             logger.error(f"Failed to fit ColumnScaler: {e}", exc_info=True)
@@ -86,6 +89,7 @@ class ColumnScaler(RequiredStep, Numerical):
 
         try:
             X_transformed = X.copy()
+
             numerical_cols = X_transformed.select_dtypes(include=["number"]).columns
             X_transformed[numerical_cols] = self.scaler.transform(
                 X_transformed[numerical_cols]
@@ -97,6 +101,7 @@ class ColumnScaler(RequiredStep, Numerical):
                     f"Appending target variable '{y_name}' to the transformed data."
                 )
                 X_transformed[y_name] = y
+
             logger.debug(
                 f"Successfully transformed ColumnScaler with method {self.method}"
             )
@@ -119,6 +124,7 @@ class ColumnScaler(RequiredStep, Numerical):
         Returns:
             pd.DataFrame: The transformed feature data.
         """
+
         logger.start_operation(
             f"Fitting and transforming data using '{self.method}' scaler."
         )
@@ -131,6 +137,7 @@ class ColumnScaler(RequiredStep, Numerical):
 
         except Exception as e:
             logger.error(f"Failed to fit_transform ColumnScaler {e}", exc_info=True)
+
             raise ValueError(f"An error occurred while fit_transform ColumnScaler: {e}")
         finally:
             logger.end_operation()
@@ -141,6 +148,7 @@ class ColumnScaler(RequiredStep, Numerical):
     def to_tex(self) -> dict:
         """
         This method returns a short description of the Scaler that was used in a form of dictionary.
+
 
         """
         return {
