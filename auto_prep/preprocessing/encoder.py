@@ -127,9 +127,6 @@ class ColumnEncoder(RequiredStep, Categorical):
         logger.end_operation()
         return result
 
-    def is_numerical(self) -> bool:
-        return False
-
     def to_tex(self) -> dict:
         return {
             "name": "ColumnEncoder",

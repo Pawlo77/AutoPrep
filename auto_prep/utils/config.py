@@ -1,6 +1,5 @@
 import logging
 import os
-from typing import List
 
 import numpy as np
 from pylatex import NoEscape
@@ -66,6 +65,8 @@ class GlobalConfig:
         test_size: float = 0.1,
         valid_size: float = 0.1,
         random_state: int = 42,
+        max_datasets_after_preprocessing: int = 3,
+        perform_only_required_: bool = False,
         raport_decimal_precision: int = 4,
         chart_settings: dict = None,
         *args,
@@ -101,6 +102,11 @@ class GlobalConfig:
             test_size (float) - % of traing set size. Defaults to 0.1.
             valid_size (float) - % of traing set size. Defaults to 0.1.
             random_state (int) - Random state for sklearn.
+            max_datasets_after_preprocessing (int) - Maximum number of datasets that will be left
+                after preprocessing steps. On them further models will be trained. Strongly
+                affects performance.
+            perform_only_required_ (bool) - weather or not to perform only required steps.
+                Affects entire process.
             raport_decimal_precision (int) - Decimal precision for all float in raport.
                 Will use standard python rounding.
             chart_settings (dict): Settings for customizing chart appearance.
@@ -146,7 +152,7 @@ class GlobalConfig:
 
         self.random_state = random_state
         np.random.seed(random_state)
-        
+
         self.chart_settings = chart_settings or {
             "theme": "whitegrid",
             "title_fontsize": 18,
@@ -161,8 +167,15 @@ class GlobalConfig:
             "heatmap_fmt": ".2f",
         }
 
+        assert (
+            max_datasets_after_preprocessing > 0
+        ), "Values smaller than 1 are forbidden."
+        self.max_datasets_after_preprocessing = max_datasets_after_preprocessing
+        self.perform_only_required_ = perform_only_required_
+
         self.raport_decimal_precision = raport_decimal_precision
 
+        self.root_project_dir = os.path.abspath("./..")
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""
