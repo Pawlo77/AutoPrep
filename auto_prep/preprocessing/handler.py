@@ -1,4 +1,5 @@
-from typing import List
+import itertools
+from typing import Dict, List
 
 import pandas as pd
 from sklearn.pipeline import Pipeline
@@ -63,11 +64,18 @@ class PreprocessingHandler(ModulesHandler):
         logger.debug(f"Extracted pipelines steps: {pipelines}")
 
         for pipeline_steps in self._pipeline_steps:
-            self._pipelines.append(
-                Pipeline(
-                    pipeline_steps,
-                )
+            pipeline_steps_exploded = PreprocessingHandler._explode_steps(
+                pipeline_steps
             )
+            logger.debug(
+                f"Exploaded {len(pipeline_steps)} steps into {len(pipeline_steps_exploded)} steps."
+            )
+            for entry in pipeline_steps_exploded:
+                self._pipelines.append(
+                    Pipeline(
+                        entry,
+                    )
+                )
 
         logger.debug("Fitting pipelines...")
         for pipeline in self._pipelines:
@@ -93,3 +101,51 @@ class PreprocessingHandler(ModulesHandler):
         )
 
         return raport
+
+    @staticmethod
+    def _explode_steps(steps: List[Step]) -> List[List[Step]]:
+        """
+        For each step with class attribute PARAMS_GRID it exploades the grid.
+        """
+        exploaded_steps = []
+        for step in steps:
+            grid = getattr(step, "PARAMS_GRID", None)
+
+            logger.debug(
+                f"Exploding for step {step.__name__}. Begining with {len(exploaded_steps)}"
+            )
+
+            steps_to_add = []
+            if grid is not None:
+                all_possibilities = PreprocessingHandler._exploade_grid(grid)
+                steps_to_add = [
+                    step(**possibility) for possibility in all_possibilities
+                ]
+            else:
+                try:
+                    steps_to_add = [step()]
+                except Exception as e:
+                    if "missing" in str(e) and "required positional argument" in str(e):
+                        raise Exception(
+                            f"{step.__name__} has no PARAM_GRID defined yet it requires params."
+                        ) from e
+                    raise e
+
+            if len(exploaded_steps) == 0:
+                exploaded_steps = [[step] for step in steps_to_add]
+            else:
+                new_exploaded_steps = []
+                for step in exploaded_steps:
+                    for step_to_add in steps_to_add:
+                        new_exploaded_steps.append([*step, step_to_add])
+                exploaded_steps = new_exploaded_steps
+
+        return exploaded_steps
+
+    @staticmethod
+    def _exploade_grid(grid: Dict[str, List]) -> List[dict]:
+        """
+        Exploades dict of Lists into all possible combinations.
+        """
+        combinations = list(itertools.product(*grid.values()))
+        return [dict(zip(grid.keys(), combination)) for combination in combinations]

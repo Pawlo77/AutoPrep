@@ -190,7 +190,7 @@ class ModulesHandler(ABC):
 
         logger.debug(f"Starting with {len(pipelines)} pipelines")
 
-        new_pipelines = ModulesHandler._exploade_pipelines_steps(
+        new_pipelines = ModulesHandler._explode_pipelines_steps(
             steps=ModulesHandler._get_required_steps(),
             new_steps=new_steps,
             pipelines=pipelines,
@@ -198,7 +198,7 @@ class ModulesHandler(ABC):
         logger.debug(f"After required steps - {len(new_pipelines)}")
 
         if not required_only_:
-            new_pipelines = ModulesHandler._exploade_pipelines_steps(
+            new_pipelines = ModulesHandler._explode_pipelines_steps(
                 steps=ModulesHandler._get_non_required_steps(),
                 new_steps=new_steps,
                 pipelines=new_pipelines,
@@ -209,7 +209,7 @@ class ModulesHandler(ABC):
         return new_pipelines
 
     @staticmethod
-    def _exploade_pipelines_steps(
+    def _explode_pipelines_steps(
         steps: List[str],
         new_steps: Dict[str, List[object]],
         pipelines: List[List[Step]],
@@ -237,7 +237,7 @@ class ModulesHandler(ABC):
             for step in steps:
                 if step in new_steps.keys():
                     for cls in new_steps[step]:
-                        new_pipelines.append([cls()])
+                        new_pipelines.append([cls])
             return new_pipelines
 
         has_new_steps_ = False
@@ -246,7 +246,7 @@ class ModulesHandler(ABC):
                 for cls in new_steps[step]:
                     for pipeline in pipelines:
                         has_new_steps_ = True
-                        new_pipelines.append([*pipeline, cls()])
+                        new_pipelines.append([*pipeline, cls])
 
         if has_new_steps_:
             return new_pipelines
