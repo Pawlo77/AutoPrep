@@ -1,5 +1,6 @@
 import copy
 import itertools
+import json
 from time import time
 from typing import Dict, List
 
@@ -12,6 +13,7 @@ from ..raporting.raport import Report
 from ..utils.abstract import ModulesHandler, Step
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
+from ..utils.other import save_model
 
 logger = setup_logger(__name__)
 
@@ -25,7 +27,10 @@ class PreprocessingHandler(ModulesHandler):
         self._score_durations: List[float] = []
         self._fit_time: float = None
         self._score_time: float = None
-        self._pipelines_scores: List[int] = []
+        self._pipelines_scores: pd.Series = []
+        self._best_pipelines_idx: List[int] = []
+        self._model = None
+        self._score_func = None
 
     def run(
         self,
@@ -98,12 +103,12 @@ class PreprocessingHandler(ModulesHandler):
 
         logger.info("Scoring pipelines...")
         t0 = time()
-        model = (
+        self._model = (
             config.regression_pipeline_scoring_model
             if task == "regression"
             else config.classification_pipeline_scoring_model
         )
-        score_func = (
+        self._score_func = (
             config.regression_pipeline_scoring_func
             if task == "regression"
             else config.classification_pipeline_scoring_func
@@ -113,13 +118,27 @@ class PreprocessingHandler(ModulesHandler):
             self._pipelines_scores.append(
                 PreprocessingHandler.score_pipeline_with_model(
                     pipeline=pipeline,
-                    model=copy.deepcopy(model),
-                    score_func=score_func,
+                    model=copy.deepcopy(self._model),
+                    score_func=self._score_func,
                     X_val=X_valid,
                     y_val=y_valid,
                 )
             )
             self._score_durations(time() - t1)
+        self._pipelines_scores = pd.Series(self._pipelines_scores)
+
+        self._best_pipelines_idx = (
+            self._pipelines_scores.nlargest(config.max_datasets_after_preprocessing)
+            .sort_values(ascending=False)
+            .index
+        )
+
+        for score_idx, idx in enumerate(self._best_pipelines_idx):
+            save_model(
+                f"preprocessing_pipeline_{score_idx}.joblib", self._pipelines[idx]
+            )
+        self._pipelines = []  # to save space
+
         self._score_time = time() - t0
 
         logger.end_operation()
@@ -129,9 +148,7 @@ class PreprocessingHandler(ModulesHandler):
 
         preprocessing_section = raport.add_section("Preprocessing")  # noqa: F841
 
-        pipeline_scores_description = (
-            pd.Series(self._pipelines_scores).describe().to_dict()
-        )
+        pipeline_scores_description = self._pipelines_scores.describe().to_dict()
         prefixed_pipeline_scores_description = {
             f"scores_{key}": value for key, value in pipeline_scores_description.items()
         }
@@ -143,6 +160,8 @@ class PreprocessingHandler(ModulesHandler):
             "All pipelines fit time": humanize.naturaltime(self._fit_time),
             "All pipelines score time": humanize.naturaltime(self._score_time),
             **prefixed_pipeline_scores_description,
+            "Scoring function": self._score_func.__name__,
+            "Scoring model": self._model.__name__,
         }
 
         raport.add_table(
@@ -161,6 +180,46 @@ class PreprocessingHandler(ModulesHandler):
             caption="Pipelines steps overview.",
             header=["index", "steps"],
         )
+
+        best_pipelines_overview = {}
+        for score_idx, idx in enumerate(self._best_pipelines_idx):
+            best_pipelines_overview[score_idx] = [
+                f"preprocessing_pipeline_{score_idx}.joblib",
+                self._pipelines_scores[idx],
+                self._fit_durations[idx],
+                self._score_durations[idx],
+            ]
+        raport.add_table(
+            best_pipelines_overview,
+            caption="Best preprocessing pipelines.",
+            header=[
+                "score index",
+                "file name",
+                "score",
+                "fit duration",
+                "score duration",
+            ],
+        )
+
+        for score_idx, idx in enumerate(self._best_pipelines_idx):
+            pipeline_steps_overview = {}
+            for i, step in enumerate(self._pipeline_steps_exploded[idx]):
+                tex = step.to_tex()
+                pipeline_steps_overview[i] = [
+                    step.__name__,
+                    tex.pop("desc", "Yet another step."),
+                    json.dumps(tex.pop("params", {})),
+                ]
+
+            raport.add_table(
+                pipeline_steps_overview,
+                caption=f"{score_idx}th best pipeline overwiev.",
+                header=[
+                    "step",
+                    "description",
+                    "params",
+                ],
+            )
 
         return raport
 

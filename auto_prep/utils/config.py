@@ -154,6 +154,8 @@ class GlobalConfig:
         self.raport_path = os.path.abspath(os.path.join(root_dir, raport_name))
         self.charts_dir = os.path.join(self.raport_path, "charts")
         os.makedirs(self.charts_dir, exist_ok=True)
+        self.pipelines_dir = os.path.join(self.raport_path, "pipelines")
+        os.makedirs(self.pipelines_dir, exist_ok=True)
         self.return_tex_ = return_tex_
 
         self.logger_colors_map = logger_colors_map
