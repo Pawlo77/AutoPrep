@@ -1,8 +1,8 @@
 import logging
 from auto_prep.utils import config
 
-# config.update(log_level=logging.DEBUG, raport_decimal_precision=2)
-config.update(perform_only_required_=True, raport_decimal_precision=2)
+config.update(log_level=logging.DEBUG, raport_decimal_precision=2)
+# config.update(perform_only_required_=True, raport_decimal_precision=2)
 
 import numpy as np
 

@@ -37,6 +37,40 @@ DEFAULT_ABSTRACT: str = NoEscape(
     """
 )
 
+DEFAULT_CHARTS_SETTINGS: dict = {
+    "theme": "whitegrid",
+    "title_fontsize": 18,
+    "title_fontweight": "bold",
+    "xlabel_fontsize": 12,
+    "ylabel_fontsize": 12,
+    "tick_label_rotation": 45,
+    "palette": "pastel",
+    "plot_width": 15,
+    "plot_height_per_row": 4,
+    "heatmap_cmap": "coolwarm",
+    "heatmap_fmt": ".2f",
+}
+
+DEFAULT_CORRELATION_SELECTOR_SETTINGS: dict = {
+    "threshold": 0.8,
+    "k": 10,
+}
+
+DEFAULT_OUTLIER_DETECTOR_SETTINGS: dict = (
+    {
+        "zscore_threshold": 3,
+        "isol_forest_n_estimators": 100,
+        "cook_threshold": 1,
+    },
+)
+
+DEFAULT_IMPUTTER_SETTINGS: dict = (
+    {
+        "categorical_strategy": "most_frequent",
+        "numerical_strategy": "mean",
+    },
+)
+
 
 class GlobalConfig:
     """Global config class."""
@@ -71,10 +105,10 @@ class GlobalConfig:
         max_datasets_after_preprocessing: int = 3,
         perform_only_required_: bool = False,
         raport_decimal_precision: int = 4,
-        chart_settings: dict = None,
-        correlation_selectors_settings: dict = None,
-        outlier_detector_settings: dict = None,
-        imputer_settings: dict = None,
+        chart_settings: dict = DEFAULT_CHARTS_SETTINGS,
+        correlation_selectors_settings: dict = DEFAULT_CORRELATION_SELECTOR_SETTINGS,
+        outlier_detector_settings: dict = DEFAULT_OUTLIER_DETECTOR_SETTINGS,
+        imputer_settings: dict = DEFAULT_IMPUTTER_SETTINGS,
         umap_components: int = 50,
         correlation_threshold: float = 0.8,
         correlation_percent: float = 0.7,
@@ -201,39 +235,13 @@ class GlobalConfig:
         self.random_state = random_state
         np.random.seed(random_state)
 
-        self.chart_settings = chart_settings or {
-            "theme": "whitegrid",
-            "title_fontsize": 18,
-            "title_fontweight": "bold",
-            "xlabel_fontsize": 12,
-            "ylabel_fontsize": 12,
-            "tick_label_rotation": 45,
-            "palette": "pastel",
-            "plot_width": 15,
-            "plot_height_per_row": 4,
-            "heatmap_cmap": "coolwarm",
-            "heatmap_fmt": ".2f",
-        }
+        self.chart_settings = chart_settings
 
         assert (
             max_datasets_after_preprocessing > 0
         ), "Values smaller than 1 are forbidden."
         self.max_datasets_after_preprocessing = max_datasets_after_preprocessing
         self.perform_only_required_ = perform_only_required_
-
-        self.chart_settings = chart_settings or {
-            "theme": "whitegrid",
-            "title_fontsize": 18,
-            "title_fontweight": "bold",
-            "xlabel_fontsize": 12,
-            "ylabel_fontsize": 12,
-            "tick_label_rotation": 45,
-            "palette": "pastel",
-            "plot_width": 15,
-            "plot_height_per_row": 4,
-            "heatmap_cmap": "coolwarm",
-            "heatmap_fmt": ".2f",
-        }
 
         self.raport_decimal_precision = raport_decimal_precision
 
@@ -257,21 +265,9 @@ class GlobalConfig:
         "Should be int >= 1."
         self.n_bins = n_bins
 
-        self.correlation_selectors_settings = correlation_selectors_settings or {
-            "threshold": 0.8,
-            "k": 10,
-        }
-
-        self.outlier_detector_settings = outlier_detector_settings or {
-            "zscore_threshold": 3,
-            "isol_forest_n_estimators": 100,
-            "cook_threshold": 1,
-        }
-
-        self.imputer_settings = imputer_settings or {
-            "categorical_strategy": "most_frequent",
-            "numerical_strategy": "mean",
-        }
+        self.correlation_selectors_settings = correlation_selectors_settings
+        self.outlier_detector_settings = outlier_detector_settings
+        self.imputer_settings = imputer_settings
 
         self.umap_components = umap_components
 
@@ -292,6 +288,7 @@ class GlobalConfig:
             "isolation_forest",
         ], f"Invalid value for outlier_detector_method: {outlier_detector_method}."
         "Should be one of ['zscore', 'iqr', 'isolation_forest', 'cooks_distance']."
+        self.outlier_detector_method = outlier_detector_method
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""

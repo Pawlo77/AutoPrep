@@ -8,6 +8,7 @@ import humanize
 import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import LabelEncoder
 
 from ..raporting.raport import Report
 from ..utils.abstract import ModulesHandler, Step
@@ -31,6 +32,7 @@ class PreprocessingHandler(ModulesHandler):
         self._best_pipelines_idx: List[int] = []
         self._model = None
         self._score_func = None
+        self._target_encoder = LabelEncoder()
 
     def run(
         self,
@@ -63,16 +65,14 @@ class PreprocessingHandler(ModulesHandler):
 
         logger.start_operation("Preprocessing.")
 
-        self._model = (
-            config.regression_pipeline_scoring_model
-            if task == "regression"
-            else config.classification_pipeline_scoring_model
-        )
-        self._score_func = (
-            config.regression_pipeline_scoring_func
-            if task == "regression"
-            else config.classification_pipeline_scoring_func
-        )
+        if task == "regression":
+            self._model = config.regression_pipeline_scoring_model
+            self._score_func = config.regression_pipeline_scoring_func
+        else:
+            self._model = config.classification_pipeline_scoring_model
+            self._score_func = config.classification_pipeline_scoring_func
+            y_train = self._target_encoder.fit_transform(y_train)
+            y_valid = self._target_encoder.transform(y_valid)
 
         logger.info("Creating pipelines...")
 

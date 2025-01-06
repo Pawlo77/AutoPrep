@@ -26,7 +26,6 @@ class ColumnEncoder(RequiredStep, Categorical):
         """
         self.encoders = {}  # Dictionary to store encoder for each column
         self.columns = []  # List to store columns that are encoded
-        self.y_encoder = None  # Encoder for the target variable
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "ColumnEncoder":
         """
@@ -67,11 +66,6 @@ class ColumnEncoder(RequiredStep, Categorical):
                     self.encoders[column].fit(X[column])
                 self.columns.append(column)
 
-            if y is not None:
-                logger.debug("Fitting LabelEncoder for target variable y.")
-                self.y_encoder = LabelEncoder()
-                self.y_encoder.fit(y)
-
         except Exception as e:
             logger.error(f"Error in ColumnEncoder fit: {e}")
             raise e
@@ -111,18 +105,12 @@ class ColumnEncoder(RequiredStep, Categorical):
                     logger.debug(f"Applying LabelEncoder to column {column}.")
                     X[column] = self.encoders[column].transform(X[column])
 
-            y_transformed = None
-            if y is not None and self.y_encoder is not None:
-                logger.debug("Applying LabelEncoder to target variable y.")
-                y_transformed = self.y_encoder.transform(y)
-                y_transformed = pd.Series(y_transformed, name=y.name)
-
         except Exception as e:
             logger.error(f"Error in ColumnEncoder transform: {e}")
             raise e
         finally:
             logger.end_operation()
-        return (X, y_transformed) if y is not None else X
+        return X
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
@@ -138,7 +126,7 @@ class ColumnEncoder(RequiredStep, Categorical):
         This method combines the fit and transform steps in one operation.
         """
         logger.start_operation("Fitting and transforming data.")
-        result = self.fit(X, y).transform(X, y)
+        result = self.fit(X).transform(X)
         logger.end_operation()
         return result
 

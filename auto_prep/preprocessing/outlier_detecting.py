@@ -74,7 +74,8 @@ class OutlierDetector(RequiredStep, Numerical):
             else:
                 outliers = self._zscore_outliers(X)
 
-            logger.debug(f"Found {len(outliers)} outliers.")
+            logger.debug(f"Found {len(outliers[0])} outliers.")
+            logger.critical(outliers)
 
             X = X.drop(outliers[0])
             logger.end_operation()
@@ -111,8 +112,8 @@ class OutlierDetector(RequiredStep, Numerical):
                 exc_info=True,
             )
             raise ValueError(
-                f"Failed to fit_transform OutlierDetector method: {self.method}: {e}"
-            )
+                f"Failed to fit_transform OutlierDetector method: {self.method}"
+            ) from e
         finally:
             logger.end_operation()
         return transformed_X
