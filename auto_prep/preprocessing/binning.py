@@ -22,7 +22,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
     """
 
     PARAMS_GRID = {
-        "binning_method": {"qcut", "cut"},
+        "binning_method": ["qcut", "cut"],
     }
 
     def __init__(self, binning_method: str = "qcut"):
