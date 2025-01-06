@@ -115,6 +115,7 @@ class ColumnEncoder(RequiredStep, Categorical):
             if y is not None and self.y_encoder is not None:
                 logger.debug("Applying LabelEncoder to target variable y.")
                 y_transformed = self.y_encoder.transform(y)
+                y_transformed = pd.Series(y_transformed, name=y.name)
 
         except Exception as e:
             logger.error(f"Error in ColumnEncoder transform: {e}")
