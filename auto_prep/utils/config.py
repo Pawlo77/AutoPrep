@@ -77,8 +77,9 @@ class GlobalConfig:
         imputer_settings: dict = None,
         umap_components: int = 50,
         correlation_threshold: float = 0.8,
-        correlation_percent: float = 0.5,
+        correlation_percent: float = 0.7,
         n_bins: int = 4,
+        outlier_detector_method: str = "zscore",
         max_unique_values_classification: int = 20,
         regression_pipeline_scoring_model: BaseEstimator = RandomForestRegressor(
             n_estimators=100, random_state=42, max_depth=5, n_jobs=-1, warm_start=True
@@ -155,6 +156,7 @@ class GlobalConfig:
             correlation_threshold (float) - threshold used for detecting highly correlated features.Default 0.8.
             correlation_percent (float) - % of selected features based on their correlation with the target. Default 0.5.
             n_bins (int) - number of bins to create while binning numerical features.
+            outlier_detector_method (str) - method used for outlier detection. Default "zscore".
         """
         assert (
             isinstance(raport_name, str) and raport_name != ""
@@ -254,6 +256,7 @@ class GlobalConfig:
         ), f"Wrong value for n_bins: {n_bins}. "
         "Should be int >= 1."
         self.n_bins = n_bins
+
         self.correlation_selectors_settings = correlation_selectors_settings or {
             "threshold": 0.8,
             "k": 10,
@@ -282,6 +285,13 @@ class GlobalConfig:
         )
         self.regression_pipeline_scoring_func = regression_pipeline_scoring_func
         self.classification_pipeline_scoring_func = classification_pipeline_scoring_func
+
+        assert outlier_detector_method in [
+            "zscore",
+            "iqr",
+            "isolation_forest",
+        ], f"Invalid value for outlier_detector_method: {outlier_detector_method}."
+        "Should be one of ['zscore', 'iqr', 'isolation_forest', 'cooks_distance']."
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""

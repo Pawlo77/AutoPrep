@@ -23,6 +23,7 @@ class NumericalImputer(NAImputer, Numerical):
         super().__init__()
         self.strategy = config.imputer_settings["numerical_strategy"]
         self.imputer = SimpleImputer(strategy=self.strategy)
+        self.numeric_features = []
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "NumericalImputer":
         """
@@ -38,11 +39,8 @@ class NumericalImputer(NAImputer, Numerical):
             f"Fitting NumericalImputer to data with {X.shape[0]} rows and {X.shape[1]} columns."
         )
         try:
-            super().fit(X)
             self.numeric_features = X.select_dtypes(include="number").columns.tolist()
-
             logger.debug(f"Identified numeric features: {self.numeric_features}")
-            self.imputer.fit(X[self.numeric_features])
         except Exception as e:
             logger.error(f"Error in NumericalImputer fit: {e}")
             raise e
@@ -62,8 +60,13 @@ class NumericalImputer(NAImputer, Numerical):
         """
         logger.start_operation("Transforming data.")
         try:
+            super().fit(X)
             X = super().transform(X)
-            X[self.numeric_features] = self.imputer.transform(X[self.numeric_features])
+            available_features = [
+                col for col in self.numeric_features if col in X.columns
+            ]
+            self.imputer.fit(X[available_features])
+            X[available_features] = self.imputer.transform(X[available_features])
         except Exception as e:
             logger.error(f"Error in NumericalImputer transform: {e}")
             raise e
@@ -88,14 +91,13 @@ class NumericalImputer(NAImputer, Numerical):
         except Exception as e:
             logger.error(f"Error in NumericalImputer fit_transform: {e}")
             raise e
-        return self.fit(X).transform(X)
+        return X
 
     def to_tex(self) -> dict:
         """
         Returns a description of the transformer in dictionary format.
         """
         return {
-            "name": "NumericalImputer",
             "desc": "Imputes numerical missing data.",
             "params": {
                 "strategy": self.strategy,
@@ -117,6 +119,7 @@ class CategoricalImputer(Categorical, NAImputer):
         super().__init__()
         self.strategy = config.imputer_settings["categorical_strategy"]
         self.imputer = SimpleImputer(strategy=self.strategy)
+        self.categorical_features = []
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "CategoricalImputer":
         """
@@ -132,15 +135,12 @@ class CategoricalImputer(Categorical, NAImputer):
             f"Fitting CategoricalImputer to data with {X.shape[0]} rows and {X.shape[1]} columns."
         )
         try:
-            super().fit(X)
             self.categorical_features = X.select_dtypes(
-                include="object"
+                exclude="number"
             ).columns.tolist()
-
             logger.debug(
                 f"Identified categorical features: {self.categorical_features}"
             )
-            self.imputer.fit(X[self.categorical_features])
         except Exception as e:
             logger.error(f"Error in CategoricalImputer fit: {e}")
             raise e
@@ -160,10 +160,16 @@ class CategoricalImputer(Categorical, NAImputer):
         """
         logger.start_operation("Transforming data.")
         try:
+            super().fit(X)
             X = super().transform(X)
-            X[self.categorical_features] = self.imputer.transform(
-                X[self.categorical_features]
-            )
+            available_features = [
+                col for col in self.categorical_features if col in X.columns
+            ]
+            self.imputer.fit(X[available_features])
+            X[available_features] = self.imputer.transform(X[available_features])
+
+            for col in available_features:
+                X[col].fillna("Missing", inplace=True)
         except Exception as e:
             logger.error(f"Error in CategoricalImputer transform: {e}")
             raise e
@@ -198,7 +204,6 @@ class CategoricalImputer(Categorical, NAImputer):
         Returns a description of the transformer in dictionary format.
         """
         return {
-            "name": "CategoricalImputer",
             "desc": "Imputes categorical missing data.",
             "params": {
                 "strategy": self.strategy,

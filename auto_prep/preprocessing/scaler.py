@@ -65,12 +65,12 @@ class ColumnScaler(RequiredStep, Numerical):
             self.scaler.fit(X[numerical_cols])
             logger.debug(f"Successfully fitted ColumnScaler with method {self.method}")
 
-            return self
         except Exception as e:
             logger.error(f"Failed to fit ColumnScaler: {e}", exc_info=True)
             raise ValueError(f"An error occurred while fitting ColumnScaler: {e}")
         finally:
             logger.end_operation()
+        return self
 
     def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
@@ -78,7 +78,7 @@ class ColumnScaler(RequiredStep, Numerical):
 
         Args:
             X (pd.DataFrame): The feature data to transform.
-            y (pd.Series, optional): The target variable (to append to the result).
+            y (pd.Series, optional): The target variable.
 
         Returns:
             pd.DataFrame: The transformed feature data.
@@ -94,24 +94,18 @@ class ColumnScaler(RequiredStep, Numerical):
             X_transformed[numerical_cols] = self.scaler.transform(
                 X_transformed[numerical_cols]
             )
-
-            if y is not None:
-                y_name = y.name if y.name is not None else "y"
-                logger.debug(
-                    f"Appending target variable '{y_name}' to the transformed data."
-                )
-                X_transformed[y_name] = y
-
             logger.debug(
                 f"Successfully transformed ColumnScaler with method {self.method}"
             )
-            return X_transformed
 
         except Exception as e:
             logger.error(f"Failed to transform ColumnScaler {e}", exc_info=True)
             raise ValueError(f"An error occurred while transforming ColumnScaler: {e}")
+
         finally:
             logger.end_operation()
+
+        return X_transformed
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
@@ -133,14 +127,15 @@ class ColumnScaler(RequiredStep, Numerical):
             logger.debug(
                 f"Successfully fit_transformed data with ColumnScaler method : {self.method}"
             )
-            return result
 
         except Exception as e:
             logger.error(f"Failed to fit_transform ColumnScaler {e}", exc_info=True)
-
             raise ValueError(f"An error occurred while fit_transform ColumnScaler: {e}")
+
         finally:
             logger.end_operation()
+
+        return result
 
     def is_numerical(self) -> bool:
         return True

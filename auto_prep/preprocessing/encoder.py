@@ -26,6 +26,7 @@ class ColumnEncoder(RequiredStep, Categorical):
         """
         self.encoders = {}  # Dictionary to store encoder for each column
         self.columns = []  # List to store columns that are encoded
+        self.y_encoder = None  # Encoder for the target variable
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "ColumnEncoder":
         """
@@ -33,6 +34,7 @@ class ColumnEncoder(RequiredStep, Categorical):
 
         Args:
             X (pd.DataFrame): The feature data to fit the encoder to.
+            y (pd.Series, optional): The target variable (to fit the encoder).
 
         Returns:
             ColumnEncoder: The fitted encoder instance.
@@ -46,7 +48,7 @@ class ColumnEncoder(RequiredStep, Categorical):
             f"Fitting ColumnEncoder to data with {X.shape[0]} rows and {X.shape[1]} columns."
         )
         try:
-            categorical_columns = X.select_dtypes(include=["object"]).columns.tolist()
+            categorical_columns = X.select_dtypes(exclude="number").columns.tolist()
             for column in categorical_columns:
                 unique_vals = len(X[column].unique())
                 if unique_vals < 5:
@@ -64,6 +66,12 @@ class ColumnEncoder(RequiredStep, Categorical):
                     self.encoders[column] = LabelEncoder()
                     self.encoders[column].fit(X[column])
                 self.columns.append(column)
+
+            if y is not None:
+                logger.debug("Fitting LabelEncoder for target variable y.")
+                self.y_encoder = LabelEncoder()
+                self.y_encoder.fit(y)
+
         except Exception as e:
             logger.error(f"Error in ColumnEncoder fit: {e}")
             raise e
@@ -103,18 +111,18 @@ class ColumnEncoder(RequiredStep, Categorical):
                     logger.debug(f"Applying LabelEncoder to column {column}.")
                     X[column] = self.encoders[column].transform(X[column])
 
-            if y is not None:
-                y_name = y.name if y.name is not None else "y"
-                logger.debug(
-                    f"Appending target variable '{y_name}' to the transformed data."
-                )
-                X[y_name] = y
+            y_transformed = None
+            if y is not None and self.y_encoder is not None:
+                logger.debug("Applying LabelEncoder to target variable y.")
+                y_transformed = self.y_encoder.transform(y)
+                y_transformed = pd.Series(y_transformed, name=y.name)
+
         except Exception as e:
             logger.error(f"Error in ColumnEncoder transform: {e}")
             raise e
         finally:
             logger.end_operation()
-        return X
+        return (X, y_transformed) if y is not None else X
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
@@ -130,11 +138,11 @@ class ColumnEncoder(RequiredStep, Categorical):
         This method combines the fit and transform steps in one operation.
         """
         logger.start_operation("Fitting and transforming data.")
-        result = self.fit(X).transform(X, y)
+        result = self.fit(X, y).transform(X, y)
         logger.end_operation()
         return result
 
     def to_tex(self) -> dict:
         return {
-            "desc": "Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or LabelEncoder (for columns with >=5 unique values).",
+            "desc": "Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or LabelEncoder (for columns with >=5 unique values). Encodes target variable using LabelEncoder if provided.",
         }

@@ -63,7 +63,7 @@ class NAImputer(RequiredStep, ABC):
         Returns:
             pd.DataFrame: The transformed data.
         """
-        return X.drop(columns=self.cols_to_remove, errors="ignore")
+        return X.drop(columns=self.cols_to_remove)
 
 
 class FeatureImportanceSelector(NonRequiredStep, ABC):

@@ -16,27 +16,13 @@ class OutlierDetector(RequiredStep, Numerical):
     Performs Numerical data outlier detection
     """
 
-    PARAMS_GRID = {
-        "method": ["zscore", "iqr", "isolation_forest", "cooks_distance"],
-    }
-
-    def __init__(self, method: str = "zscore"):
+    def __init__(self):
         """
         Args:
-            method: The method to use for outlier detection
+            method: The method to use for outlier detection.
         """
-        self.available_methods = {
-            "zscore": self._zscore_outliers,
-            "iqr": self._iqr_outliers,
-            "isolation_forest": self._isolation_forest_outliers,
-            "cooks_distance": self._cooks_distance_outliers,
-        }
-        if method not in self.available_methods:
-            raise ValueError(
-                f"Method {method} not supported. Supported methods are "
-                f"{self.available_methods.keys()}"
-            )
-        self.method = method
+
+        self.method = config.outlier_detector_method
 
     def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "OutlierDetector":
         """Identify feature types in the dataset.
@@ -70,17 +56,26 @@ class OutlierDetector(RequiredStep, Numerical):
 
         Args:
             X (pd.DataFrame): The input DataFrame to be cleaned and transformed.
+            y (pd.Series): The target data.
 
         Returns:
             pd.DataFrame: The cleaned and transformed DataFrame.
         """
-        logger.start_operation("Transforming data.")
+        logger.start_operation("Transforming data for outlier detection.")
         try:
             X = X.copy()
 
-            logger.start_operation(f"Numerical data transform (shape - {X.shape}).")
-            outliers = self.available_methods[self.method](X)
+            if self.method == "cooks_distance":
+                outliers = self._cooks_distance_outliers(X, y)
+            elif self.method == "isolation_forest":
+                outliers = self._isolation_forest_outliers(X)
+            elif self.method == "iqr":
+                outliers = self._iqr_outliers(X)
+            else:
+                outliers = self._zscore_outliers(X)
+
             logger.debug(f"Found {len(outliers)} outliers.")
+
             X = X.drop(outliers[0])
             logger.end_operation()
         except Exception as e:
@@ -88,9 +83,41 @@ class OutlierDetector(RequiredStep, Numerical):
             raise e
         finally:
             logger.end_operation()
+
         return X
 
-    def _zscore_outliers(self, X: pd.DataFrame, y: pd.Series = None) -> tuple:
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series = None):
+        """
+        Fit and transform the data in one step.
+        Args:
+            X (pd.DataFrame): Input data
+            y (pd.Series): Target data
+        Returns:
+            pd.DataFrame: Transformed data
+        """
+        logger.start_operation(
+            f"Fitting ans transforming data with OutlierDetector method: {self.method}"
+        )
+        try:
+            transformed_X = self.fit(X).transform(X)
+
+            logger.debug(
+                f"Successfully fit_transformed data data with OutlierDetector method: {self.method}"
+            )
+
+        except Exception as e:
+            logger.error(
+                f"Failed to fit_transform OutlierDetector method: {self.method}: {e}",
+                exc_info=True,
+            )
+            raise ValueError(
+                f"Failed to fit_transform OutlierDetector method: {self.method}: {e}"
+            )
+        finally:
+            logger.end_operation()
+        return transformed_X
+
+    def _zscore_outliers(self, X: pd.DataFrame) -> tuple:
         """
         Detect outliers using Z-score method
         Args:
@@ -98,6 +125,7 @@ class OutlierDetector(RequiredStep, Numerical):
         Returns:
             Tuple of arrays containing row and column indices of outliers
         """
+
         logger.start_operation("Detecting outliers using Z-score.")
         try:
             threshold = config.outlier_detector_settings["zscore_threshold"]
@@ -109,7 +137,7 @@ class OutlierDetector(RequiredStep, Numerical):
             logger.end_operation()
         return np.where(z_scores > threshold)
 
-    def _iqr_outliers(self, X: pd.DataFrame, y: pd.Series = None) -> tuple:
+    def _iqr_outliers(self, X: pd.DataFrame) -> tuple:
         """
         Detect outliers using IQR method
         Args:
@@ -129,7 +157,7 @@ class OutlierDetector(RequiredStep, Numerical):
             logger.end_operation()
         return np.where((X < (Q1 - 1.5 * IQR)) | (X > (Q3 + 1.5 * IQR)))
 
-    def _isolation_forest_outliers(self, X: pd.DataFrame, y: pd.Series = None) -> tuple:
+    def _isolation_forest_outliers(self, X: pd.DataFrame) -> tuple:
         """
         Detect outliers using Isolation Forest method
         Args:
