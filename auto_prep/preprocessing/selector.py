@@ -183,14 +183,7 @@ class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
         )
         try:
             X_selected = X[self.selected_columns].copy()
-            if y is not None:
-                if isinstance(y, list):
-                    y = pd.Series(y)
-                y_name = y.name if y.name is not None else "y"
-                logger.debug(
-                    f"Appending target variable '{y_name}' to the transformed data."
-                )
-                X_selected[y_name] = y.values
+
         except Exception as e:
             logger.error(
                 f"Error in FeatureImportanceClassificationSelector transform: {e}"
@@ -304,14 +297,7 @@ class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
         try:
 
             X_selected = X[self.selected_columns].copy()
-            if y is not None:
-                if isinstance(y, list):
-                    y = pd.Series(y)
-                y_name = y.name if y.name is not None else "y"
-                logger.debug(
-                    f"Appending target variable '{y_name}' to the transformed data."
-                )
-                X_selected[y_name] = y.values
+
         except Exception as e:
             logger.error(f"Error in FeatureImportanceRegressionSelector transform: {e}")
             raise e
