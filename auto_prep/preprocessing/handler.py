@@ -45,13 +45,13 @@ class PreprocessingHandler(ModulesHandler):
 
         Preprocessing steps are as follows:
         - imputing
-        - scaling
+        - removing reduntant columns
+        - scaling numerical columns
         - encoding
-        - binning
         - outlier detection
-        - filtering out features (ex those with 0 variance)
-        - dimentionality reduction
         - feature selection
+        - binning
+        - dimentionality reduction
 
         Args:
             X_train (pd.DataFrame): Training feature dataset.
@@ -77,13 +77,14 @@ class PreprocessingHandler(ModulesHandler):
         logger.info("Creating pipelines...")
 
         for step_name, package_name in [
-            ("Imputting missing data.", ".imputer"),
-            ("Scaling data.", ".scaler"),
-            ("Encoding data.", ".encoder"),
+            ("Imputting missing data.", ".imputing"),
+            ("Removing redundant columns.", ".redundancy_filtering"),
+            ("Scaling data.", ".scaling"),
+            ("Encoding data.", ".encoding"),
+            ("Outlier detection.", ".outlier_detecting"),
+            ("Features selection.", ".feature_selecting"),
             ("Binning data.", ".binning"),
-            ("Outlier detection.", ".outlier_detector"),
-            ("Dinemtionality reduction.", ".dimention_reducer"),
-            ("Features selection.", ".selector"),
+            ("Dinemtionality reduction.", ".dimention_reducing"),
         ]:
             self._pipeline_steps = ModulesHandler.construct_pipelines_steps_helper(
                 step_name,
