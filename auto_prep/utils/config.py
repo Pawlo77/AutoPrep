@@ -77,7 +77,7 @@ class GlobalConfig:
         imputer_settings: dict = None,
         umap_components: int = 50,
         correlation_threshold: float = 0.8,
-        correlation_percent: float = 0.5,
+        correlation_percent: float = 0.7,
         n_bins: int = 4,
         max_unique_values_classification: int = 20,
         regression_pipeline_scoring_model: BaseEstimator = RandomForestRegressor(
@@ -254,6 +254,7 @@ class GlobalConfig:
         ), f"Wrong value for n_bins: {n_bins}. "
         "Should be int >= 1."
         self.n_bins = n_bins
+
         self.correlation_selectors_settings = correlation_selectors_settings or {
             "threshold": 0.8,
             "k": 10,

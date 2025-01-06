@@ -80,7 +80,6 @@ class BinningTransformer(NonRequiredStep, Numerical):
                     self.should_bin[column] = False
 
             logger.debug("Successfully fitted BinningTransformer.")
-            return self
         except Exception as e:
             logger.error(
                 f"Failed to fit BinningTransformer with method {self.binning_method}: {e}",
@@ -92,6 +91,8 @@ class BinningTransformer(NonRequiredStep, Numerical):
 
         finally:
             logger.end_operation()
+
+        return self
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         """
@@ -135,7 +136,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
                         )
 
             logger.debug("Successfully transformed data with BinningTransformer")
-            return X_transformed
+
         except Exception as e:
             logger.error(
                 f"Failed to transform BinningTransformer with method {self.binning_method}: {e}",
@@ -146,6 +147,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
             )
         finally:
             logger.end_operation()
+        return X_transformed
 
     def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
@@ -167,7 +169,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
             logger.debug(
                 f"Successfully fit_transformed data data with BinningTransformer n_bins: {self.n_bins} and binning_method: {self.binning_method}"
             )
-            return transformed_X
+
         except Exception as e:
             logger.error(
                 f"Failed to fit_transform BinningTransformer with method {self.binning_method}: {e}",
@@ -178,6 +180,7 @@ class BinningTransformer(NonRequiredStep, Numerical):
             )
         finally:
             logger.end_operation()
+        return transformed_X
 
     def is_numeric(self) -> bool:
         return True
