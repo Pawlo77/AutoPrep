@@ -29,7 +29,7 @@ class VarianceFilter(RequiredStep, Numerical):
 
         self.dropped_columns = []
 
-    def fit(self, X: pd.DataFrame) -> "VarianceFilter":
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "VarianceFilter":
         """
         Identifies columns with zero variances and adds to dropped_columns list.
 
@@ -53,7 +53,7 @@ class VarianceFilter(RequiredStep, Numerical):
             logger.end_operation()
         return self
 
-    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
+    def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Drops the identified columns with zero variance based on the fit method.
 
@@ -80,7 +80,7 @@ class VarianceFilter(RequiredStep, Numerical):
 
         return X_transformed
 
-    def fit_transform(self, X: pd.DataFrame) -> pd.DataFrame:
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Fits and transforms the data in one step.
 
@@ -259,7 +259,7 @@ class CorrelationSelector(NonRequiredStep, Numerical):
             CorrelationSelector: The fitted transformer instance.
         """
         logger.start_operation(
-            f"Fitting CorrelationSelector with top {self.correlation_percent}% correlated features."
+            f"Fitting CorrelationSelector with top {self.k}% correlated features."
         )
         try:
             corr_with_target = X.corrwith(y).abs()

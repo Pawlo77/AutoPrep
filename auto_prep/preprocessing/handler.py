@@ -1,6 +1,7 @@
 import copy
 import itertools
 import json
+import logging
 from time import time
 from typing import Dict, List
 
@@ -9,6 +10,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
+from tqdm import tqdm
 
 from ..raporting.raport import Report
 from ..utils.abstract import ModulesHandler, Step
@@ -50,10 +52,10 @@ class PreprocessingHandler(ModulesHandler):
         - removing reduntant columns
         - scaling numerical columns
         - encoding
-        - outlier detection
         - feature selection
         - binning
         - dimentionality reduction
+        - outlier detection (only for training data)
 
         Args:
             X_train (pd.DataFrame): Training feature dataset.
@@ -71,8 +73,8 @@ class PreprocessingHandler(ModulesHandler):
         else:
             self._model = config.classification_pipeline_scoring_model
             self._score_func = config.classification_pipeline_scoring_func
-            y_train = self._target_encoder.fit_transform(y_train)
-            y_valid = self._target_encoder.transform(y_valid)
+            y_train = pd.Series(self._target_encoder.fit_transform(y_train))
+            y_valid = pd.Series(self._target_encoder.transform(y_valid))
 
         logger.info("Creating pipelines...")
 
@@ -81,10 +83,10 @@ class PreprocessingHandler(ModulesHandler):
             ("Removing redundant columns.", ".redundancy_filtering"),
             ("Scaling data.", ".scaling"),
             ("Encoding data.", ".encoding"),
-            ("Outlier detection.", ".outlier_detecting"),
             ("Features selection.", ".feature_selecting"),
             ("Binning data.", ".binning"),
             ("Dinemtionality reduction.", ".dimention_reducing"),
+            # ("Outlier detection.", ".outlier_detecting"),
         ]:
             self._pipeline_steps = ModulesHandler.construct_pipelines_steps_helper(
                 step_name,
@@ -112,16 +114,27 @@ class PreprocessingHandler(ModulesHandler):
 
         t0 = time()
         logger.info("Fitting pipelines...")
-        for pipeline in self._pipelines:
+        if logger.level != logging.DEBUG:
+            gen = tqdm(self._pipelines, desc="Fitting pipelines", unit="pipeline")
+        else:
+            gen = self._pipelines
+
+        for pipeline in gen:
             t1 = time()
-            pipeline.fit(X_train, y_train)
+            try:
+                pipeline.fit(X_train, y_train)
+            except Exception as e:
+                raise Exception(f"Error fitting pipeline {pipeline.steps}") from e
             self._fit_durations.append(time() - t1)
         self._fit_time = time() - t0
 
         logger.info("Scoring pipelines...")
         t0 = time()
-        for pipeline in self._pipelines:
+        for pipeline in tqdm(
+            self._pipelines, desc="Scoring pipelines", unit="pipeline"
+        ):
             t1 = time()
+            logger.critical
             self._pipelines_scores.append(
                 PreprocessingHandler.score_pipeline_with_model(
                     pipeline=pipeline,
@@ -297,7 +310,9 @@ class PreprocessingHandler(ModulesHandler):
                 new_exploaded_steps = []
                 for entry in exploaded_steps:
                     for entry_to_add in steps_to_add:
-                        new_exploaded_steps.append([*entry, entry_to_add])
+                        new_exploaded_steps.append(
+                            [*[copy.deepcopy(e) for e in entry], entry_to_add]
+                        )
                 exploaded_steps = new_exploaded_steps
 
         return exploaded_steps

@@ -65,7 +65,6 @@ class ColumnEncoder(RequiredStep, Categorical):
                     self.encoders[column] = LabelEncoder()
                     self.encoders[column].fit(X[column])
                 self.columns.append(column)
-
         except Exception as e:
             logger.error(f"Error in ColumnEncoder fit: {e}")
             raise e
@@ -90,20 +89,23 @@ class ColumnEncoder(RequiredStep, Categorical):
 
         try:
             for column in self.columns:
-                if isinstance(self.encoders[column], OneHotEncoder):
-                    logger.debug(f"Applying OneHotEncoder to column {column}.")
-                    encoded_data = self.encoders[column].transform(X[[column]])
-                    ohe_columns = [
-                        f"{column}_{cat}"
-                        for cat in self.encoders[column].categories_[0]
-                    ]
-                    encoded_df = pd.DataFrame(
-                        encoded_data, columns=ohe_columns, index=X.index
-                    )
-                    X = pd.concat([X.drop(column, axis=1), encoded_df], axis=1)
-                else:
-                    logger.debug(f"Applying LabelEncoder to column {column}.")
-                    X[column] = self.encoders[column].transform(X[column])
+                try:
+                    if isinstance(self.encoders[column], OneHotEncoder):
+                        logger.debug(f"Applying OneHotEncoder to column {column}.")
+                        encoded_data = self.encoders[column].transform(X[[column]])
+                        ohe_columns = [
+                            f"{column}_{cat}"
+                            for cat in self.encoders[column].categories_[0]
+                        ]
+                        encoded_df = pd.DataFrame(
+                            encoded_data, columns=ohe_columns, index=X.index
+                        )
+                        X = pd.concat([X.drop(column, axis=1), encoded_df], axis=1)
+                    else:
+                        logger.debug(f"Applying LabelEncoder to column {column}.")
+                        X[column] = self.encoders[column].transform(X[column])
+                except Exception as e:
+                    raise Exception(f"Error in transforming column {column}") from e
 
         except Exception as e:
             logger.error(f"Error in ColumnEncoder transform: {e}")

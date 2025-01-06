@@ -1,8 +1,44 @@
-2025-01-06 22:28:20 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.dimention_reducing.PCADimentionReducer'>, <class 'auto_prep.preprocessing.dimention_reducing.UMAPDimentionReducer'>, <class 'auto_prep.preprocessing.dimention_reducing.VIFDimentionReducer'>]
-2025-01-06 22:28:20 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'NumericalNonRequired': [<class 'auto_prep.preprocessing.dimention_reducing.PCADimentionReducer'>, <class 'auto_prep.preprocessing.dimention_reducing.UMAPDimentionReducer'>, <class 'auto_prep.preprocessing.dimention_reducing.VIFDimentionReducer'>]}
-2025-01-06 22:28:20 DEBUG auto_prep.utils.abstract: New steps: {'NumericalNonRequired': [<class 'auto_prep.preprocessing.dimention_reducing.PCADimentionReducer'>, <class 'auto_prep.preprocessing.dimention_reducing.UMAPDimentionReducer'>, <class 'auto_prep.preprocessing.dimention_reducing.VIFDimentionReducer'>]}
-2025-01-06 22:28:20 DEBUG auto_prep.utils.abstract: Starting with 32 pipelines
-2025-01-06 22:28:20 DEBUG auto_prep.utils.abstract: After required steps - 32
-2025-01-06 22:28:20 DEBUG auto_prep.utils.abstract: After non-required steps - 128
-2025-01-06 22:28:20 INFO auto_prep.utils.abstract: Extracted 3 steps for Dinemtionality reduction. (0 required, 3 non required)
-2025-01-06 22:28:20 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'CategoricalRequired': [<class 'auto_prep.preprocessing.imputing.CategoricalImputer'>], 'NumericalRequired': [<class 'auto_prep.preprocessing.imputing.NumericalImputer'>]}
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: New steps: {'CategoricalRequired': [<class 'auto_prep.preprocessing.imputing.CategoricalImputer'>], 'NumericalRequired': [<class 'auto_prep.preprocessing.imputing.NumericalImputer'>]}
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Starting with 0 pipelines
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: After required steps - 2
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: After non-required steps - 2
+2025-01-06 23:24:20 INFO auto_prep.utils.abstract: Extracted 2 steps for Imputting missing data. (2 required, 0 non required)
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: → Removing redundant columns.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Importing classes from .redundancy_filtering
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.redundancy_filtering.UniqueFilter'>]
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'CategoricalRequired': [<class 'auto_prep.preprocessing.redundancy_filtering.UniqueFilter'>]}
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: New steps: {'CategoricalRequired': [<class 'auto_prep.preprocessing.redundancy_filtering.UniqueFilter'>]}
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Starting with 2 pipelines
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: After required steps - 2
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: After non-required steps - 2
+2025-01-06 23:24:20 INFO auto_prep.utils.abstract: Extracted 1 steps for Removing redundant columns. (1 required, 0 non required)
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: → Scaling data.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Importing classes from .scaling
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.scaling.ColumnScaler'>]
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'NumericalRequired': [<class 'auto_prep.preprocessing.scaling.ColumnScaler'>]}
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: New steps: {'NumericalRequired': [<class 'auto_prep.preprocessing.scaling.ColumnScaler'>]}
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Starting with 2 pipelines
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: After required steps - 2
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: After non-required steps - 2
+2025-01-06 23:24:20 INFO auto_prep.utils.abstract: Extracted 1 steps for Scaling data. (1 required, 0 non required)
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: → Encoding data.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Importing classes from .encoding
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.encoding.ColumnEncoder'>]
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Retrieved follwing combinations - {'CategoricalRequired': [<class 'auto_prep.preprocessing.encoding.ColumnEncoder'>]}
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: New steps: {'CategoricalRequired': [<class 'auto_prep.preprocessing.encoding.ColumnEncoder'>]}
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Starting with 2 pipelines
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: After required steps - 2
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: After non-required steps - 2
+2025-01-06 23:24:20 INFO auto_prep.utils.abstract: Extracted 1 steps for Encoding data. (1 required, 0 non required)
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: ✓ Constructing new pipelines.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: → Features selection.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: → Constructing new pipelines.
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Importing classes from .feature_selecting
+2025-01-06 23:24:20 DEBUG auto_prep.utils.abstract: Found follwing classes: [<class 'auto_prep.preprocessing.feature_selecting.CorrelationFilter'>, <class 'auto_prep.preprocessing.feature_selecting.CorrelationSelector'>, <class 'auto_prep.preprocessing.feature_selecting.FeatureImportanceClassificationSelector'>, <class 'auto_prep.preprocessing.feature_selecting.FeatureImportanceRegressionSelector'>, <class 'auto_prep.preprocessing.feature_selecting.VarianceFilter'>]

@@ -3,9 +3,12 @@ import os
 
 import numpy as np
 from pylatex import NoEscape
+from sklearn import set_config
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import mean_squared_error, roc_auc_score
+
+set_config(transform_output="pandas")
 
 # ANSI color codes
 COLORS: dict = {
@@ -56,20 +59,16 @@ DEFAULT_CORRELATION_SELECTOR_SETTINGS: dict = {
     "k": 10,
 }
 
-DEFAULT_OUTLIER_DETECTOR_SETTINGS: dict = (
-    {
-        "zscore_threshold": 3,
-        "isol_forest_n_estimators": 100,
-        "cook_threshold": 1,
-    },
-)
+DEFAULT_OUTLIER_DETECTOR_SETTINGS: dict = {
+    "zscore_threshold": 3,
+    "isol_forest_n_estimators": 100,
+    "cook_threshold": 1,
+}
 
-DEFAULT_IMPUTTER_SETTINGS: dict = (
-    {
-        "categorical_strategy": "most_frequent",
-        "numerical_strategy": "mean",
-    },
-)
+DEFAULT_IMPUTTER_SETTINGS: dict = {
+    "categorical_strategy": "most_frequent",
+    "numerical_strategy": "mean",
+}
 
 
 class GlobalConfig:

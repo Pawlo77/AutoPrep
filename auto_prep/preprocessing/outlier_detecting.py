@@ -74,10 +74,10 @@ class OutlierDetector(RequiredStep, Numerical):
             else:
                 outliers = self._zscore_outliers(X)
 
-            logger.debug(f"Found {len(outliers[0])} outliers.")
-            logger.critical(outliers)
+            logger.debug(f"Found {len(outliers)} outliers.")
 
-            X = X.drop(outliers[0])
+            outliers_idx = X.iloc[outliers].index
+            X = X.drop(outliers_idx)
             logger.end_operation()
         except Exception as e:
             logger.error(f"Error in Outlier Detection: {e}")
@@ -136,7 +136,7 @@ class OutlierDetector(RequiredStep, Numerical):
             raise e
         finally:
             logger.end_operation()
-        return np.where(z_scores > threshold)
+        return np.where(z_scores > threshold)[0]
 
     def _iqr_outliers(self, X: pd.DataFrame) -> tuple:
         """
@@ -156,7 +156,7 @@ class OutlierDetector(RequiredStep, Numerical):
             raise e
         finally:
             logger.end_operation()
-        return np.where((X < (Q1 - 1.5 * IQR)) | (X > (Q3 + 1.5 * IQR)))
+        return np.where((X < (Q1 - 1.5 * IQR)) | (X > (Q3 + 1.5 * IQR)))[0]
 
     def _isolation_forest_outliers(self, X: pd.DataFrame) -> tuple:
         """
@@ -171,7 +171,7 @@ class OutlierDetector(RequiredStep, Numerical):
             n_estimators = config.outlier_detector_settings["isol_forest_n_estimators"]
             clf = IsolationForest(n_estimators=n_estimators)
             clf.fit(X)
-            outliers = np.where(clf.predict(X) == -1)
+            outliers = np.where(clf.predict(X) == -1)[0]
             logger.debug(f"Found {len(outliers)} outliers.")
         except Exception as e:
             logger.error(f"Error in Isolation Forest outlier detection: {e}")
@@ -200,7 +200,7 @@ class OutlierDetector(RequiredStep, Numerical):
             raise e
         finally:
             logger.end_operation()
-        return np.where(cooks_distance > threshold)
+        return np.where(cooks_distance > threshold)[0]
 
     def to_tex(self) -> dict:
         return {
