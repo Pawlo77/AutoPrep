@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import List, Tuple
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -31,74 +31,91 @@ class NumericalVisualizer:
     def numerical_distribution_chart(
         X: pd.DataFrame,
         y: pd.Series,
-    ) -> Tuple[str, str]:
+    ) -> List[Tuple[str, str]]:
         """
         Generates a plot to visualize the distribution of numerical features.
         """
         logger.start_operation("Numerical distribution visualizations.")
 
         try:
-            df = pd.concat([X, y], axis=1)
-
+            df = X
             numerical_columns = df.select_dtypes(include="number").columns.tolist()
-            if numerical_columns == []:
+            if not numerical_columns:
                 logger.debug("No numerical features found in the dataset.")
-                return "", ""
+                return []
+
             logger.debug(
                 "Will create numerical distribution visualisations"
                 f"for {numerical_columns} columns."
             )
 
-            num_columns = len(numerical_columns)
-            num_rows = (num_columns + 1) // 2
+            max_plots_per_page = 10
+            numerical_groups = [
+                numerical_columns[i : i + max_plots_per_page]
+                for i in range(0, len(numerical_columns), max_plots_per_page)
+            ]
 
             sns.set_theme(
                 style=config.chart_settings["theme"],
                 palette=config.chart_settings["palette"],
             )
 
-            _, axes = plt.subplots(
-                num_rows,
-                2,
-                # fit in A5
-                figsize=(
-                    min(config.chart_settings["plot_width"], 5.8),
-                    min(config.chart_settings["plot_height_per_row"] * num_rows, 8.3),
-                ),
-            )
-            axes = axes.flatten()
+            chart_list = []
+            for group_idx, group in enumerate(numerical_groups):
+                num_columns = len(group)
+                num_rows = (num_columns + 1) // 2
 
-            for i, column in enumerate(numerical_columns):
-                sns.histplot(
-                    data=df,
-                    x=column,
-                    ax=axes[i],
+                fig, axes = plt.subplots(
+                    num_rows,
+                    2,
+                    figsize=(
+                        config.chart_settings["plot_width"],
+                        config.chart_settings["plot_height_per_row"] * num_rows,
+                    ),
                 )
-                axes[i].set_title(
-                    f"Distribution of {column}",
-                    fontsize=config.chart_settings["title_fontsize"],
-                    fontweight=config.chart_settings["title_fontweight"],
+                axes = axes.flatten()
+
+                for i, column in enumerate(group):
+                    sns.histplot(
+                        data=df,
+                        x=column,
+                        ax=axes[i],
+                    )
+                    axes[i].set_title(
+                        f"Distribution of {column}",
+                        fontsize=config.chart_settings["title_fontsize"],
+                        fontweight=config.chart_settings["title_fontweight"],
+                    )
+                    axes[i].set_xlabel(
+                        column, fontsize=config.chart_settings["xlabel_fontsize"]
+                    )
+                    axes[i].set_ylabel(
+                        "Count", fontsize=config.chart_settings["ylabel_fontsize"]
+                    )
+                    axes[i].tick_params(
+                        axis="x", rotation=config.chart_settings["tick_label_rotation"]
+                    )
+                    axes[i].tick_params(
+                        axis="both",
+                        which="major",
+                        labelsize=config.chart_settings["xlabel_fontsize"],
+                    )
+
+                for j in range(i + 1, len(axes)):
+                    axes[j].axis("off")
+
+                plt.tight_layout()
+                pdf_path = save_chart(
+                    name=f"numerical_distribution_page_{group_idx + 1}.png"
                 )
-                axes[i].set_xlabel(
-                    column, fontsize=config.chart_settings["xlabel_fontsize"]
-                )
-                axes[i].set_ylabel(
-                    "Count", fontsize=config.chart_settings["ylabel_fontsize"]
-                )
-                axes[i].tick_params(
-                    axis="x", rotation=config.chart_settings["tick_label_rotation"]
-                )
-                axes[i].tick_params(
-                    axis="both",
-                    which="major",
-                    labelsize=config.chart_settings["xlabel_fontsize"],
+                chart_list.append(
+                    (
+                        pdf_path,
+                        f"Numerical Features Distribution - Page {group_idx + 1}",
+                    )
                 )
 
-            axes[-1].axis("off")
-
-            plt.tight_layout()
-            path = save_chart(name="numerical_distribution.png")
-            return path, "Numerical distribution."
+            return chart_list
         except Exception as e:
             logger.error(f"Failed to generate numerical distribution plot: {str(e)}")
             raise e
@@ -119,9 +136,17 @@ class NumericalVisualizer:
             df = pd.concat([X, y], axis=1)
 
             numerical_columns = df.select_dtypes(include="number").columns.tolist()
-            if numerical_columns == []:
+            if not numerical_columns:
                 logger.debug("No numerical features found in the dataset.")
                 return "", ""
+
+            max_columns_for_heatmap = 25
+            if len(numerical_columns) > max_columns_for_heatmap:
+                logger.debug(
+                    f"Too many numerical columns ({len(numerical_columns)}) for heatmap visualization."
+                )
+                return "", "Too many numerical columns for heatmap visualization."
+
             logger.debug(f"Will create heatmap for {numerical_columns} columns.")
 
             plt.figure(
@@ -154,71 +179,81 @@ class NumericalVisualizer:
     def numerical_features_boxplot_chart(
         X: pd.DataFrame,
         y: pd.Series,
-    ) -> Tuple[str, str]:
+    ) -> List[Tuple[str, str]]:
         """
-        Generates a boxplot for numerical features.
+        Generates boxplots for numerical features, split into multiple pages if necessary.
         """
         logger.start_operation("Boxplot visualization for numerical features.")
 
         try:
-            df = pd.concat([X, y], axis=1)
-
+            df = X
             numerical_columns = df.select_dtypes(include="number").columns.tolist()
             if not numerical_columns:
                 logger.debug("No numerical features found in the dataset.")
-                return "", ""
+                return []
 
             logger.debug(f"Will create boxplot for {numerical_columns} columns.")
             num_columns = len(numerical_columns)
-            num_rows = (num_columns + 1) // 2
+            plots_per_page = 10
+            num_pages = (num_columns + plots_per_page - 1) // plots_per_page
 
-            _, axes = plt.subplots(
-                num_rows,
-                2,
-                # fit in A5
-                figsize=(
-                    min(config.chart_settings["plot_width"], 5.8),
-                    min(config.chart_settings["plot_height_per_row"] * num_rows, 8.3),
-                ),
-            )
-            axes = axes.flatten()
+            paths = []
 
-            try:
-                for i, column in enumerate(numerical_columns):
-                    sns.boxplot(
-                        data=df,
-                        x=column,
-                        ax=axes[i],
-                        palette=config.chart_settings["palette"],
-                    )
-                    axes[i].set_title(
-                        f"Boxplot of {column}",
-                        fontsize=config.chart_settings["title_fontsize"],
-                        fontweight=config.chart_settings["title_fontweight"],
-                    )
-                    axes[i].set_xlabel(
-                        column, fontsize=config.chart_settings["xlabel_fontsize"]
-                    )
-                    axes[i].set_ylabel(
-                        "Value", fontsize=config.chart_settings["ylabel_fontsize"]
-                    )
-                    axes[i].tick_params(
-                        axis="x", rotation=config.chart_settings["tick_label_rotation"]
-                    )
-                    axes[i].tick_params(
-                        axis="both",
-                        which="major",
-                        labelsize=config.chart_settings["xlabel_fontsize"],
-                    )
-            except Exception as e:
-                raise Exception(f"Error in column {column}") from e
+            for page in range(num_pages):
+                start_idx = page * plots_per_page
+                end_idx = min(start_idx + plots_per_page, num_columns)
+                columns_to_plot = numerical_columns[start_idx:end_idx]
+                num_rows = (len(columns_to_plot) + 1) // 2
 
-            for j in range(i + 1, len(axes)):
-                axes[j].axis("off")
+                _, axes = plt.subplots(
+                    num_rows,
+                    2,
+                    figsize=(
+                        config.chart_settings["plot_width"],
+                        config.chart_settings["plot_height_per_row"] * num_rows,
+                    ),
+                )
+                axes = axes.flatten()
 
-            plt.tight_layout()
-            path = save_chart(name="boxplot.png")
-            return path, "Boxplot."
+                try:
+                    for i, column in enumerate(columns_to_plot):
+                        sns.boxplot(
+                            data=df,
+                            x=column,
+                            ax=axes[i],
+                            palette=config.chart_settings["palette"],
+                        )
+                        axes[i].set_title(
+                            f"Boxplot of {column}",
+                            fontsize=config.chart_settings["title_fontsize"],
+                            fontweight=config.chart_settings["title_fontweight"],
+                        )
+                        axes[i].set_xlabel(
+                            column, fontsize=config.chart_settings["xlabel_fontsize"]
+                        )
+                        axes[i].set_ylabel(
+                            "Value", fontsize=config.chart_settings["ylabel_fontsize"]
+                        )
+                        axes[i].tick_params(
+                            axis="x",
+                            rotation=config.chart_settings["tick_label_rotation"],
+                        )
+                        axes[i].tick_params(
+                            axis="both",
+                            which="major",
+                            labelsize=config.chart_settings["xlabel_fontsize"],
+                        )
+                except Exception as e:
+                    raise Exception(f"Error in column {column}") from e
+
+                for j in range(i + 1, len(axes)):
+                    axes[j].axis("off")
+
+                plt.tight_layout()
+                path = save_chart(name=f"boxplot_page_{page + 1}.png")
+                paths.append((path, f"Boxplot page {page + 1}"))
+
+            return paths
         except Exception as e:
             logger.error(f"Failed to generate boxplot visualisations plot: {str(e)}")
             raise e
