@@ -86,7 +86,6 @@ class CategoricalVisualizer:
                         palette=sns.color_palette(
                             settings["palette"], X[column].nunique()
                         ),
-                        legend=False,
                     )
                     axes[plot_count].set_title(
                         f"Distribution of {column}",

@@ -35,8 +35,10 @@ class EdaRaport:
                     method = getattr(visualiser_cls, method_name)
 
                     chart_dt = method(X, y)
-                    if chart_dt[0] != "":
+                    if isinstance(chart_dt, list) and len(chart_dt) > 0:
                         self.charts_dt[visualiser_cls.__name__].extend(chart_dt)
+                    elif isinstance(chart_dt, tuple) and chart_dt[0] != "":
+                        self.charts_dt[visualiser_cls.__name__].append(chart_dt)
 
                 logger.end_operation()
 

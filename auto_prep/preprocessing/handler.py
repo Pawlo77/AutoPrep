@@ -28,7 +28,7 @@ def _fit_pipeline(pipeline, X_train, y_train):
         pipeline = pipeline.fit(X_train, y_train)
     except Exception as e:
         raise Exception(f"Error fitting pipeline {pipeline.steps}") from e
-    return pipeline, time() - t1
+    return pipeline, time() - t1, pipeline.transform(X_train).describe().T.reset_index()
 
 
 def _score_pipeline(pipeline, X_train, y_train, X_valid, y_valid, model, score_func):
@@ -56,6 +56,7 @@ class PreprocessingHandler(ModulesHandler):
         self._fit_time: float = None
         self._score_time: float = None
         self._pipelines_scores: pd.Series = []
+        self._pipelines_descr: List[pd.DataFrame] = []
         self._best_pipelines_idx: List[int] = []
         self._model = None
         self._score_func = None
@@ -135,7 +136,7 @@ class PreprocessingHandler(ModulesHandler):
                 gen = tqdm(gen, desc="Fitting pipelines", unit="pipeline")
             results = list(gen)
 
-        self._pipelines, self._fit_durations = zip(*results)
+        self._pipelines, self._fit_durations, self._pipelines_descr = zip(*results)
         self._fit_time = time() - t0
 
         logger.info("Scoring pipelines...")
@@ -255,7 +256,7 @@ class PreprocessingHandler(ModulesHandler):
 
             raport.add_table(
                 pipeline_steps_overview,
-                caption=f"{score_idx}th best pipeline overwiev.",
+                caption=f"{score_idx}th best pipeline overwiev on training set.",
                 header=[
                     "step",
                     "name",
@@ -263,6 +264,16 @@ class PreprocessingHandler(ModulesHandler):
                     "params",
                 ],
                 widths=[10, 30, 60, 60],
+            )
+
+            columns = [
+                c.replace("%", "\%")  # noqa W605
+                for c in self._pipelines_descr[score_idx].columns
+            ]
+            raport.add_table(
+                self._pipelines_descr[score_idx].values.tolist(),
+                caption=f"{score_idx}th best pipeline output overview.",
+                header=columns,
             )
 
         return raport

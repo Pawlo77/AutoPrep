@@ -16,6 +16,8 @@ class OverviewRaport:
         self.missing_values: dict = {}
         self.features_details: dict = {}
         self.system_info: dict = {}
+        self.descr_num: pd.DataFrame = None
+        self.descr_cat: pd.DataFrame = None
 
     def run(self, X: pd.DataFrame, y: pd.Series):
         """Performs dataset overview."""
@@ -71,6 +73,9 @@ class OverviewRaport:
                 f"{len(categorical_features)} categorical features"
             )
 
+            self.descr_cat = X.describe(include=["object"]).T.reset_index()
+            self.descr_num = X.describe().T.reset_index()
+
         except Exception as e:
             logger.error(f"Failed to gather overview statistics: {str(e)}")
             raise e
@@ -108,7 +113,19 @@ class OverviewRaport:
         raport.add_table(
             self.features_details,
             header=["class", "type", "dtype", "space usage"],
-            caption="Features description.",
+            caption="Features dtypes description.",
+        )
+
+        columns = [c.replace("%", "\%") for c in self.descr_num.columns]  # noqa W605
+        raport.add_table(
+            self.descr_num.values.tolist(),
+            header=columns,
+            caption="Numerical features description.",
+        )
+        raport.add_table(
+            self.descr_cat.values.tolist(),
+            header=self.descr_cat.columns,
+            caption="Categorical features description.",
         )
 
         return raport
