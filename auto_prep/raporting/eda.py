@@ -37,7 +37,7 @@ class EdaRaport:
                     logger.debug(f"Calling {method}...")
                     chart_dt = method(X, y)
                     if chart_dt[0] != "":
-                        self.charts_dt[visualiser_cls.__name__].append(chart_dt)
+                        self.charts_dt[visualiser_cls.__name__].extend(chart_dt)
 
                 logger.end_operation()
 
