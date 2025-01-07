@@ -25,6 +25,12 @@ class Categorical(ABC):
     pass
 
 
+class NumericalCategorical(ABC):
+    """Abstract interface to indicate categorical and numerical step"""
+
+    pass
+
+
 class Step(ABC, BaseEstimator, TransformerMixin):
     """
     Abstract class to be overwritten for implementing custom
@@ -61,6 +67,7 @@ class ModulesHandler(ABC):
     supported_interfaces: List[object] = [
         Numerical,
         Categorical,
+        NumericalCategorical,
         RequiredStep,
         NonRequiredStep,
     ]
@@ -69,6 +76,8 @@ class ModulesHandler(ABC):
         ("NumericalNonRequired", (Numerical, NonRequiredStep)),
         ("CategoricalRequired", (Categorical, RequiredStep)),
         ("CategoricalNonRequired", (Categorical, NonRequiredStep)),
+        ("NumericalCategoricalRequired", (NumericalCategorical, RequiredStep)),
+        ("NumericalCategoricalNonRequired", (NumericalCategorical, NonRequiredStep)),
     ]
 
     def __init__(self):

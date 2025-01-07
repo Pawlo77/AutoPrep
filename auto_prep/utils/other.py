@@ -37,7 +37,7 @@ def save_model(name: str, model: BaseEstimator, *args, **kwargs) -> str:
     Returs:
         path (str) - Path where model has been saved.
     """
-    path = os.path.join(config.models_dir, name)
+    path = os.path.join(config.pipelines_dir, name)
     logger.debug(f"Saving to {path}...")
     joblib.dump(model, path)
     return path

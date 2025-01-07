@@ -1,46 +1,17 @@
-2025-01-06 00:18:43 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 00:18:43 INFO auto_prep.prep: Detected task: classification
-2025-01-06 00:18:43 ERROR auto_prep.prep: Pipeline run failed: Can't instantiate abstract class PCADimentionReducer with abstract method is_numerical
-2025-01-06 00:19:18 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 00:19:18 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 00:19:18 INFO auto_prep.prep: Detected task: classification
-2025-01-06 00:19:18 ERROR auto_prep.prep: Pipeline run failed: Can't instantiate abstract class PCADimentionReducer with abstract method is_numerical
-2025-01-06 00:20:23 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 00:20:23 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 00:20:23 INFO auto_prep.prep: Detected task: classification
-2025-01-06 00:20:23 ERROR auto_prep.prep: Pipeline run failed: Can't instantiate abstract class PCADimentionReducer with abstract method is_numerical
-2025-01-06 00:20:45 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 00:20:45 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 00:20:45 INFO auto_prep.prep: Detected task: classification
-2025-01-06 00:20:45 ERROR auto_prep.prep: Pipeline run failed: Can't instantiate abstract class PCADimentionReducer with abstract method is_numerical
-2025-01-06 00:21:54 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 00:21:54 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 00:21:54 INFO auto_prep.prep: Detected task: classification
-2025-01-06 00:21:54 ERROR auto_prep.prep: Pipeline run failed: "['body'] not in index"
-2025-01-06 00:24:00 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 00:24:00 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 00:24:00 INFO auto_prep.prep: Detected task: classification
-2025-01-06 00:24:00 ERROR auto_prep.prep: Pipeline run failed: "['body'] not in index"
-2025-01-06 00:26:35 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 00:26:35 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 00:26:35 INFO auto_prep.prep: Detected task: classification
-2025-01-06 00:26:35 ERROR auto_prep.prep: Pipeline run failed: "['body'] not in index"
-2025-01-06 22:05:39 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 22:05:39 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 22:05:39 INFO auto_prep.prep: Detected task: classification
-2025-01-06 22:05:39 ERROR auto_prep.prep: Pipeline run failed: No module named 'auto_prep.preprocessing.reduncancy_filtering'
-2025-01-06 22:06:17 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 22:06:17 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 22:06:17 INFO auto_prep.prep: Detected task: classification
-2025-01-06 22:06:17 ERROR auto_prep.prep: Pipeline run failed: 'GlobalConfig' object has no attribute 'outlier_detector_method'
-2025-01-06 22:08:32 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 22:08:32 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 22:08:32 INFO auto_prep.prep: Detected task: classification
-2025-01-06 22:08:32 ERROR auto_prep.prep: Pipeline run failed: 'GlobalConfig' object has no attribute 'outlier_detector_method'
-2025-01-06 22:08:51 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 22:08:51 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 22:08:51 INFO auto_prep.prep: Detected task: classification
-2025-01-06 22:08:51 ERROR auto_prep.prep: Pipeline run failed: 'GlobalConfig' object has no attribute 'outlier_detector_method'
-2025-01-06 22:14:33 INFO auto_prep.prep: Starting pipeline run with target column: survived
-2025-01-06 22:14:33 WARNING auto_prep.prep: Column 'home.dest' will be renamed to home__destrenamed due to '.' in it's name, which leads to os problems.
-2025-01-06 22:14:33 INFO auto_prep.prep: Detected task: classification
+2025-01-07 00:57:53 ERROR auto_prep.prep: Pipeline run failed:
+        An attempt has been made to start a new process before the
+        current process has finished its bootstrapping phase.
+
+        This probably means that you are not using fork to start your
+        child processes and you have forgotten to use the proper idiom
+        in the main module:
+
+            if __name__ == '__main__':
+                freeze_support()
+                ...
+
+        The "freeze_support()" line can be omitted if the program
+        is not going to be frozen to produce an executable.
+
+        To fix this issue, refer to the "Safe importing of main module"
+        section in https://docs.python.org/3/library/multiprocessing.html

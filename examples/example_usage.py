@@ -1,8 +1,9 @@
 import logging
 from auto_prep.utils import config
 
-config.update(log_level=logging.DEBUG, raport_decimal_precision=2)
-# config.update(perform_only_required_=True, raport_decimal_precision=2)
+config.update(
+    perform_only_required_=False, raport_decimal_precision=2, log_level=logging.INFO
+)
 
 import numpy as np
 
@@ -15,4 +16,6 @@ data["survived"] = data["survived"].astype(np.uint8)
 
 # Create and run pipeline
 pipeline = AutoPrep()
-pipeline.run(data, target_column="survived")
+
+if __name__ == "__main__":
+    pipeline.run(data, target_column="survived")

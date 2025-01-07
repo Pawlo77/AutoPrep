@@ -44,33 +44,37 @@ class CategoricalVisualizer:
             f"for {categorical_columns} columns."
         )
 
-        num_columns = len(categorical_columns)
-        num_rows = (num_columns + 1) // 2
+        for column in categorical_columns:
+            if X[column].nunique() > 15:
+                logger.debug(
+                    f"Skipping column {column} with more than 15 unique values."
+                )
+                categorical_columns.remove(column)
 
+        if len(categorical_columns) == 0:
+            return "", ""
+
+        num_rows = (len(categorical_columns) + 1) // 2
         _, axes = plt.subplots(
             num_rows,
             2,
+            # fit in A5
             figsize=(
-                settings["plot_width"],
-                settings["plot_height_per_row"] * num_rows,
+                min(settings["plot_width"], 5.8),
+                min(settings["plot_height_per_row"] * num_rows, 8.3),
             ),
         )
         axes = axes.flatten()
 
         plot_count = 0
-        for i, column in enumerate(categorical_columns):
-            if X[column].nunique() > 15:
-                logger.debug(
-                    f"Skipping column {column} with more than 15 unique values."
-                )
-                continue
+        for column in categorical_columns:
             sns.countplot(
                 data=X,
                 y=column,
                 order=X[column].value_counts().index,
                 ax=axes[plot_count],
                 palette=sns.color_palette(settings["palette"], X[column].nunique()),
-                legend=False,
+                # legend=False,
             )
             axes[plot_count].set_title(
                 f"Distribution of {column}",

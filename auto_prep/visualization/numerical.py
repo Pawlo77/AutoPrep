@@ -25,9 +25,6 @@ class NumericalVisualizer:
         "numerical_distribution_chart",
         "correlation_heatmap_chart",
         "numerical_features_boxplot_chart",
-        "numerical_distribution_chart",
-        "correlation_heatmap_chart",
-        "numerical_features_boxplot_chart",
     ]
 
     @staticmethod
@@ -63,9 +60,10 @@ class NumericalVisualizer:
             _, axes = plt.subplots(
                 num_rows,
                 2,
+                # fit in A5
                 figsize=(
-                    config.chart_settings["plot_width"],
-                    config.chart_settings["plot_height_per_row"] * num_rows,
+                    min(config.chart_settings["plot_width"], 5.8),
+                    min(config.chart_settings["plot_height_per_row"] * num_rows, 8.3),
                 ),
             )
             axes = axes.flatten()
@@ -177,9 +175,10 @@ class NumericalVisualizer:
             _, axes = plt.subplots(
                 num_rows,
                 2,
+                # fit in A5
                 figsize=(
-                    config.chart_settings["plot_width"],
-                    config.chart_settings["plot_height_per_row"] * num_rows,
+                    min(config.chart_settings["plot_width"], 5.8),
+                    min(config.chart_settings["plot_height_per_row"] * num_rows, 8.3),
                 ),
             )
             axes = axes.flatten()

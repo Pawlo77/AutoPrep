@@ -1,8 +1,9 @@
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder
 
 from ..utils.abstract import Categorical, RequiredStep
 from ..utils.logging_config import setup_logger
+from .utils import TolerantLabelEncoder
 
 logger = setup_logger(__name__)
 
@@ -13,7 +14,7 @@ class ColumnEncoder(RequiredStep, Categorical):
     (OneHotEncoding or LabelEncoding) based on the number of unique values in each column.
 
     For columns with less than 5 unique values, OneHotEncoder is used. For columns with
-    5 or more unique values, LabelEncoder is applied.
+    5 or more unique values, TolerantLabelEncoder is applied.
 
     Attributes:
         encoders (dict): A dictionary of fitted encoders for each column.
@@ -40,7 +41,7 @@ class ColumnEncoder(RequiredStep, Categorical):
 
         The encoder will choose between OneHotEncoder and LabelEncoder based on the
         number of unique values in each column. OneHotEncoder is used for columns
-        with fewer than 5 unique values, and LabelEncoder is used for columns with
+        with fewer than 5 unique values, and TolerantLabelEncoder is used for columns with
         5 or more unique values.
         """
         logger.start_operation(
@@ -58,11 +59,11 @@ class ColumnEncoder(RequiredStep, Categorical):
                     self.encoders[column] = OneHotEncoder(sparse_output=False)
                     self.encoders[column].fit(X[[column]])
                 else:
-                    # LabelEncoder for columns with 5 or more unique values
+                    # TolerantLabelEncoder for columns with 5 or more unique values
                     logger.debug(
-                        f"Column {column} has {unique_vals} unique values, using LabelEncoder."
+                        f"Column {column} has {unique_vals} unique values, using TolerantLabelEncoder."
                     )
-                    self.encoders[column] = LabelEncoder()
+                    self.encoders[column] = TolerantLabelEncoder()
                     self.encoders[column].fit(X[column])
                 self.columns.append(column)
         except Exception as e:
@@ -102,8 +103,12 @@ class ColumnEncoder(RequiredStep, Categorical):
                         )
                         X = pd.concat([X.drop(column, axis=1), encoded_df], axis=1)
                     else:
-                        logger.debug(f"Applying LabelEncoder to column {column}.")
-                        X[column] = self.encoders[column].transform(X[column])
+                        logger.debug(
+                            f"Applying TolerantLabelEncoder to column {column}."
+                        )
+                        X[column] = self.encoders[column].transform(
+                            X[column], column=column
+                        )
                 except Exception as e:
                     raise Exception(f"Error in transforming column {column}") from e
 
@@ -134,5 +139,5 @@ class ColumnEncoder(RequiredStep, Categorical):
 
     def to_tex(self) -> dict:
         return {
-            "desc": "Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or LabelEncoder (for columns with >=5 unique values). Encodes target variable using LabelEncoder if provided.",
+            "desc": "Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or TolerantLabelEncoder (for columns with >=5 unique values). Encodes target variable using LabelEncoder if provided.",
         }

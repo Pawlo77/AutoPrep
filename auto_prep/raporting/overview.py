@@ -4,7 +4,7 @@ import pandas as pd
 
 from ..utils.logging_config import setup_logger
 from ..utils.system import get_system_info
-from .raport import Report
+from .raport import Raport
 
 logger = setup_logger(__name__)
 
@@ -77,7 +77,7 @@ class OverviewRaport:
 
         logger.end_operation()
 
-    def write_to_raport(self, raport: Report):
+    def write_to_raport(self, raport: Raport):
         """Writes overview section to a raport"""
 
         overview_section = raport.add_section("Overview")  # noqa: F841
