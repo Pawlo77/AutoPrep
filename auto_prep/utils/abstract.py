@@ -25,6 +25,18 @@ class Categorical(ABC):
     pass
 
 
+class Classifier(ABC):
+    """Abstract interface to indicate classification problem."""
+
+    pass
+
+
+class Regressor(ABC):
+    """Abstract interface to indicate regression problem."""
+
+    pass
+
+
 class Step(ABC, BaseEstimator, TransformerMixin):
     """
     Abstract class to be overwritten for implementing custom
