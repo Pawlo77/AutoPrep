@@ -34,6 +34,8 @@ The generated report includes:
 
 ## Installation
 
+In order to use our tool, you need to have latex intalled on your local machine.
+
 ### Using pip (Recommended)
 
 1. Install Auto-Prep directly from PyPI:

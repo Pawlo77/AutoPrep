@@ -188,8 +188,8 @@ class ModelHandler:
 
             result["name"] = model_cls.__name__
             result["params"] = json.dumps(result["params"])
-            result["combined Score (after re-training)"] = combined_score
-            result["test Score (after re-training)"] = test_score
+            result["combined score (after re-training)"] = combined_score
+            result["test score (after re-training)"] = test_score
 
             final_pipeline_name = f"final_pipeline_{idx}.joblib"
             result["final pipeline name"] = final_pipeline_name

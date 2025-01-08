@@ -101,7 +101,7 @@ class PreprocessingHandler:
             ("Encoding data.", ".encoding"),
             ("Scaling data.", ".scaling"),
             ("Features selection.", ".feature_selecting"),
-            ("Binning data.", ".binning"),
+            # ("Binning data.", ".binning"),
             ("Dinemtionality reduction.", ".dimention_reducing"),
         ]:
             self._pipeline_steps = ModulesHandler.construct_pipelines_steps_helper(
