@@ -1,0 +1,41 @@
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: Successfully fit_transformed data with ColumnScaler method : standard
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: → Fitting and transforming data using 'standard' scaler.
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: → Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: Successfully fitted ColumnScaler with method standard
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: ✓ Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: → Scaler: Transforming data with 1047 rows and 13 columns.
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: Appending target variable 'survived' to the transformed data.
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: Successfully transformed ColumnScaler with method standard
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: ✓ Scaler: Transforming data with 1047 rows and 13 columns.
+2025-01-05 22:53:33 DEBUG auto_prep.preprocessing.scaler: Successfully fit_transformed data with ColumnScaler method : standard
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: → Fitting and transforming data using 'standard' scaler.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: → Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: Successfully fitted ColumnScaler with method standard
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: ✓ Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: → Scaler: Transforming data with 1047 rows and 13 columns.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: Appending target variable 'survived' to the transformed data.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: Successfully transformed ColumnScaler with method standard
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: ✓ Scaler: Transforming data with 1047 rows and 13 columns.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: Successfully fit_transformed data with ColumnScaler method : standard
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: → Fitting and transforming data using 'standard' scaler.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: → Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: Successfully fitted ColumnScaler with method standard
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: ✓ Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: → Scaler: Transforming data with 1047 rows and 13 columns.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: Appending target variable 'survived' to the transformed data.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: Successfully transformed ColumnScaler with method standard
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: ✓ Scaler: Transforming data with 1047 rows and 13 columns.
+2025-01-05 22:54:59 DEBUG auto_prep.preprocessing.scaler: Successfully fit_transformed data with ColumnScaler method : standard
+2025-01-05 23:27:49 DEBUG auto_prep.preprocessing.scaler: → Fitting and transforming data using 'standard' scaler.
+2025-01-05 23:27:49 DEBUG auto_prep.preprocessing.scaler: → Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.
+2025-01-05 23:27:49 DEBUG auto_prep.preprocessing.scaler: Successfully fitted ColumnScaler with method standard
+2025-01-05 23:27:49 DEBUG auto_prep.preprocessing.scaler: ✓ Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.
+2025-01-05 23:27:49 DEBUG auto_prep.preprocessing.scaler: → Scaler: Transforming data with 1047 rows and 13 columns.
+2025-01-05 23:27:49 DEBUG auto_prep.preprocessing.scaler: Appending target variable 'survived' to the transformed data.
+2025-01-05 23:27:49 DEBUG auto_prep.preprocessing.scaler: Successfully transformed ColumnScaler with method standard
+2025-01-05 23:27:49 DEBUG auto_prep.preprocessing.scaler: ✓ Scaler: Transforming data with 1047 rows and 13 columns.
+2025-01-05 23:27:49 DEBUG auto_prep.preprocessing.scaler: Successfully fit_transformed data with ColumnScaler method : standard
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.scaler: → Fitting and transforming data using 'standard' scaler.
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.scaler: → Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.scaler: Successfully fitted ColumnScaler with method standard
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.scaler: ✓ Fitting ColumnScaler with type 'standard' to data with 1047 rows and 13 columns.

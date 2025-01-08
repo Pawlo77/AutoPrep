@@ -1,0 +1,44 @@
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Transforming data for outlier detection.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Detecting outliers using Z-score.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Detecting outliers using Z-score.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: Found 144 outliers.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: Successfully fit_transformed data data with OutlierDetector method: zscore
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Fitting ans transforming data with OutlierDetector method: zscore
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Numerical data fit (13 columns).
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Numerical data fit (13 columns).
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Transforming data for outlier detection.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Detecting outliers using Z-score.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Detecting outliers using Z-score.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: Found 144 outliers.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: Successfully fit_transformed data data with OutlierDetector method: zscore
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Fitting ans transforming data with OutlierDetector method: zscore
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Numerical data fit (14 columns).
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Numerical data fit (14 columns).
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Transforming data for outlier detection.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: → Detecting outliers using Z-score.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Detecting outliers using Z-score.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: Found 182 outliers.
+2025-01-06 23:22:00 DEBUG auto_prep.preprocessing.outlier_detecting: Successfully fit_transformed data data with OutlierDetector method: zscore
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Fitting ans transforming data with OutlierDetector method: zscore
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Numerical data fit (14 columns).
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Numerical data fit (14 columns).
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Transforming data for outlier detection.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Detecting outliers using Z-score.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Detecting outliers using Z-score.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: Found 182 outliers.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: Successfully fit_transformed data data with OutlierDetector method: zscore
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Fitting ans transforming data with OutlierDetector method: zscore
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Numerical data fit (14 columns).
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Numerical data fit (14 columns).
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Transforming data for outlier detection.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Detecting outliers using Z-score.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Detecting outliers using Z-score.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: Found 182 outliers.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: Successfully fit_transformed data data with OutlierDetector method: zscore
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Fitting ans transforming data with OutlierDetector method: zscore
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Numerical data fit (13 columns).
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Numerical data fit (13 columns).
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Transforming data for outlier detection.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: → Detecting outliers using Z-score.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: ✓ Detecting outliers using Z-score.
+2025-01-06 23:22:01 DEBUG auto_prep.preprocessing.outlier_detecting: Found 144 outliers.

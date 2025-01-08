@@ -79,7 +79,9 @@ class PreprocessingHandler(ModulesHandler):
         logger.info("Creating pipelines...")
 
         for step_name, package_name in [
-            ("Imputting missing data.", ".imputing"),
+            # ("Imputting missing data.", ".imputing"),
+            ("Imputting categorical missing data.", ".categorical_imputing"),
+            ("Imputting numerical missing data.", ".numerical_imputing"),
             ("Removing redundant columns.", ".redundancy_filtering"),
             ("Scaling data.", ".scaling"),
             ("Encoding data.", ".encoding"),
@@ -137,7 +139,7 @@ class PreprocessingHandler(ModulesHandler):
             logger.critical
             self._pipelines_scores.append(
                 PreprocessingHandler.score_pipeline_with_model(
-                    pipeline=pipeline,
+                    preprocessing_pipeline=pipeline,
                     model=copy.deepcopy(self._model),
                     score_func=self._score_func,
                     X_val=X_valid,

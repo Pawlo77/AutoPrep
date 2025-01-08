@@ -1,0 +1,42 @@
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting and transforming categorical data with 100% unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fitted UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fit_transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting and transforming categorical data with 100% unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fitted UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fit_transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting and transforming categorical data with 100% unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fitted UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fit_transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting and transforming categorical data with 100% unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fitted UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fit_transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting and transforming categorical data with 100% unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fitted UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Fitting UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: ✓ Transforming data UniqueFilter by dropping 0 columns with unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: Successfully fit_transformed UniqueFilter
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting and transforming categorical data with 100% unique values
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.redundancy_filtering: → Fitting UniqueFilter

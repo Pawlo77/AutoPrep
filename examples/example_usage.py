@@ -10,9 +10,12 @@ from auto_prep.prep import AutoPrep
 from sklearn.datasets import fetch_openml
 
 # Load your dataset
-data = fetch_openml(name="titanic", version=1, as_frame=True, parser="auto").frame
-data["survived"] = data["survived"].astype(np.uint8)
+# data = fetch_openml(name="titanic", version=1, as_frame=True, parser="auto").frame
+# data["survived"] = data["survived"].astype(np.uint8)
 
+import openml
+data = openml.datasets.get_dataset(40945).get_data()[0]
+data["survived"] = data["survived"].astype(np.uint8)
 # Create and run pipeline
 pipeline = AutoPrep()
 pipeline.run(data, target_column="survived")

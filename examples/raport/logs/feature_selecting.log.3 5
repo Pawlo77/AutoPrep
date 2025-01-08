@@ -1,0 +1,39 @@
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fitted VarianceFilter, columns with 0 variance: []
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting VarianceFilter
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by dropping 0 zero variance columns.
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: Successfully dropped zero variance columns : []
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by dropping 0 zero variance columns.
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fit_transformed zero variance columns : []
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with top 10.0% important features.
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting FeatureImportanceClassificationSelector with top 10.0% important features.
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting FeatureImportanceClassificationSelector with top 10.0% important features.
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by selecting 2 most important features.
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by selecting 2 most important features.
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with zero variance
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting VarianceFilter
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fitted VarianceFilter, columns with 0 variance: []
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting VarianceFilter
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by dropping 0 zero variance columns.
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: Successfully dropped zero variance columns : []
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by dropping 0 zero variance columns.
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fit_transformed zero variance columns : []
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with top 10.0% important features.
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting FeatureImportanceClassificationSelector with top 10.0% important features.
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting FeatureImportanceClassificationSelector with top 10.0% important features.
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by selecting 2 most important features.
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by selecting 2 most important features.
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with zero variance
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting VarianceFilter
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fitted VarianceFilter, columns with 0 variance: []
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting VarianceFilter
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by dropping 0 zero variance columns.
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: Successfully dropped zero variance columns : []
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by dropping 0 zero variance columns.
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fit_transformed zero variance columns : []
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with top 10.0% important features.
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting FeatureImportanceClassificationSelector with top 10.0% important features.
+2025-01-08 10:03:14 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting FeatureImportanceClassificationSelector with top 10.0% important features.
+2025-01-08 10:03:14 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by selecting 2 most important features.
+2025-01-08 10:03:14 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by selecting 2 most important features.
+2025-01-08 10:03:15 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with correlation threshold 0.8
+2025-01-08 10:03:15 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting CorrelationFilter with threshold 0.8

@@ -1,0 +1,53 @@
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step UniqueFilter. Begining with 12
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step CorrelationSelector. Begining with 12
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploaded 5 steps into 12 steps.
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 0
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder. Begining with 3
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer. Begining with 3
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector. Begining with 6
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step UniqueFilter. Begining with 24
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step CorrelationSelector. Begining with 24
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploaded 6 steps into 24 steps.
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 0
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder. Begining with 3
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer. Begining with 3
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector. Begining with 6
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step UniqueFilter. Begining with 24
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step CorrelationSelector. Begining with 24
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploaded 6 steps into 24 steps.
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 0
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder. Begining with 3
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer. Begining with 3
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector. Begining with 6
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step UniqueFilter. Begining with 24
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step CorrelationSelector. Begining with 24
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploaded 6 steps into 24 steps.
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnScaler. Begining with 0
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step ColumnEncoder. Begining with 3
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step BinningTransformer. Begining with 3
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step OutlierDetector. Begining with 6
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step UniqueFilter. Begining with 24
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploding for step CorrelationSelector. Begining with 24
+2025-01-05 23:47:22 DEBUG auto_prep.preprocessing.handler: Exploaded 6 steps into 24 steps.
+2025-01-05 23:47:22 INFO auto_prep.preprocessing.handler: Fitting pipelines... (3456)
+2025-01-05 23:49:16 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 23:49:16 INFO auto_prep.preprocessing.handler: Extracted 192 pipelines steps.
+2025-01-05 23:49:16 INFO auto_prep.preprocessing.handler: Fitting pipelines... (3456)
+2025-01-05 23:53:40 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 23:53:40 INFO auto_prep.preprocessing.handler: Extracted 192 pipelines steps.
+2025-01-05 23:53:40 INFO auto_prep.preprocessing.handler: Fitting pipelines... (3456)
+2025-01-05 23:55:58 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 23:55:58 INFO auto_prep.preprocessing.handler: Extracted 384 pipelines steps.
+2025-01-05 23:57:26 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 23:57:26 INFO auto_prep.preprocessing.handler: Extracted 384 pipelines steps.
+2025-01-05 23:57:26 INFO auto_prep.preprocessing.handler: Fitting pipelines... (6912)
+2025-01-05 23:58:19 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 23:58:19 INFO auto_prep.preprocessing.handler: Extracted 384 pipelines steps.
+2025-01-05 23:58:19 INFO auto_prep.preprocessing.handler: Exploaded into 6912 pipelines steps.
+2025-01-05 23:58:19 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-05 23:59:06 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-05 23:59:06 INFO auto_prep.preprocessing.handler: 2
+2025-01-05 23:59:06 INFO auto_prep.preprocessing.handler: 4
+2025-01-05 23:59:06 INFO auto_prep.preprocessing.handler: 8
+2025-01-05 23:59:06 INFO auto_prep.preprocessing.handler: 16
+2025-01-05 23:59:06 INFO auto_prep.preprocessing.handler: 32

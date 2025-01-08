@@ -1,0 +1,40 @@
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by dropping 1 highly correlated columns.
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: Successfully transformed CorrelationFilter
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by dropping 1 highly correlated columns.
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fit_transformed CorrelationFilter
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with top 0.7% correlated features.
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting CorrelationSelector with top 0.7% correlated features.
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting CorrelationSelector with top 0.7% correlated features.
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by selecting 9 most correlated features.
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: Successfully transformed CorrelationSelector
+2025-01-08 10:03:33 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by selecting 9 most correlated features.
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with correlation threshold 0.8
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting CorrelationFilter with threshold 0.8
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fitted CorrelationFilter with threshold: 0.8
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting CorrelationFilter with threshold 0.8
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by dropping 1 highly correlated columns.
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: Successfully transformed CorrelationFilter
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by dropping 1 highly correlated columns.
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fit_transformed CorrelationFilter
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with top 0.7% correlated features.
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting CorrelationSelector with top 0.7% correlated features.
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting CorrelationSelector with top 0.7% correlated features.
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by selecting 9 most correlated features.
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: Successfully transformed CorrelationSelector
+2025-01-08 10:03:34 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by selecting 9 most correlated features.
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with correlation threshold 0.8
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting CorrelationFilter with threshold 0.8
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fitted CorrelationFilter with threshold: 0.8
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting CorrelationFilter with threshold 0.8
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by dropping 1 highly correlated columns.
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: Successfully transformed CorrelationFilter
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by dropping 1 highly correlated columns.
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: Successfully fit_transformed CorrelationFilter
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with top 0.7% correlated features.
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting CorrelationSelector with top 0.7% correlated features.
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Fitting CorrelationSelector with top 0.7% correlated features.
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: → Transforming data by selecting 9 most correlated features.
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: Successfully transformed CorrelationSelector
+2025-01-08 10:03:35 DEBUG auto_prep.preprocessing.feature_selecting: ✓ Transforming data by selecting 9 most correlated features.
+2025-01-08 10:03:36 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting and transforming data with correlation threshold 0.8
+2025-01-08 10:03:36 DEBUG auto_prep.preprocessing.feature_selecting: → Fitting CorrelationFilter with threshold 0.8

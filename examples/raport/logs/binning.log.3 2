@@ -1,0 +1,41 @@
+2025-01-08 10:02:53 DEBUG auto_prep.preprocessing.binning: ✓ Transforming BinningTransformer with 4 and binning_method cut
+2025-01-08 10:02:53 DEBUG auto_prep.preprocessing.binning: Successfully fit_transformed data data with BinningTransformer n_bins: 4 and binning_method: cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Fitting ans transforming data with BinningTransformer n_bins: 4 and binning_method: qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Fitting BinningTransformer with 4 binning method : qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: BinningTransformer: calculating bin edges for ticket using qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully fitted BinningTransformer.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: ✓ Fitting BinningTransformer with 4 binning method : qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Transforming BinningTransformer with 4 and binning_method qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: BinningTransformer: transforming column : ticket using qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully transformed data with BinningTransformer
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: ✓ Transforming BinningTransformer with 4 and binning_method qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully fit_transformed data data with BinningTransformer n_bins: 4 and binning_method: qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Fitting ans transforming data with BinningTransformer n_bins: 4 and binning_method: cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Fitting BinningTransformer with 4 binning method : cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: BinningTransformer: calculating bin edges for ticket using cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully fitted BinningTransformer.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: ✓ Fitting BinningTransformer with 4 binning method : cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Transforming BinningTransformer with 4 and binning_method cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: BinningTransformer: transforming column: ticket using cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully transformed data with BinningTransformer
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: ✓ Transforming BinningTransformer with 4 and binning_method cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully fit_transformed data data with BinningTransformer n_bins: 4 and binning_method: cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Fitting ans transforming data with BinningTransformer n_bins: 4 and binning_method: qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Fitting BinningTransformer with 4 binning method : qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: BinningTransformer: calculating bin edges for ticket using qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully fitted BinningTransformer.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: ✓ Fitting BinningTransformer with 4 binning method : qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Transforming BinningTransformer with 4 and binning_method qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: BinningTransformer: transforming column : ticket using qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully transformed data with BinningTransformer
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: ✓ Transforming BinningTransformer with 4 and binning_method qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully fit_transformed data data with BinningTransformer n_bins: 4 and binning_method: qcut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Fitting ans transforming data with BinningTransformer n_bins: 4 and binning_method: cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Fitting BinningTransformer with 4 binning method : cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: BinningTransformer: calculating bin edges for ticket using cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully fitted BinningTransformer.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: ✓ Fitting BinningTransformer with 4 binning method : cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: → Transforming BinningTransformer with 4 and binning_method cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: BinningTransformer: transforming column: ticket using cut
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: Successfully transformed data with BinningTransformer
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.binning: ✓ Transforming BinningTransformer with 4 and binning_method cut

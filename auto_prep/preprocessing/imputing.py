@@ -170,6 +170,10 @@ class CategoricalImputer(Categorical, NAImputer):
 
             for col in available_features:
                 X[col].fillna("Missing", inplace=True)
+                
+            # print how many nans per column
+            logger.debug(X.isnull().sum())
+            
         except Exception as e:
             logger.error(f"Error in CategoricalImputer transform: {e}")
             raise e

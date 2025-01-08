@@ -1,0 +1,41 @@
+2025-01-08 10:02:53 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: []
+2025-01-08 10:02:53 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: ['cabin', 'boat', 'body']
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: []
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: ['cabin', 'boat', 'body']
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: []
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: ['cabin', 'boat', 'body']
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: []
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: ['cabin', 'boat', 'body']
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: []
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: ['cabin', 'boat', 'body']
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: []
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: ['cabin', 'boat', 'body']
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: []
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: → Fitting NAImputer to data with 1047 rows and 13 columns.
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: Columns to be removed due to >50% missing values: ['cabin', 'boat', 'body']
+2025-01-08 10:02:54 DEBUG auto_prep.preprocessing.abstract: ✓ Fitting NAImputer to data with 1047 rows and 13 columns.

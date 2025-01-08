@@ -1,0 +1,40 @@
+2025-01-08 10:03:22 DEBUG auto_prep.preprocessing.scaling: → Fitting ColumnScaler with type 'minmax' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:22 DEBUG auto_prep.preprocessing.scaling: Successfully fitted ColumnScaler with method minmax
+2025-01-08 10:03:22 DEBUG auto_prep.preprocessing.scaling: ✓ Fitting ColumnScaler with type 'minmax' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:22 DEBUG auto_prep.preprocessing.scaling: → Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:22 DEBUG auto_prep.preprocessing.scaling: Successfully transformed ColumnScaler with method minmax
+2025-01-08 10:03:22 DEBUG auto_prep.preprocessing.scaling: ✓ Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:22 DEBUG auto_prep.preprocessing.scaling: Successfully fit_transformed data with ColumnScaler method : minmax
+2025-01-08 10:03:23 DEBUG auto_prep.preprocessing.scaling: → Fitting and transforming data using 'minmax' scaler.
+2025-01-08 10:03:23 DEBUG auto_prep.preprocessing.scaling: → Fitting ColumnScaler with type 'minmax' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:23 DEBUG auto_prep.preprocessing.scaling: Successfully fitted ColumnScaler with method minmax
+2025-01-08 10:03:23 DEBUG auto_prep.preprocessing.scaling: ✓ Fitting ColumnScaler with type 'minmax' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:23 DEBUG auto_prep.preprocessing.scaling: → Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:23 DEBUG auto_prep.preprocessing.scaling: Successfully transformed ColumnScaler with method minmax
+2025-01-08 10:03:23 DEBUG auto_prep.preprocessing.scaling: ✓ Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:23 DEBUG auto_prep.preprocessing.scaling: Successfully fit_transformed data with ColumnScaler method : minmax
+2025-01-08 10:03:24 DEBUG auto_prep.preprocessing.scaling: → Fitting and transforming data using 'robust' scaler.
+2025-01-08 10:03:24 DEBUG auto_prep.preprocessing.scaling: → Fitting ColumnScaler with type 'robust' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:24 DEBUG auto_prep.preprocessing.scaling: Successfully fitted ColumnScaler with method robust
+2025-01-08 10:03:24 DEBUG auto_prep.preprocessing.scaling: ✓ Fitting ColumnScaler with type 'robust' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:24 DEBUG auto_prep.preprocessing.scaling: → Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:24 DEBUG auto_prep.preprocessing.scaling: Successfully transformed ColumnScaler with method robust
+2025-01-08 10:03:24 DEBUG auto_prep.preprocessing.scaling: ✓ Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:24 DEBUG auto_prep.preprocessing.scaling: Successfully fit_transformed data with ColumnScaler method : robust
+2025-01-08 10:03:25 DEBUG auto_prep.preprocessing.scaling: → Fitting and transforming data using 'robust' scaler.
+2025-01-08 10:03:25 DEBUG auto_prep.preprocessing.scaling: → Fitting ColumnScaler with type 'robust' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:25 DEBUG auto_prep.preprocessing.scaling: Successfully fitted ColumnScaler with method robust
+2025-01-08 10:03:25 DEBUG auto_prep.preprocessing.scaling: ✓ Fitting ColumnScaler with type 'robust' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:25 DEBUG auto_prep.preprocessing.scaling: → Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:25 DEBUG auto_prep.preprocessing.scaling: Successfully transformed ColumnScaler with method robust
+2025-01-08 10:03:25 DEBUG auto_prep.preprocessing.scaling: ✓ Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:25 DEBUG auto_prep.preprocessing.scaling: Successfully fit_transformed data with ColumnScaler method : robust
+2025-01-08 10:03:26 DEBUG auto_prep.preprocessing.scaling: → Fitting and transforming data using 'standard' scaler.
+2025-01-08 10:03:26 DEBUG auto_prep.preprocessing.scaling: → Fitting ColumnScaler with type 'standard' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:26 DEBUG auto_prep.preprocessing.scaling: Successfully fitted ColumnScaler with method standard
+2025-01-08 10:03:26 DEBUG auto_prep.preprocessing.scaling: ✓ Fitting ColumnScaler with type 'standard' to data with 1047 rows and 10 columns.
+2025-01-08 10:03:26 DEBUG auto_prep.preprocessing.scaling: → Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:26 DEBUG auto_prep.preprocessing.scaling: Successfully transformed ColumnScaler with method standard
+2025-01-08 10:03:26 DEBUG auto_prep.preprocessing.scaling: ✓ Scaler: Transforming data with 1047 rows and 10 columns.
+2025-01-08 10:03:26 DEBUG auto_prep.preprocessing.scaling: Successfully fit_transformed data with ColumnScaler method : standard
+2025-01-08 10:03:27 DEBUG auto_prep.preprocessing.scaling: → Fitting and transforming data using 'standard' scaler.

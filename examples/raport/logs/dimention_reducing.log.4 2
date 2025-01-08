@@ -1,0 +1,39 @@
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:45 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 12 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 12 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting PCADimentionReducer to data with 1047 rows and 12 columns.
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 09:56:46 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting PCADimentionReducer to data with 1047 rows and 12 columns.

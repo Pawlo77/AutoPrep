@@ -1,0 +1,65 @@
+2025-01-06 00:04:49 INFO auto_prep.utils.abstract: Starting with 0 pipelines
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Extracted 2 steps for .imputer.
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Starting with 0 pipelines
+2025-01-06 00:04:59 CRITICAL auto_prep.utils.abstract: CategoricalRequired
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Extracted 1 steps for .scaler.
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:04:59 CRITICAL auto_prep.utils.abstract: NumericalRequired
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Extracted 1 steps for .encoder.
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:04:59 CRITICAL auto_prep.utils.abstract: CategoricalRequired
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Extracted 1 steps for .binning.
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:04:59 CRITICAL auto_prep.utils.abstract: NumericalNonRequired
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Extracted 1 steps for .outlier_detector.
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:04:59 CRITICAL auto_prep.utils.abstract: NumericalRequired
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Extracted 3 steps for .dimention_reducer.
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Extracted 6 steps for .selector.
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:04:59 CRITICAL auto_prep.utils.abstract: NumericalRequired
+2025-01-06 00:04:59 CRITICAL auto_prep.utils.abstract: CategoricalRequired
+2025-01-06 00:04:59 INFO auto_prep.utils.abstract: After required steps - 3
+2025-01-06 00:04:59 CRITICAL auto_prep.utils.abstract: NumericalNonRequired
+2025-01-06 00:05:28 INFO auto_prep.utils.abstract: Extracted 2 steps for .imputer.
+2025-01-06 00:05:28 INFO auto_prep.utils.abstract: Starting with 0 pipelines
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Extracted 2 steps for .imputer.
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Starting with 0 pipelines
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: CategoricalImputer
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Extracted 1 steps for .scaler.
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: ColumnScaler
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Extracted 1 steps for .encoder.
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: ColumnEncoder
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Extracted 1 steps for .binning.
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: BinningTransformer
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Extracted 1 steps for .outlier_detector.
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: OutlierDetector
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Extracted 3 steps for .dimention_reducer.
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: After required steps - 1
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Extracted 6 steps for .selector.
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: Starting with 1 pipelines
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: CorrelationFilter
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: VarianceFilter
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: UniqueFilter
+2025-01-06 00:05:38 INFO auto_prep.utils.abstract: After required steps - 3
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: CorrelationSelector
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: CorrelationSelector
+2025-01-06 00:05:38 CRITICAL auto_prep.utils.abstract: CorrelationSelector
+2025-01-06 00:06:29 INFO auto_prep.utils.abstract: Extracted 2 steps for .imputer.

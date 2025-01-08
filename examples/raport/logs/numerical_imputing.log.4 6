@@ -1,0 +1,43 @@
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.numerical_imputing: → Transforming data.
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Transforming data.
+2025-01-08 10:03:15 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting and transforming data.
+2025-01-08 10:03:15 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:15 DEBUG auto_prep.preprocessing.numerical_imputing: Identified numeric features: ['pclass', 'age', 'sibsp', 'parch', 'fare']
+2025-01-08 10:03:15 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:15 DEBUG auto_prep.preprocessing.numerical_imputing: → Transforming data.
+2025-01-08 10:03:15 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Transforming data.
+2025-01-08 10:03:16 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting and transforming data.
+2025-01-08 10:03:16 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:16 DEBUG auto_prep.preprocessing.numerical_imputing: Identified numeric features: ['pclass', 'age', 'sibsp', 'parch', 'fare']
+2025-01-08 10:03:16 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:16 DEBUG auto_prep.preprocessing.numerical_imputing: → Transforming data.
+2025-01-08 10:03:16 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Transforming data.
+2025-01-08 10:03:17 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting and transforming data.
+2025-01-08 10:03:17 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:17 DEBUG auto_prep.preprocessing.numerical_imputing: Identified numeric features: ['pclass', 'age', 'sibsp', 'parch', 'fare']
+2025-01-08 10:03:17 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:17 DEBUG auto_prep.preprocessing.numerical_imputing: → Transforming data.
+2025-01-08 10:03:17 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Transforming data.
+2025-01-08 10:03:18 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting and transforming data.
+2025-01-08 10:03:18 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:18 DEBUG auto_prep.preprocessing.numerical_imputing: Identified numeric features: ['pclass', 'age', 'sibsp', 'parch', 'fare']
+2025-01-08 10:03:18 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:18 DEBUG auto_prep.preprocessing.numerical_imputing: → Transforming data.
+2025-01-08 10:03:18 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Transforming data.
+2025-01-08 10:03:19 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting and transforming data.
+2025-01-08 10:03:19 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:19 DEBUG auto_prep.preprocessing.numerical_imputing: Identified numeric features: ['pclass', 'age', 'sibsp', 'parch', 'fare']
+2025-01-08 10:03:19 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:19 DEBUG auto_prep.preprocessing.numerical_imputing: → Transforming data.
+2025-01-08 10:03:19 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Transforming data.
+2025-01-08 10:03:20 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting and transforming data.
+2025-01-08 10:03:20 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:20 DEBUG auto_prep.preprocessing.numerical_imputing: Identified numeric features: ['pclass', 'age', 'sibsp', 'parch', 'fare']
+2025-01-08 10:03:20 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:20 DEBUG auto_prep.preprocessing.numerical_imputing: → Transforming data.
+2025-01-08 10:03:20 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Transforming data.
+2025-01-08 10:03:21 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting and transforming data.
+2025-01-08 10:03:21 DEBUG auto_prep.preprocessing.numerical_imputing: → Fitting NumericalImputer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:21 DEBUG auto_prep.preprocessing.numerical_imputing: Identified numeric features: ['pclass', 'age', 'sibsp', 'parch', 'fare']
+2025-01-08 10:03:21 DEBUG auto_prep.preprocessing.numerical_imputing: ✓ Fitting NumericalImputer to data with 1047 rows and 10 columns.

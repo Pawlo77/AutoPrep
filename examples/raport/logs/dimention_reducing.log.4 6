@@ -1,0 +1,39 @@
+2025-01-08 10:03:02 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 13 columns.
+2025-01-08 10:03:02 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 13 columns.
+2025-01-08 10:03:03 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 6
+2025-01-08 10:03:03 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 13 columns.
+2025-01-08 10:03:03 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 9 columns.
+2025-01-08 10:03:04 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 4
+2025-01-08 10:03:04 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 9 columns.
+2025-01-08 10:03:04 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 9 columns.
+2025-01-08 10:03:05 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 4
+2025-01-08 10:03:05 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 9 columns.
+2025-01-08 10:03:05 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 9 columns.
+2025-01-08 10:03:06 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 4
+2025-01-08 10:03:06 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 9 columns.
+2025-01-08 10:03:06 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:07 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 5
+2025-01-08 10:03:07 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:07 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:07 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 5
+2025-01-08 10:03:07 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:07 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:08 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 5
+2025-01-08 10:03:08 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 10 columns.
+2025-01-08 10:03:08 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:09 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 10:03:09 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:09 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:10 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 10:03:10 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:10 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:11 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:12 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
+2025-01-08 10:03:13 DEBUG auto_prep.preprocessing.dimention_reducing: ✓ Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:14 DEBUG auto_prep.preprocessing.dimention_reducing: → Fitting UMAPDimentionReducer to data with 1047 rows and 2 columns.
+2025-01-08 10:03:14 DEBUG auto_prep.preprocessing.dimention_reducing: Number of components selected: 1
