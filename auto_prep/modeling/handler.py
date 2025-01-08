@@ -142,6 +142,7 @@ class ModelHandler:
                         {
                             "name": model_cls.__name__,
                             "unique params distributions checked": n_runs,
+                            "param_grid": model_cls.PARAM_GRID,
                         }
                     )
                     self._unique_models_params_checked += n_runs
@@ -223,10 +224,22 @@ class ModelHandler:
 
         model_meta = pd.DataFrame(self._model_meta)
         raport.add_table(
-            model_meta.values.tolist(),
+            model_meta[["name", "unique params distributions checked"]].values.tolist(),
             caption="Used models.",
-            header=model_meta.columns,
+            header=["name", "unique params distributions checked"],
         )
+
+        for model, param_grid in model_meta[["name", "param_grid"]].values.tolist():
+            if isinstance(param_grid, dict):
+                raport.add_table(
+                    param_grid,
+                    caption=f"Param grid for model {model}.",
+                )
+            else:
+                raport.add_table(
+                    {i: json.dumps(v) for i, v in enumerate(param_grid)},
+                    caption=f"Param grid for model {model}.",
+                )
 
         for idx, model_results in enumerate(self._best_models_results):
             raport.add_subsection(f"Scores for {idx}th best model")

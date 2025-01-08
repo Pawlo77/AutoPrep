@@ -2,7 +2,7 @@ import logging
 from auto_prep.utils import config
 
 config.update(
-    perform_only_required_=False, raport_decimal_precision=2, log_level=logging.INFO
+    perform_only_required_=True, raport_decimal_precision=2, log_level=logging.INFO
 )
 
 import openml
