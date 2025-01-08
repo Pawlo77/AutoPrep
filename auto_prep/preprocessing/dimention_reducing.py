@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import umap
+import umap.umap_ as umap
 from sklearn.decomposition import PCA
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
