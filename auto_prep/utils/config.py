@@ -129,6 +129,7 @@ class GlobalConfig:
         ),
         regression_pipeline_scoring_func: callable = mean_squared_error,
         classification_pipeline_scoring_func: callable = roc_auc_score,
+        classification_score: str = "ROC AUC",
         max_workers: int = None,
     ):
         """

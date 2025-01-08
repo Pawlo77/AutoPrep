@@ -91,8 +91,8 @@ class PreprocessingHandler(ModulesHandler):
         for step_name, package_name in [
             ("Imputting missing data.", ".imputing"),
             ("Removing redundant columns.", ".redundancy_filtering"),
-            ("Scaling data.", ".scaling"),
             ("Encoding data.", ".encoding"),
+            ("Scaling data.", ".scaling"),
             ("Features selection.", ".feature_selecting"),
             ("Binning data.", ".binning"),
             ("Dinemtionality reduction.", ".dimention_reducing"),

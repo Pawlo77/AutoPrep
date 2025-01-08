@@ -10,6 +10,7 @@ from pylatex import (
     Subsection,
     Table,
     Tabular,
+    Itemize
 )
 from pylatex.package import Package
 
@@ -189,7 +190,37 @@ class Raport:
         except Exception as e:
             logger.error(f"Failed to add figure {path}: {str(e)}")
             raise
-
+        
+    def add_text(self, text: str) -> None: 
+        """     Adds plain text to the LaTeX document.   
+        Args:         text (str): The text to add to the document.     """
+        try:         
+            self.doc.append(text)    
+        except Exception as e:
+            logger.error(f"Failed to add text: {str(e)}") 
+            raise
+    
+    def add_list(self, items: list, caption: str = None) -> None:
+        """
+        Adds a bullet-point list to the document.
+ 
+        Args:
+            items (list): List of items to include in the bullet-point list.
+            caption (str, optional): Optional caption or description above the list.
+        """
+        try:
+            if caption:
+                self.doc.append(NoEscape(r"\newline"))
+                self.doc.append(NoEscape(r"\text{" + caption + "}"))
+                self.doc.append(NoEscape(r"\newline"))
+ 
+            with self.doc.create(Itemize()) as itemize:
+                for item in items:
+                    itemize.add_item(str(item))
+        except Exception as e:
+            logger.error(f"Failed to add list: {str(e)}")
+            raise
+        
     def add_verbatim(self, content: str) -> str:
         """Add verbatim text to the document.
 
