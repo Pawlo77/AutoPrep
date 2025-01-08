@@ -60,7 +60,6 @@ class ModelDecisionTreeClassifier(DecisionTreeClassifier, Classifier):
             random_state=random_state,
             **kwargs,
         )
-        logger.info("Decision Tree Classifier model initialized.")
 
     def to_tex(self) -> dict:
         """

@@ -53,6 +53,9 @@ class EdaRaport:
 
         eda_section = raport.add_section("Eda")  # noqa: F841
 
+        section_desc = "This part of the report provides basic insides to the data and the informations it holds.."
+        raport.add_text(section_desc)
+
         for visualizer_name, charts_dt in self.charts_dt.items():
             raport.add_subsection(visualizer_name[: -len("Visualizer")])
 

@@ -1,244 +1,390 @@
-import importlib
-import inspect
-import pandas as pd
-from typing import Dict, List, Union
-from sklearn.metrics import roc_auc_score
+import json
+import logging
+import os
+from time import time
+from typing import List, Union
+
+import humanize
 import joblib
 import numpy as np
-import os
-
+import pandas as pd
+from sklearn.base import BaseEstimator
 from sklearn.model_selection import RandomizedSearchCV
-from ..utils.abstract import Classifier, Regressor
+from sklearn.pipeline import Pipeline
+from tqdm import tqdm
+
+from ..utils.abstract import Classifier, ModulesHandler, Regressor
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
+from ..utils.other import save_model
 
 logger = setup_logger(__name__)
+
+format_shape: callable = lambda df: f"{df.shape[0]} samples, {df.shape[1]} features"
+
+
+def custom_sort(key_value):
+    key, _ = key_value
+    key_lower = key.lower()
+
+    # Check if key ends with "time"
+    if key_lower.endswith("time"):
+        return (2, key)  # Time keys come last
+    # Check if key contains "score"
+    elif "score" in key_lower:
+        return (1, key)  # Score keys come after regular keys
+    else:
+        return (0, key)
 
 
 class ModelHandler:
     """
     Class responsible for loading and handling machine learning models and pipelines.
     """
-    
-    NUMBER_OF_MODELS = 3
 
     def __init__(self):
-        """
-        Initializes an instance of ModelHandler.
-        """
-        self._pipelines: Dict = {"file_name": [], "pipeline": []}
-        self.regression_models: List = []
-        self.classification_models: List = []
-        self.modules: List = []
-        self.results = pd.DataFrame()
-        self.tuned_results = pd.DataFrame()
-        self.task: str = None
+        self._task: str = None
+        self._data_meta: dict = {}
+        self._model_meta: List[dict] = []
+        self._unique_models_params_checked: int = 0
+        self._scoring_func = None
 
-    def load_pipelines(self):
+        self._models_classes: List[BaseEstimator] = []
+        self._pipelines: List[BaseEstimator] = []
+        self._pipelines_names: List[str] = []
+        self._results: List[dict] = []
+        self._stats: List[dict] = []
+        self._best_models_results: List[dict] = []
+
+    def run(
+        self,
+        X_train: pd.DataFrame,
+        y_train: pd.Series,
+        X_valid: pd.DataFrame,
+        y_valid: pd.Series,
+        X_test: pd.DataFrame,
+        y_test: pd.Series,
+        task: str,
+    ):
         """
-        Loads pipelines from the specified directory and stores them in the `_pipelines` attribute.
+        Performs models fitting and selection.
+
+        Args:
+            X_train (pd.DataFrame): Training feature dataset.
+            y_train (pd.Series): Training target dataset.
+            X_valid (pd.DataFrame): Validation feature dataset.
+            y_valid (pd.Series): Validation target dataset.
+            X_test (pd.DataFrame): Test feature dataset.
+            y_test (pd.Series): Test target dataset.
+            task (str): regiression / classification
         """
-        logger.start_operation("Loading pipelines.")
-        try:
-            for file_name in os.listdir(config.pipelines_dir):
-                if file_name.endswith(".joblib"):
-                    self._pipelines["file_name"].append(file_name)
-                    pipeline = joblib.load(
-                        os.path.join(config.pipelines_dir, file_name)
+        self._task = task
+        self._data_meta = {
+            "train": format_shape(X_train),
+            "valid": format_shape(X_valid),
+            "test": format_shape(X_test),
+        }
+
+        self._models_classes = ModelHandler.load_models(task)
+        pipelines, pipelines_file_names = ModelHandler.load_pipelines()
+
+        self._scoring_func = (
+            config.classification_pipeline_scoring_func
+            if task == "classification"
+            else config.regression_pipeline_scoring_func
+        )
+
+        logger.start_operation("Tuning models...")
+        logger.info(
+            f"Will train {len(self._models_classes)} for each of {len(pipelines)} preprocessing pipelines."
+        )
+        for idx, (pipeline, pipeline_file_name) in enumerate(
+            zip(pipelines, pipelines_file_names)
+        ):
+            try:
+                X_train_cur = pipeline.transform(X_train)
+                X_valid_cur = pipeline.transform(X_valid)
+            except Exception as e:
+                raise Exception(
+                    f"Faulty preprocessing pipeline {pipeline_file_name}"
+                ) from e
+
+            gen = self._models_classes
+            if logger.level >= logging.INFO:
+                gen = tqdm(
+                    gen, desc=f"Tuning models for pipeline number {idx}", unit="model"
+                )
+            for model_cls in gen:
+                try:
+                    info, results, n_runs = ModelHandler.tune_model(
+                        scoring_func=self._scoring_func,
+                        model_cls=model_cls,
+                        best_k=config.max_models,
+                        X_train=X_train_cur,
+                        y_train=y_train,
+                        X_valid=X_valid_cur,
+                        y_valid=y_valid,
                     )
-                    self._pipelines["pipeline"].append(pipeline)
-                    logger.debug(f"Pipeline {pipeline} loaded.")
-            logger.error(f"Loaded {len(self._pipelines)} pipelines.")
+                except Exception as e:
+                    raise Exception(f"Failed to tune {model_cls.__name__}") from e
+
+                info["Preprocessing pipeline name"] = pipeline_file_name
+                for r in results:
+                    r["Preprocessing pipeline name"] = pipeline_file_name
+                    r["Preprocessing pipeline"] = pipeline
+                    r["Model cls"] = model_cls
+
+                self._stats.append(info)
+                self._results.extend(results)
+
+                if idx == 0:
+                    self._model_meta.append(
+                        {
+                            "name": model_cls.__name__,
+                            "unique params distributions checked": n_runs,
+                        }
+                    )
+                    self._unique_models_params_checked += n_runs
+
+        logger.end_operation()
+
+        self._results = sorted(
+            self._results,
+            key=lambda x: (
+                x["mean_test_score"],
+                x["std_test_score"],
+                -x["std_fit_time"],
+            ),
+        )
+
+        logger.start_operation("Re-training best models...")
+        logger.info(f"Re-training for up to {config.max_models} best models.")
+        gen = self._results[: config.max_models]
+        if logger.level >= logging.INFO:
+            gen = tqdm(gen, desc="Re-training best models...", unit="model")
+        for idx, result in enumerate(gen):
+            model_cls = result.pop("Model cls")
+            pipeline = result.pop("Preprocessing pipeline")
+            pipeline_file_name = result.pop("Preprocessing pipeline name")
+
+            X_train_cur = pipeline.transform(X_train)
+            X_valid_cur = pipeline.transform(X_valid)
+            X_test_cur = pipeline.transform(X_test)
+
+            model = model_cls(**result["params"])
+
+            X_combined = np.vstack([X_train_cur, X_valid_cur])
+            y_combined = pd.concat([y_train, y_test], axis=0)
+
+            t0 = time()
+            model.fit(X_combined, y_combined)
+            result["re-training time"] = time() - t0
+
+            y_combined_pred = model.predict(X_combined)
+            y_test_pred = model.predict(X_test_cur)
+
+            combined_score = self._scoring_func(y_combined, y_combined_pred)
+            test_score = self._scoring_func(y_test, y_test_pred)
+
+            result["name"] = model_cls.__name__
+            result["params"] = json.dumps(result["params"])
+            result["combined Score (after re-training)"] = combined_score
+            result["test Score (after re-training)"] = test_score
+
+            final_pipeline_name = f"final_pipeline_{idx}.joblib"
+            result["final pipeline name"] = final_pipeline_name
+            self._best_models_results.append(result)
+
+            final_model = Pipeline([("preprocessing", pipeline), ("predicting", model)])
+            save_model(final_pipeline_name, final_model)
+
+        logger.end_operation()
+
+    def write_to_raport(self, raport):
+        """Writes overview section to a raport"""
+
+        modeling_section = raport.add_section("Modeling")  # noqa: F841
+
+        section_desc = f"This part of the report presents the results of the modeling process. It was configured to create up to {config.max_models} models."
+        raport.add_text(section_desc)
+
+        raport.add_subsection("Overview")
+        overview = {
+            "task": self._task,
+            "unique models param sets checked (for each dataset)": self._unique_models_params_checked,
+            "unique models": len(self._models_classes),
+            "scoring function": self._scoring_func.__name__,
+            "search parameters": json.dumps(config.tuning_params),
+            **self._data_meta,
+        }
+        raport.add_table(
+            overview, caption="General input data overview.", widths=[40, 120]
+        )
+
+        model_meta = pd.DataFrame(self._model_meta)
+        raport.add_table(
+            model_meta.values.tolist(),
+            caption="Used models.",
+            header=model_meta.columns,
+        )
+
+        for idx, model_results in enumerate(self._best_models_results):
+            raport.add_subsection(f"Scores for {idx}th best model")
+
+            for k in model_results.keys():
+                if k.endswith("time"):
+                    model_results[k] = humanize.naturaldelta(model_results[k])
+                elif "score" in k.lower():
+                    model_results[k] = round(
+                        model_results[k], config.raport_decimal_precision
+                    )
+
+            model_results = [
+                f"{k}: {v}" for k, v in sorted(model_results.items(), key=custom_sort)
+            ]
+            raport.add_list(model_results)
+
+        return raport
+
+    @staticmethod
+    def load_models(task: str) -> List[BaseEstimator]:
+        logger.start_operation("Loading models...")
+        package = ModulesHandler.get_subpackage(__file__)
+        modules = ModelHandler.load_modules(package=os.path.dirname(__file__))
+
+        classes = []
+        for module in modules:
+            classes.extend(
+                ModulesHandler.load_classes(module_name=module, package=package)
+            )
+
+        models_classes = []
+        for classes in classes:
+            if task == "regression" and issubclass(classes, Regressor):
+                models_classes.append(classes)
+            elif task == "classification" and issubclass(classes, Classifier):
+                models_classes.append(classes)
+
+        logger.debug(f"Loaded {models_classes} models.")
+        logger.end_operation()
+        return models_classes
+
+    @staticmethod
+    def load_modules(package: str) -> List[str]:
+        """
+        Loads modules from the specified package that contains models
+        (start with model_).
+
+        Args:
+            package (str): The package to load modules from.
+        Returns:
+            List[str]: found module names.
+        """
+        modules = []
+        for file_name in os.listdir(package):
+            if file_name.startswith("model_") and file_name.endswith(".py"):
+                modules.append(f".{os.path.splitext(file_name)[0]}")
+        logger.debug(f"Found model modules: {modules}")
+        return modules
+
+    def load_pipelines() -> Union[List[BaseEstimator], List[str]]:
+        """
+        Loads pipelines from the directory specified in config.
+
+        Returns:
+            List[BaseEstimator]: loaded pipelines.
+            List[str]: pipelines file names.
+        """
+        logger.start_operation("Loading pipelines...")
+
+        pipelines = []
+        file_names = []
+
+        for file_name in os.listdir(config.pipelines_dir):
+            if file_name.endswith(".joblib") and file_name.startswith("preprocessing_"):
+                file_names.append(file_name)
+
+        file_names = sorted(file_names)
+        try:
+            for file_name in file_names:
+                pipeline = joblib.load(os.path.join(config.pipelines_dir, file_name))
+                pipelines.append(pipeline)
+            return pipelines, file_names
         except Exception as e:
             logger.error(f"Error in loading pipelines: {e}")
             raise e
         finally:
             logger.end_operation()
 
-    def load_and_group_classes(self, module_name: str, package: str):
+    @staticmethod
+    def tune_model(
+        scoring_func: callable,
+        model_cls: BaseEstimator,
+        best_k: int,
+        X_train: pd.DataFrame,
+        y_train: pd.Series,
+        X_valid: pd.DataFrame = None,
+        y_valid: pd.Series = None,
+    ) -> Union[dict, List[dict], int]:
         """
-        Loads and groups classes from the specified module and package.
+        Tunes a model's hyperparameters using RandomizedSearchCV and returns the best model and related information.
 
         Args:
-            module_name (str): The name of the module to import classes from.
-            package (str): The package where the module is located.
+            scoring_func (Callable): Scoring function for evaluating models.
+            model_cls (BaseEstimator): Model class to be trained.
+            best_k (int): Return up to k best models params.
+            X_train (pd.DataFrame): Training feature dataset.
+            y_train (pd.Series): Training target dataset.
+            X_valid (pd.DataFrame, optional): Validation feature dataset. Defaults to None.
+            y_valid (pd.Series, optional): Validation target dataset. Defaults to None.
+
+        Returns:
+            dict: training meta info
+            List[dict]: results
+            int: models tested
         """
-        print(f"importing classes from {module_name}")
-        logger.debug(f"Importing classes from {module_name}")
-        print("module_name: ", module_name)
-        module = importlib.import_module(module_name, package=package)
+        if not hasattr(model_cls, "PARAM_GRID"):
+            raise AttributeError("Model class must define a PARAM_GRID attribute.")
 
-        print(f"module: {module}")
-        classes = [
-            cls
-            for _, cls in inspect.getmembers(module, inspect.isclass)
-            if cls.__module__.endswith(module_name)
-        ]
+        logger.debug(f"Tuning model {model_cls.__name__}")
 
-        logger.debug(f"Found following classes: {classes}")
+        random_search = RandomizedSearchCV(
+            estimator=model_cls(),
+            param_distributions=model_cls.PARAM_GRID,
+            scoring=scoring_func,
+            **config.tuning_params,
+        )
 
-        for name, cls in inspect.getmembers(module, inspect.isclass):
-            if issubclass(cls, (Regressor, Classifier)) and cls.__module__ == module.__name__:
-                if issubclass(cls, Regressor):
-                    self.regression_models.append(cls())
-                else:
-                    self.classification_models.append(cls())
-                print(f"Added model: {name}")
+        t0 = time()
 
-    def load_modules(self, package: str):
-        """
-        Loads modules from the specified package and stores their names in the `modules` attribute.
+        # Fit with or without validation set
+        fit_params = {}
+        if X_valid is not None and y_valid is not None:
+            if hasattr(model_cls, "eval_set"):
+                fit_params.update(
+                    {
+                        "eval_set": [(X_valid, y_valid)],
+                        "eval_metric": scoring_func,
+                        "early_stopping_rounds": 10,
+                    }
+                )
+        random_search.fit(X_train, y_train, **fit_params)
 
-        Args:
-            package (str): The package to load modules from.
-        """
-        package = os.path.abspath(package)
-        print(f"package: {package}")
-        print(f"package: {os.listdir(package)}")
+        info = {
+            "search_time": time() - t0,
+            "best_score": random_search.best_score_,
+            "best_index": random_search.best_index_,
+        }
+        results = pd.DataFrame(random_search.cv_results_)
+        sorted_results = results.sort_values(by="mean_test_score", ascending=False)
+        top_models_stats = sorted_results.head(best_k)[
+            [
+                "params",
+                "mean_test_score",
+                "std_test_score",
+                "mean_fit_time",
+                "std_fit_time",
+            ]
+        ].to_dict(orient="records")
 
-        for file_name in os.listdir(package):
-            if file_name.startswith("Model"):
-                module_name = f".{file_name[:-3]}"
-                print(f"module_: {module_name}")
-                self.modules.append(module_name)
-        print(self.modules)
-
-    def load_and_group_all_classes(self, package: str):
-        """
-        Loads and groups all classes from the modules stored in the `modules` attribute.
-
-        Args:
-            package (str): The package where the modules are located.
-        """
-        for module_name in self.modules:
-            self.load_and_group_classes(module_name, package)
-
-    def fit_all_models(self, 
-                       X_train: pd.DataFrame, 
-                       X_valid: pd.DataFrame, 
-                       y_train: pd.Series,
-                       y_valid: pd.Series, 
-                       task: str):
-        """
-        Fits all the loaded models with the given data.
-
-        Args:
-            X (pd.DataFrame): The input features.
-            y (pd.Series): The target variable.
-            task (str): The type of task (classification or regression).
-        """
-        print("starting")
-        for pipeline in self._pipelines["pipeline"]:
-            
-            print("Fitting pipeline: ", pipeline)
-            X_transformed = pipeline.transform(X_train)
-            print(X_transformed.head())
-            if task == "classification":
-                for model in self.classification_models:
-                    print("Fitting model: ", model)
-                    model.fit(X_transformed, y_train)
-                    predictions = model.predict(pipeline.transform(X_valid))
-                    auc = config.classification_pipeline_scoring_func(y_valid, predictions)
-                    pipeline_file_name = self._pipelines["file_name"][self._pipelines["pipeline"].index(pipeline)]
-                    self.results = self.results.append({"model": model, "roc_auc": auc, "pipeline": pipeline_file_name, "X_transformed": X_transformed}, ignore_index=True)
-        self.results = self.results.sort_values(by="roc_auc", ascending=False).head(self.NUMBER_OF_MODELS)
-               
-    
-    def hyperparameter_tuning(self, y_train: pd.Series):
-        self.tuned_results = pd.DataFrame({"model": [], "params": [], "pipeline": [], "roc_auc": []})
-        
-        for i in range(self.NUMBER_OF_MODELS):
-            model = self.results["model"].iloc[i]
-            logger.info(f"Hyperparameter tuning for model: {model}")
-            params = model.PARAM_GRID
-            logger.info(f"Parameters: {params}")
-            random_search = RandomizedSearchCV(estimator=model, param_distributions=params, cv=3, verbose=2, random_state=42, n_jobs=-1, scoring="roc_auc")
-            random_search.fit(self.results["X_transformed"].iloc[i], y_train)
-            logger.info("random search fitted")
-            logger.info(f"Best params: {random_search.best_params_}")
-            pipeline = self.results["pipeline"].iloc[i]
-            self.tuned_results = self.tuned_results.append({"model": model, "params": random_search.best_params_, "pipeline": pipeline,  "roc_auc": random_search.best_score_}, ignore_index=True)
-        self.tuned_results = self.tuned_results.sort_values(by="roc_auc", ascending=False)
-    
-    
-    def write_to_raport(self, raport):
-        
-        raport.add_section(f"Modeling")
-        raport.add_subsection("Overview")
-        if self.task == "classification":
-            report_models = self.classification_models
-            score = "ROC AUC"
-        else:
-            report_models = self.regression_models 
-            score = "R2"
-        
-        section_desc = f"This part of the report presents the results of the modeling process. There were {len(report_models)} {self.task} models trained and {self.NUMBER_OF_MODELS} of them selected based on the {score} score."
-        raport.add_text(section_desc)
-        raport.add_list([model.to_tex()["name"] for model in report_models], caption="Models used in the modeling process")
-        table_desc = f"The table below presents the results of the modeling process on default parameters for each of the best piplelines. The models are sorted by the {score} score in descending order."
-        raport.add_text(table_desc)
-        modified_results = self.results.copy()
-        modified_results.drop(columns=["X_transformed"], inplace=True)
-        modified_results["pipeline"] = modified_results["pipeline"].apply(lambda x: x[:-7])
-        modified_results["model"] = modified_results["model"].apply(lambda x: x.to_tex()["name"])
-        modified_results["roc_auc"] = modified_results["roc_auc"].apply(lambda x: round(x, 5))
-        modified_results = modified_results.to_dict(orient="list")
-        modified_results = list(zip(modified_results['model'], modified_results['roc_auc'], modified_results['pipeline']))
-        logger.info(f"modified_results: {modified_results}")
-        raport.add_table(data= modified_results , caption="Results of the modeling process on default parameters", header=["Model", "AUC Score", "Pipeline"], widths=[30, 20, 50])  
-        
-        raport.add_subsection("Hyperparameter tuning")
-        section_desc = f"This section presents the results of the hyperparameter tuning process for the best {self.NUMBER_OF_MODELS} models using RandomizedSearchCV."
-        params_desc = f"The following parameters grids were used for hyperparameter tuning:"
-        raport.add_text(section_desc)
-        raport.add_text(params_desc)
-        
-        model_set = set()
-        param_grids = []
-        for i in range(self.NUMBER_OF_MODELS):
-            model = self.results["model"].iloc[i]
-            param_grid = model.PARAM_GRID
-            param_grids.append(param_grid)
-            if model not in model_set:
-                model_set.add(model)
-                model_name = model.to_tex()["name"]
-                raport.add_table(data=param_grid, caption=f"Parameter grid for {model_name}", header=["Parameter", "Values"], widths=[30, 70])
-        
-        tuned_results_desc = f"The table below presents the results of the hyperparameter tuning process for the best {self.NUMBER_OF_MODELS} models. The models are sorted by the {score} score in descending order."
-        raport.add_text(tuned_results_desc)
-        modified_results = self.tuned_results.copy()
-        modified_results["pipeline"] = modified_results["pipeline"].apply(lambda x: x[:-7])
-        modified_results["model"] = modified_results["model"].apply(lambda x: x.to_tex()["name"])
-        modified_results["roc_auc"] = modified_results["roc_auc"].apply(lambda x: round(x, 5))
-        modified_results = modified_results.to_dict(orient="list")
-        modified_results = list(zip(modified_results['model'], modified_results['params'], modified_results['pipeline'], modified_results['roc_auc'], ))
-        logger.info(f"modified_results: {modified_results}")
-        raport.add_table(data= modified_results , caption="Results of the hyperparameter tuning process on default parameters", header=["Model", "Params", "Pipeline", "ROC AUC"], widths=[15, 50, 60, 10])  
-        
-        
-        return raport
-        
-        
-        
-        
-    def run(self,
-                X_train: pd.DataFrame, 
-                X_valid: pd.DataFrame, 
-                y_train: pd.Series,
-                y_valid: pd.Series, 
-                task: str):
-        self.task = task
-        self.load_pipelines()
-        self.load_modules(package="../auto_prep/modeling")
-        self.load_and_group_all_classes(package="auto_prep.modeling")
-        
-        self.fit_all_models(X_train, X_valid, y_train, y_valid, task)
-        self.hyperparameter_tuning(y_train)
-        return self.tuned_results
-                    
-            
-
-        
-        
-        
-
+        return info, top_models_stats, len(results)

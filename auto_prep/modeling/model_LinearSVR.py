@@ -1,5 +1,3 @@
-import warnings
-
 from sklearn.svm import LinearSVR
 
 from ..utils.abstract import Regressor
@@ -35,9 +33,6 @@ class ModelLinearSVR(LinearSVR, Regressor):
         super().__init__(
             epsilon=epsilon, C=C, loss=loss, fit_intercept=fit_intercept, **kwargs
         )
-        logger.start_operation("Initializing LinearSVR model.")
-        warnings.filterwarnings("ignore")
-        logger.end_operation()
 
     def to_tex(self) -> dict:
         """

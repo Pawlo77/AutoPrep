@@ -3,13 +3,13 @@ from typing import Callable
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+from .modeling.handler import ModelHandler
 from .preprocessing.handler import PreprocessingHandler
 from .raporting.eda import EdaRaport
 from .raporting.overview import OverviewRaport
 from .raporting.raport import Raport
 from .utils.config import config
 from .utils.logging_config import setup_logger
-from .modeling.handler import ModelHandler
 
 logger = setup_logger(__name__)
 
@@ -113,14 +113,20 @@ class AutoPrep:
                 y_valid=y_valid,
                 task=task,
             )
-            logger.info("Preprocessing finished.")
-            logger.info("Starting modeling.")
-            logger.info("Model handler created.")
-            tuned_results = self.model_handler.run(X_train, X_valid, y_train, y_valid, task)
-            logger.info(f"Tuned results: {tuned_results}")
-            
-        
-            
+
+            """
+            Modeling
+            """
+            self.model_handler.run(
+                X_train=X_train,
+                y_train=y_train,
+                X_valid=X_valid,
+                y_valid=y_valid,
+                X_test=X_test,
+                y_test=y_test,
+                task=task,
+            )
+
         except Exception as e:
             logger.error(f"Pipeline run failed: {e}")
             raise
@@ -149,11 +155,12 @@ class AutoPrep:
         Preprocessing
         """
         self.preprocessing_handler.write_to_raport(raport)
-    
-        """ Modeling
+
+        """
+        Modeling
         """
         self.model_handler.write_to_raport(raport)
-        
+
         raport.generate()
         logger.end_operation()
 

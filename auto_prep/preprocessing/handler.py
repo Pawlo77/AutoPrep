@@ -46,7 +46,7 @@ def _score_pipeline(pipeline, X_train, y_train, X_valid, y_valid, model, score_f
     return score, duration
 
 
-class PreprocessingHandler(ModulesHandler):
+class PreprocessingHandler:
     def __init__(self):
         self._pipeline_steps: List[List[Step]] = []
         self._pipeline_steps_exploded: List[List[Step]] = []
@@ -72,6 +72,13 @@ class PreprocessingHandler(ModulesHandler):
     ):
         """
         Performs dataset preprocessing and scoring.
+
+        Args:
+            X_train (pd.DataFrame): Training feature dataset.
+            y_train (pd.Series): Training target dataset.
+            X_valid (pd.DataFrame): Validation feature dataset.
+            y_valid (pd.Series): Validation target dataset.
+            task (str): regiression / classification
         """
 
         logger.start_operation("Preprocessing.")
@@ -185,6 +192,9 @@ class PreprocessingHandler(ModulesHandler):
         """Writes overview section to a raport"""
 
         preprocessing_section = raport.add_section("Preprocessing")  # noqa: F841
+
+        section_desc = f"This part of the report presents the results of the preprocessing process. It was configured to create up to {config.max_datasets_after_preprocessing} unique preprocessing pipelines."
+        raport.add_text(section_desc)
 
         pipeline_scores_description = self._pipelines_scores.describe().to_dict()
         prefixed_pipeline_scores_description = {

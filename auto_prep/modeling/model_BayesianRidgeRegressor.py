@@ -65,7 +65,6 @@ class ModelBayesianRidgeRegressor(BayesianRidge, Regressor):
             lambda_2=lambda_2,
             **kwargs,
         )
-        logger.info("Bayesian Ridge Regressor model initialized.")
 
     def to_tex(self) -> dict:
         """

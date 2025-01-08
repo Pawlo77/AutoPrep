@@ -75,6 +75,15 @@ DEFAULT_OUTLIER_DETECTOR_SETTINGS: dict = {
 DEFAULT_IMPUTTER_SETTINGS: dict = {
     "categorical_strategy": "most_frequent",
     "numerical_strategy": "mean",
+    "n_iter": 10,
+}
+
+DEFAULT_TUNING_PARAMS: dict = {
+    "cv": 3,
+    "verbose": 0,
+    "n_jobs": -1,
+    "random_state": 42,
+    "n_iter": 10,
 }
 
 
@@ -129,8 +138,9 @@ class GlobalConfig:
         ),
         regression_pipeline_scoring_func: callable = mean_squared_error,
         classification_pipeline_scoring_func: callable = roc_auc_score,
-        classification_score: str = "ROC AUC",
         max_workers: int = None,
+        tuning_params: dict = DEFAULT_TUNING_PARAMS,
+        max_models: int = 3,
     ):
         """
         Args:
@@ -200,6 +210,8 @@ class GlobalConfig:
             n_bins (int) - number of bins to create while binning numerical features.
             outlier_detector_method (str) - method used for outlier detection. Default "zscore".
             max_workers (int) - maximum number of cores to evaluate on.
+            tuning_params (dict) - Tuning params for RandomizedSearchCV.
+            max_models (int) - Maximum number of final models to save and raport.
         """
         assert (
             isinstance(raport_name, str) and raport_name != ""
@@ -300,6 +312,10 @@ class GlobalConfig:
         self.outlier_detector_method = outlier_detector_method
 
         self.max_workers = max_workers
+        self.tuning_params = tuning_params
+
+        assert max_models > 0, "Invalid value"
+        self.max_models = max_models
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""
