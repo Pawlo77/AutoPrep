@@ -28,5 +28,5 @@ X, _, _, _ = data.get_data(dataset_format="dataframe")
 pipeline = AutoPrep()
 
 if __name__ == "__main__":
-    print(X.head())
     pipeline.run(X, target_column="CL")
+    # pipeline.run(data, target_column="survived")

@@ -19,7 +19,7 @@ class OverviewRaport:
         self.descr_num: pd.DataFrame = None
         self.descr_cat: pd.DataFrame = None
 
-    def run(self, X: pd.DataFrame, y: pd.Series):
+    def run(self, X: pd.DataFrame, y: pd.Series, task: str):
         """Performs dataset overview."""
 
         logger.start_operation("Overview.")
@@ -31,12 +31,10 @@ class OverviewRaport:
             raise e
 
         try:
-            logger.info("numeric features")
             numeric_features = X.select_dtypes(include=[np.number]).columns
             categorical_features = X.select_dtypes(exclude=[np.number]).columns
 
             # Basic statistics
-            logger.info("dataset summary")
             self.dataset_summary = {
                 "Number of samples": len(X),
                 "Number of features": len(X.columns),
@@ -44,13 +42,12 @@ class OverviewRaport:
                 "Number of categorical features": len(categorical_features),
             }
 
-            logger.info("target distribution")
-            value_counts = y.value_counts()
-            normalized_counts = y.value_counts(normalize=True)
-            self.target_distibution = list(
-                zip(value_counts.index, value_counts.values, normalized_counts.values)
-            )
-            logger.info("misiiing values")
+            if task == "classification":
+                value_counts = y.value_counts()
+                normalized_counts = y.value_counts(normalize=True)
+                self.target_distibution = list(
+                    zip(value_counts.index, value_counts.values, normalized_counts.values)
+                )
             missing_value_counts = X.isnull().sum()
             normalized_missing_counts = X.isnull().sum() / len(X)
             self.missing_values = list(
@@ -60,7 +57,6 @@ class OverviewRaport:
                     normalized_missing_counts.values,
                 )
             )
-            logger.info(" features details")
             self.features_details = [
                 (
                     feature,
@@ -70,7 +66,6 @@ class OverviewRaport:
                 )
                 for feature in X.columns
             ]
-            logger.info("debug")
             logger.debug(
                 f"Found {len(numeric_features)} numeric and "
                 f"{len(categorical_features)} categorical features"
@@ -80,8 +75,6 @@ class OverviewRaport:
                 self.descr_num = X[numeric_features].describe().T.reset_index()
             if len(categorical_features) > 0:
                 self.descr_cat = X[categorical_features].describe(include=["object"]).T.reset_index()
-            # self.descr_cat = X.describe(include=["object"]).T.reset_index()
-            # self.descr_num = X.describe().T.reset_index()
 
         except Exception as e:
             logger.error(f"Failed to gather overview statistics: {str(e)}")
@@ -113,16 +106,16 @@ class OverviewRaport:
             caption="Dataset Summary.",
             label="tab:dataset_summary",
         )
-
-        target_desc = "Distribution of the target classes in terms of the number of observations and their percentages is presented in "
-        raport.add_text(target_desc)
-        raport.add_reference(label="tab:target_distribution", add_space=False)
-        raport.add_table(
-            self.target_distibution,
-            caption="Target class distribution.",
-            header=["class", "number of observations", "Percentage"],
-            label="tab:target_distribution",
-        )
+        if len(self.target_distibution) > 0:
+            target_desc = "Distribution of the target classes in terms of the number of observations and their percentages is presented in "
+            raport.add_text(target_desc)
+            raport.add_reference(label="tab:target_distribution", add_space=False)
+            raport.add_table(
+                self.target_distibution,
+                caption="Target class distribution.",
+                header=["class", "number of observations", "Percentage"],
+                label="tab:target_distribution",
+            )
         
         raport.add_reference(label="tab:missing_values", add_space=True)
         missing_values_desc = "presents the distribution of missing values in the dataset."
@@ -147,23 +140,50 @@ class OverviewRaport:
 
         columns = [c.replace("%", "\%") for c in self.descr_num.columns]  # noqa W605
         
-        raport.add_reference(label="tab:numerical_features", add_space=True)
-        raport.add_text("and ")
-        raport.add_reference(label="tab:categorical_features", add_space=True)
-        fetaures_desc = "present the description of numerical and categorical features in the dataset."
-        raport.add_text(fetaures_desc)
-        raport.add_table(
-            self.descr_num.values.tolist(),
-            header=columns,
-            caption="Numerical features description.",
-            label="tab:numerical_features",
-        )
-        if self.descr_cat is not None:
+        if self.descr_num is not None and self.descr_cat is not None:
+            raport.add_reference(label="tab:numerical_features", add_space=True)
+            raport.add_text("and ")
+            raport.add_reference(label="tab:categorical_features", add_space=True)
+            features_desc = "present the description of numerical and categorical features in the dataset."
+            raport.add_text(features_desc)
+
+            raport.add_table(
+                self.descr_num.values.tolist(),
+                header=columns,
+                caption="Numerical features description.",
+                label="tab:numerical_features",
+            )
             raport.add_table(
                 self.descr_cat.values.tolist(),
                 header=self.descr_cat.columns,
                 caption="Categorical features description.",
                 label="tab:categorical_features",
             )
+        elif self.descr_num is not None:
+            raport.add_reference(label="tab:numerical_features", add_space=True)
+            features_desc = "presents the description of numerical features in the dataset."
+            raport.add_text(features_desc)
+
+            raport.add_table(
+                self.descr_num.values.tolist(),
+                header=columns,
+                caption="Numerical features description.",
+                label="tab:numerical_features",
+            )
+        elif self.descr_cat is not None:
+            raport.add_reference(label="tab:categorical_features", add_space=True)
+            features_desc = "presents the description of categorical features in the dataset."
+            raport.add_text(features_desc)
+
+            raport.add_table(
+                self.descr_cat.values.tolist(),
+                header=self.descr_cat.columns,
+                caption="Categorical features description.",
+                label="tab:categorical_features",
+            )
+        else:
+            features_desc = "No numerical or categorical features descriptions are available in the dataset."
+            raport.add_text(features_desc)
+
 
         return raport

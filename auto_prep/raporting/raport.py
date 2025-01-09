@@ -182,7 +182,7 @@ class Raport:
             logger.error(f"Failed to add table {caption}: {str(e)}")
             raise
 
-    def add_figure(self, path: str, caption: str = None, size: int = 0.9) -> None:
+    def add_figure(self, path: str, caption: str = None, size: int = 0.9, label: str = None) -> None:
         """Add a figure to the document.
 
         Args:
@@ -195,6 +195,8 @@ class Raport:
                 fig.add_image(path, width=NoEscape(rf"{size}\textwidth"))
                 if caption is not None:
                     fig.add_caption(caption)
+                if label is not None:
+                    fig.append(NoEscape(f"\\label{{{label}}}"))
         except Exception as e:
             logger.error(f"Failed to add figure {path}: {str(e)}")
             raise

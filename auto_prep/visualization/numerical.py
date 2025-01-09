@@ -49,7 +49,7 @@ class NumericalVisualizer:
                 f"for {numerical_columns} columns."
             )
 
-            max_plots_per_page = 10
+            max_plots_per_page = 6
             numerical_groups = [
                 numerical_columns[i : i + max_plots_per_page]
                 for i in range(0, len(numerical_columns), max_plots_per_page)
@@ -194,7 +194,7 @@ class NumericalVisualizer:
 
             logger.debug(f"Will create boxplot for {numerical_columns} columns.")
             num_columns = len(numerical_columns)
-            plots_per_page = 10
+            plots_per_page = 6
             num_pages = (num_columns + plots_per_page - 1) // plots_per_page
 
             paths = []

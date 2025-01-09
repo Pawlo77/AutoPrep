@@ -140,7 +140,7 @@ class GlobalConfig:
         classification_pipeline_scoring_func: callable = roc_auc_score,
         max_workers: int = None,
         tuning_params: dict = DEFAULT_TUNING_PARAMS,
-        max_models: int = 3,
+        max_models: int = 3
     ):
         """
         Args:

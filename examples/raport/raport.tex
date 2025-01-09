@@ -52,9 +52,9 @@ Physical Cores&8\\%
 Logical Cores&8\\%
 CPU Frequency (MHz)&3204\\%
 Total RAM (GB)&16.00\\%
-Available RAM (GB)&4.22\\%
+Available RAM (GB)&4.57\\%
 Total Disk Space (GB)&228.27\\%
-Free Disk Space (GB)&8.30\\%
+Free Disk Space (GB)&8.06\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -84,75 +84,6 @@ Number of categorical features&0\\%
 \end{center}%
 \caption{Dataset Summary.}%
 \label{tab:dataset_summary}%
-\end{table}
-
-%
-Distribution of the target classes in terms of the number of observations and their percentages is presented in %
-Table~\ref{tab:target_distribution}%
-
-
-\begin{table}[H]%
-\begin{center}%
-\renewcommand{\arraystretch}{1.5}%
-\begin{tabular}{l l l}%
-\hline%
-\textbf{class}&\textbf{number of observations}&\textbf{Percentage}\\%
-\hline%
-50&7&0.03\\%
-17&7&0.03\\%
-34&6&0.03\\%
-44&6&0.03\\%
-7&6&0.03\\%
-12&6&0.03\\%
-9&6&0.03\\%
-4&5&0.02\\%
-43&5&0.02\\%
-6&5&0.02\\%
-31&5&0.02\\%
-10&5&0.02\\%
-1&5&0.02\\%
-23&5&0.02\\%
-28&5&0.02\\%
-45&5&0.02\\%
-22&5&0.02\\%
-15&5&0.02\\%
-27&5&0.02\\%
-29&5&0.02\\%
-38&5&0.02\\%
-46&5&0.02\\%
-20&5&0.02\\%
-35&5&0.02\\%
-18&5&0.02\\%
-3&5&0.02\\%
-21&5&0.02\\%
-48&4&0.02\\%
-13&4&0.02\\%
-14&4&0.02\\%
-37&4&0.02\\%
-24&4&0.02\\%
-41&4&0.02\\%
-8&4&0.02\\%
-11&4&0.02\\%
-40&4&0.02\\%
-33&4&0.02\\%
-49&4&0.02\\%
-36&4&0.02\\%
-32&4&0.02\\%
-25&4&0.02\\%
-26&4&0.02\\%
-47&3&0.01\\%
-42&3&0.01\\%
-30&3&0.01\\%
-39&3&0.01\\%
-19&3&0.01\\%
-5&3&0.01\\%
-16&3&0.01\\%
-2&2&0.01\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{Target class distribution.}%
-\label{tab:target_distribution}%
 \end{table}
 
 %
@@ -213,9 +144,7 @@ REG&numerical&uint8&2.0 kB\\%
 
 %
 Table~\ref{tab:numerical_features} %
-and %
-Table~\ref{tab:categorical_features} %
-present the description of numerical and categorical features in the dataset.%
+presents the description of numerical features in the dataset.%
 
 
 \begin{table}[H]%
@@ -251,18 +180,16 @@ This part of the report provides basic insides to the data and the informations 
 \label{subsec:Targetvariableandmissingvalues}%
 
 %
-Here we present the distribution of the target variable.%
+Figure~\ref{Target distribution.} %
+ shows the distribution of the target variable.%
 
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/target_distribution.png}%
+\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/target_distribution_regression.png}%
 \caption{Target distribution.}%
+\label{Target distribution.}%
 \end{figure}
-
-%
-\subsection{EDA for categorical features}%
-\label{subsec:EDAforcategoricalfeatures}%
 
 %
 \subsection{EDA for numerical features}%
@@ -276,26 +203,50 @@ The distribution of numerical features is presented on histogram(s) below.%
 \centering%
 \includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_1.png}%
 \caption{Numerical Features Distribution {-} Page 1}%
+\label{Numerical Features Distribution - Page 1}%
 \end{figure}
 
 %
-Here we present the correlation heatmap.%
+
+
+\begin{figure}[H]%
+\centering%
+\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_2.png}%
+\caption{Numerical Features Distribution {-} Page 2}%
+\label{Numerical Features Distribution - Page 2}%
+\end{figure}
+
+%
+Figure~\ref{Correlation heatmap.} %
+ shows the correlation between features.%
 
 
 \begin{figure}[H]%
 \centering%
 \includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/correlation_heatmap.png}%
 \caption{Correlation heatmap.}%
+\label{Correlation heatmap.}%
 \end{figure}
 
 %
-Here we present the boxplot(s) of numerical features.%
+The boxplot of numerical features is presented on chart(s) below.%
 
 
 \begin{figure}[H]%
 \centering%
 \includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/boxplot_page_1.png}%
 \caption{Boxplot page 1}%
+\label{Boxplot page 1}%
+\end{figure}
+
+%
+
+
+\begin{figure}[H]%
+\centering%
+\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/boxplot_page_2.png}%
+\caption{Boxplot page 2}%
+\label{Boxplot page 2}%
 \end{figure}
 
 %
@@ -509,7 +460,7 @@ Table~\ref{tab:preprocessing_pipelines_runtime_statistics}%
 Unique created pipelines&1\\%
 All created pipelines (after exploading each step params)&3\\%
 All pipelines fit time&2 seconds\\%
-All pipelines score time&3 seconds\\%
+All pipelines score time&2 seconds\\%
 scores\_count&3.00\\%
 scores\_mean&31.78\\%
 scores\_std&0.09\\%
@@ -556,7 +507,7 @@ LinearRegression%
 \label{subsec:Hyperparametertuning}%
 
 %
-This section presents the results of hyperparameter tuning for each of the best 3 models. using RandomizedSearchCV. Param grids used for each model are presented in the tables below.%
+This section presents the results of hyperparameter tuning for each of the best 3 models using RandomizedSearchCV. Param grids used for each model are presented in the tables below.%
 
 
 \begin{table}[H]%
@@ -694,9 +645,9 @@ presents the best models and pipelines along with their hyperparameters, mean fi
 \hline%
 \textbf{Model}&\textbf{Pipeline}&\textbf{Best params}&\textbf{Mean fit time}&\textbf{Test score}\\%
 \hline%
-LinearSVR&final\_pipeline\_1.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": true, "epsilon": 0.0, "C": 0.1\}&0.00&250.06\\%
-LinearSVR&final\_pipeline\_2.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": false, "epsilon": 0.0, "C": 1.0\}&0.01&72.54\\%
 LinearSVR&final\_pipeline\_0.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": false, "epsilon": 0.2, "C": 1.0\}&0.00&71.53\\%
+LinearSVR&final\_pipeline\_2.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": false, "epsilon": 0.0, "C": 1.0\}&0.00&72.54\\%
+LinearSVR&final\_pipeline\_1.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": true, "epsilon": 0.0, "C": 0.1\}&0.00&250.06\\%
 \hline%
 \end{tabular}%
 \end{center}%

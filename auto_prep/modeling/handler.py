@@ -124,6 +124,7 @@ class ModelHandler:
                         y_train=y_train,
                         X_valid=X_valid_cur,
                         y_valid=y_valid,
+                        task=task,
                     )
                 except Exception as e:
                     raise Exception(f"Failed to tune {model_cls.__name__}") from e
@@ -147,48 +148,48 @@ class ModelHandler:
                         }
                     )
                     self._unique_models_params_checked += n_runs
-
         logger.end_operation()
-
+        
         self._results = sorted(
-            self._results,
-            key=lambda x: (
-                x["mean_test_score"],
-                x["std_test_score"],
-                -x["std_fit_time"],
-            ),
-        )
+        self._results,
+        key=lambda x: (
+            x["mean_test_score"],
+            x["std_test_score"],
+            -x["std_fit_time"]
+        ),
+    )
+
+        # tak probowalam 
+    #     self._results = sorted(
+    #     self._results,
+    #     key=lambda x: (
+    #         -x["mean_test_score"] if task == "regression" else x["mean_test_score"],
+    #         x["std_test_score"],
+    #         -x["std_fit_time"]
+    #     ),
+    # )
 
         logger.start_operation("Re-training best models...")
         logger.info(f"Re-training for up to {config.max_models} best models.")
         gen = self._results[: config.max_models]
         if logger.level >= logging.INFO:
-            logger.info("weszlo do if")
             gen = tqdm(gen, desc="Re-training best models...", unit="model")
         for idx, result in enumerate(gen):
-            logger.info("weszlo do for")
             model_cls = result.pop("Model cls")
             pipeline = result.pop("Preprocessing pipeline")
             pipeline_file_name = result.pop("Preprocessing pipeline name")
 
-            logger.info("transofrming")
             X_train_cur = pipeline.transform(X_train)
-            logger.info("transofrming")
             X_valid_cur = pipeline.transform(X_valid)
-            logger.info("transofrming")
             X_test_cur = pipeline.transform(X_test)
-            logger.info("model")
             model = model_cls(**result["params"])
 
             X_combined = np.vstack([X_train_cur, X_valid_cur])
             y_combined = pd.concat([y_train, y_valid], axis=0)
 
             t0 = time()
-            logger.info(X_combined.shape)
-            logger.info(y_combined.shape)
             model.fit(X_combined, y_combined)
             result["re-training time"] = time() - t0
-            logger.info("predict")
             y_combined_pred = model.predict(X_combined)
             y_test_pred = model.predict(X_test_cur)
 
@@ -201,6 +202,9 @@ class ModelHandler:
             result["combined score (after re-training)"] = combined_score
             result["test score (after re-training)"] = test_score
             result["model base name"] = model_cls.__bases__[0].__name__
+            
+            logger.info(f"Model: {model_cls.__name__} | Combined Score: {combined_score} | Test Score: {test_score}")
+
 
             final_pipeline_name = f"final_pipeline_{idx}.joblib"
             result["final pipeline name"] = final_pipeline_name
@@ -236,7 +240,7 @@ class ModelHandler:
         raport.add_list(overview["base model names"])
         
         raport.add_subsection("Hyperparameter tuning")
-        section_desc = f"This section presents the results of hyperparameter tuning for each of the best {config.max_models} models. using RandomizedSearchCV. Param grids used for each model are presented in the tables below."
+        section_desc = f"This section presents the results of hyperparameter tuning for each of the best {config.max_models} models using RandomizedSearchCV. Param grids used for each model are presented in the tables below."
         raport.add_text(section_desc)
         
         model_meta = pd.DataFrame(self._model_meta)
@@ -254,14 +258,23 @@ class ModelHandler:
                     caption=f"Param grid for model {model_base_name}.",
                 )
 
-         
+        results_df = pd.DataFrame(overview["results"])
+        results_df.to_csv("results.csv", index=False)
         best_results = pd.DataFrame(overview["best models results"])
-        best_results = best_results[["Model cls base name", "final pipeline name", "params", "mean_fit_time", "test score (after re-training)"]]
-        best_results = best_results.rename(columns={"Model cls base name": "Model", "final pipeline name": "Pipeline ", "params": "Best params", "mean_fit_time": "Mean fit time", "test score (after re-training)": "Test score"})
-        best_results.sort_values(by="Test score", ascending=False, inplace=True)
-        best_results_dict = best_results.to_dict(orient="list")
-        best_results_dict = list(zip(best_results_dict["Model"], best_results_dict["Pipeline "], best_results_dict["Best params"], best_results_dict["Mean fit time"], best_results_dict["Test score"]))
-        
+
+        best_results = (
+        best_results[["Model cls base name", "final pipeline name", "params", "mean_fit_time", "test score (after re-training)"]]
+        .rename(columns={
+            "Model cls base name": "Model",
+            "final pipeline name": "Pipeline",
+            "params": "Best params",
+            "mean_fit_time": "Mean fit time",
+            "test score (after re-training)": "Test score"
+        })
+        .sort_values(by="Test score", ascending= overview["task"] == "regression") # to git
+)      
+        best_results_dict = list(best_results.itertuples(index=False, name=None))
+                
         raport.add_reference(label="tab:best_models_results", add_space=True)
         best_models_desc = "presents the best models and pipelines along with their hyperparameters, mean fit time, and test score."
         raport.add_text(best_models_desc)
@@ -364,6 +377,7 @@ class ModelHandler:
         y_train: pd.Series,
         X_valid: pd.DataFrame = None,
         y_valid: pd.Series = None,
+        task: str =  None,
     ) -> Union[dict, List[dict], int]:
         """
         Tunes a model's hyperparameters using RandomizedSearchCV and returns the best model and related information.
@@ -395,7 +409,6 @@ class ModelHandler:
         )
 
         t0 = time()
-
         # Fit with or without validation set
         fit_params = {}
         if X_valid is not None and y_valid is not None:
@@ -409,13 +422,16 @@ class ModelHandler:
                 )
         random_search.fit(X_train, y_train, **fit_params)
 
+        
         info = {
             "search_time": time() - t0,
             "best_score": random_search.best_score_,
             "best_index": random_search.best_index_,
         }
         results = pd.DataFrame(random_search.cv_results_)
-        sorted_results = results.sort_values(by="mean_test_score", ascending=False)
+        results.to_csv("results.csv", index=False)
+        logger.info(results["mean_test_score"])
+        sorted_results = results.sort_values(by="mean_test_score", ascending=True)
         top_models_stats = sorted_results.head(best_k)[
             [
                 "params",
@@ -425,7 +441,6 @@ class ModelHandler:
                 "std_fit_time",
             ]
         ].to_dict(orient="records")
-
         return info, top_models_stats, len(results)
 
     # @staticmethod
