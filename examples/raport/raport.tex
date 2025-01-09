@@ -40,20 +40,21 @@
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l}%
 \hline%
-System&Windows\\%
-Machine&AMD64\\%
-Processor&Intel64 Family 6 Model 140 Stepping 2, GenuineIntel\\%
+System&Darwin\\%
+Machine&arm64\\%
+Processor&arm\\%
 Architecture&64bit\\%
-Python Version&3.11.5\\%
-Physical Cores&4\\%
+Python Version&3.10.5\\%
+Physical Cores&8\\%
 Logical Cores&8\\%
-CPU Frequency (MHz)&1207.00\\%
-Total RAM (GB)&15.74\\%
-Available RAM (GB)&1.66\\%
-Total Disk Space (GB)&457.28\\%
-Free Disk Space (GB)&234.67\\%
+CPU Frequency (MHz)&3204\\%
+Total RAM (GB)&16.00\\%
+Available RAM (GB)&4.22\\%
+Total Disk Space (GB)&228.27\\%
+Free Disk Space (GB)&8.30\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -65,134 +66,179 @@ Free Disk Space (GB)&234.67\\%
 \label{subsec:Dataset}%
 
 %
+Table~\ref{tab:dataset_summary} %
+presents an overview of the dataset including the number of samples, features, and their types.%
 
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l}%
 \hline%
-Number of samples&1047\\%
-Number of features&13\\%
-Number of numerical features&6\\%
-Number of categorical features&7\\%
+Number of samples&227\\%
+Number of features&9\\%
+Number of numerical features&9\\%
+Number of categorical features&0\\%
 \hline%
 \end{tabular}%
 \end{center}%
 \caption{Dataset Summary.}%
+\label{tab:dataset_summary}%
 \end{table}
 
 %
+Distribution of the target classes in terms of the number of observations and their percentages is presented in %
+Table~\ref{tab:target_distribution}%
 
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l}%
 \hline%
 \textbf{class}&\textbf{number of observations}&\textbf{Percentage}\\%
 \hline%
-0&665&0.64\\%
-1&382&0.36\\%
+50&7&0.03\\%
+17&7&0.03\\%
+34&6&0.03\\%
+44&6&0.03\\%
+7&6&0.03\\%
+12&6&0.03\\%
+9&6&0.03\\%
+4&5&0.02\\%
+43&5&0.02\\%
+6&5&0.02\\%
+31&5&0.02\\%
+10&5&0.02\\%
+1&5&0.02\\%
+23&5&0.02\\%
+28&5&0.02\\%
+45&5&0.02\\%
+22&5&0.02\\%
+15&5&0.02\\%
+27&5&0.02\\%
+29&5&0.02\\%
+38&5&0.02\\%
+46&5&0.02\\%
+20&5&0.02\\%
+35&5&0.02\\%
+18&5&0.02\\%
+3&5&0.02\\%
+21&5&0.02\\%
+48&4&0.02\\%
+13&4&0.02\\%
+14&4&0.02\\%
+37&4&0.02\\%
+24&4&0.02\\%
+41&4&0.02\\%
+8&4&0.02\\%
+11&4&0.02\\%
+40&4&0.02\\%
+33&4&0.02\\%
+49&4&0.02\\%
+36&4&0.02\\%
+32&4&0.02\\%
+25&4&0.02\\%
+26&4&0.02\\%
+47&3&0.01\\%
+42&3&0.01\\%
+30&3&0.01\\%
+39&3&0.01\\%
+19&3&0.01\\%
+5&3&0.01\\%
+16&3&0.01\\%
+2&2&0.01\\%
 \hline%
 \end{tabular}%
 \end{center}%
 \caption{Target class distribution.}%
+\label{tab:target_distribution}%
 \end{table}
 
 %
+Table~\ref{tab:missing_values} %
+presents the distribution of missing values in the dataset.%
 
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l}%
 \hline%
 \textbf{classgit}&\textbf{number of observations}&\textbf{Percentage}\\%
 \hline%
-pclass&0&0.00\\%
-name&0&0.00\\%
-sex&0&0.00\\%
-age&207&0.20\\%
-sibsp&0&0.00\\%
-parch&0&0.00\\%
-ticket&0&0.00\\%
-fare&1&0.00\\%
-cabin&813&0.78\\%
-embarked&1&0.00\\%
-boat&672&0.64\\%
-body&948&0.91\\%
-home\_\_dest&453&0.43\\%
+P85&0&0.00\\%
+P75&0&0.00\\%
+RMT85&0&0.00\\%
+CS82&0&0.00\\%
+SS82&0&0.00\\%
+S82&0&0.00\\%
+ME84&0&0.00\\%
+REV84&0&0.00\\%
+REG&0&0.00\\%
 \hline%
 \end{tabular}%
 \end{center}%
 \caption{Missing values distribution.}%
+\label{tab:missing_values}%
 \end{table}
 
 %
+Table~\ref{tab:features_dtypes} %
+presents the description of features in the dataset.%
 
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l l}%
 \hline%
 \textbf{class}&\textbf{type}&\textbf{dtype}&\textbf{space usage}\\%
 \hline%
-pclass&numerical&int64&16.8 kB\\%
-name&categorical&object&96.4 kB\\%
-sex&categorical&category&9.7 kB\\%
-age&numerical&float64&16.8 kB\\%
-sibsp&numerical&int64&16.8 kB\\%
-parch&numerical&int64&16.8 kB\\%
-ticket&categorical&object&75.1 kB\\%
-fare&numerical&float64&16.8 kB\\%
-cabin&categorical&object&48.6 kB\\%
-embarked&categorical&category&9.7 kB\\%
-boat&categorical&object&51.8 kB\\%
-body&numerical&float64&16.8 kB\\%
-home\_\_dest&categorical&object&68.2 kB\\%
+P85&numerical&int64&3.6 kB\\%
+P75&numerical&int64&3.6 kB\\%
+RMT85&numerical&int64&3.6 kB\\%
+CS82&numerical&uint8&2.0 kB\\%
+SS82&numerical&uint8&2.0 kB\\%
+S82&numerical&uint8&2.0 kB\\%
+ME84&numerical&int64&3.6 kB\\%
+REV84&numerical&int64&3.6 kB\\%
+REG&numerical&uint8&2.0 kB\\%
 \hline%
 \end{tabular}%
 \end{center}%
 \caption{Features dtypes description.}%
+\label{tab:features_dtypes}%
 \end{table}
 
 %
+Table~\ref{tab:numerical_features} %
+and %
+Table~\ref{tab:categorical_features} %
+present the description of numerical and categorical features in the dataset.%
 
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l l l l l l l}%
 \hline%
 \textbf{index}&\textbf{count}&\textbf{mean}&\textbf{std}&\textbf{min}&\textbf{25\%}&\textbf{50\%}&\textbf{75\%}&\textbf{max}\\%
 \hline%
-pclass&1047.00&2.30&0.84&1.00&2.00&3.00&3.00&3.00\\%
-age&840.00&29.53&14.27&0.17&21.00&28.00&38.62&80.00\\%
-sibsp&1047.00&0.52&1.05&0.00&0.00&0.00&1.00&8.00\\%
-parch&1047.00&0.40&0.89&0.00&0.00&0.00&0.00&9.00\\%
-fare&1046.00&33.55&51.81&0.00&7.92&14.50&31.27&512.33\\%
-body&99.00&160.90&98.35&1.00&73.50&156.00&255.50&328.00\\%
+P85&227.00&29.99&56.17&3.00&10.00&16.00&30.00&653.00\\%
+P75&227.00&29.52&57.77&4.00&10.00&15.00&28.00&671.00\\%
+RMT85&227.00&254.51&657.60&21.00&66.50&118.00&229.50&6720.00\\%
+CS82&227.00&9.18&4.98&1.00&6.00&8.00&11.00&34.00\\%
+SS82&227.00&21.95&7.23&8.00&17.00&21.00&27.00&46.00\\%
+S82&227.00&47.15&10.57&31.00&41.00&45.00&49.00&101.00\\%
+ME84&227.00&1842.41&4685.06&173.00&480.50&839.00&1580.50&47074.00\\%
+REV84&227.00&3048.31&5125.17&347.00&1134.50&1828.00&3174.00&59877.00\\%
+REG&227.00&4.33&2.08&1.00&2.00&4.00&6.00&8.00\\%
 \hline%
 \end{tabular}%
 \end{center}%
 \caption{Numerical features description.}%
-\end{table}
-
-%
-
-
-\begin{table}[H]%
-\begin{center}%
-\begin{tabular}{l l l l l}%
-\hline%
-\textbf{index}&\textbf{count}&\textbf{unique}&\textbf{top}&\textbf{freq}\\%
-\hline%
-name&1047&1046&Connolly, Miss. Kate&2\\%
-ticket&1047&773&CA. 2343&9\\%
-cabin&234&161&B57 B59 B63 B66&5\\%
-boat&375&25&13&34\\%
-home\_\_dest&594&317&New York, NY&50\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{Categorical features description.}%
+\label{tab:numerical_features}%
 \end{table}
 
 %
@@ -201,68 +247,54 @@ home\_\_dest&594&317&New York, NY&50\\%
 
 %
 This part of the report provides basic insides to the data and the informations it holds..%
-\subsection{Eda}%
-\label{subsec:Eda}%
+\subsection{Target variable and missing values}%
+\label{subsec:Targetvariableandmissingvalues}%
 
 %
+Here we present the distribution of the target variable.%
 
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/target_distribution.png}%
+\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/target_distribution.png}%
 \caption{Target distribution.}%
 \end{figure}
 
 %
+\subsection{EDA for categorical features}%
+\label{subsec:EDAforcategoricalfeatures}%
+
+%
+\subsection{EDA for numerical features}%
+\label{subsec:EDAfornumericalfeatures}%
+
+%
+The distribution of numerical features is presented on histogram(s) below.%
 
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/missing_values.png}%
-\caption{Missing values.}%
-\end{figure}
-
-%
-\subsection{Categorical}%
-\label{subsec:Categorical}%
-
-%
-
-
-\begin{figure}[H]%
-\centering%
-\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/categorical_distribution_page_1.png}%
-\caption{Categorical Features Distribution {-} Page 1}%
-\end{figure}
-
-%
-\subsection{Numerical}%
-\label{subsec:Numerical}%
-
-%
-
-
-\begin{figure}[H]%
-\centering%
-\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_1.png}%
+\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_1.png}%
 \caption{Numerical Features Distribution {-} Page 1}%
 \end{figure}
 
 %
+Here we present the correlation heatmap.%
 
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/correlation_heatmap.png}%
+\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/correlation_heatmap.png}%
 \caption{Correlation heatmap.}%
 \end{figure}
 
 %
+Here we present the boxplot(s) of numerical features.%
 
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/boxplot_page_1.png}%
+\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/boxplot_page_1.png}%
 \caption{Boxplot page 1}%
 \end{figure}
 
@@ -271,40 +303,37 @@ This part of the report provides basic insides to the data and the informations 
 \label{sec:Preprocessing}%
 
 %
-This part of the report presents the results of the preprocessing process. It was configured to create up to 3 unique preprocessing pipelines.%
-
-
-\begin{table}[H]%
-\begin{center}%
-\begin{tabular}{l l}%
-\hline%
-\textbf{Category}&\textbf{Value}\\%
-\hline%
-Unique created pipelines&1\\%
-All created pipelines (after exploading each step params)&3\\%
-All pipelines fit time&3 seconds\\%
-All pipelines score time&3 seconds\\%
-scores\_count&3.00\\%
-scores\_mean&0.75\\%
-scores\_std&0.00\\%
-scores\_min&0.75\\%
-scores\_25\%&0.75\\%
-scores\_50\%&0.75\\%
-scores\_75\%&0.75\\%
-scores\_max&0.75\\%
-Scoring function&<class 'str'>\\%
-Scoring model&RandomForestClassifier\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{Preprocessing pipelines runtime statistics.}%
-\end{table}
-
+This part of the report presents the results of the preprocessing process. It contains required, as well as non required, steps listed below. 
+%
+\\ \text{Required preprocessing steps}%
+\begin{itemize}%
+\item%
+Missing data imputation%
+\item%
+Removing columns with 100\% unique categorical values%
+\item%
+Categorical features encoding%
+\item%
+Scaling%
+\item%
+Removing columns with 0 variance%
+\item%
+Detecting highly correlatd features%
+\end{itemize}%
+\\ \text{Additional preprocessing steps}%
+\begin{itemize}%
+\item%
+Feature selection methods : Correlation with the target or Random Forest feature importance%
+\item%
+Dimention reduction techniques: PCA, VIF, UMAP%
+\end{itemize}%
+Preprocessing process was configured to select up to 3 best unique preprocessing pipelines. Pipelines were scored based on a simple model. Tables below show detailed description of the best pipelines as well as all step combinations that were examined. 
 %
 
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{p{20mm} p{160mm}}%
 \hline%
 \textbf{index}&\textbf{steps}\\%
@@ -314,6 +343,7 @@ Scoring model&RandomForestClassifier\\%
 \end{tabular}%
 \end{center}%
 \caption{Pipelines steps overview.}%
+\label{tab:pipelines_steps_overview}%
 \end{table}
 
 %
@@ -321,13 +351,14 @@ Scoring model&RandomForestClassifier\\%
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l l l}%
 \hline%
 \textbf{score index}&\textbf{file name}&\textbf{score}&\textbf{fit duration}&\textbf{score duration}\\%
 \hline%
-0&preprocessing\_pipeline\_0.joblib&0.75&a moment&a moment\\%
-1&preprocessing\_pipeline\_1.joblib&0.75&a moment&a moment\\%
-2&preprocessing\_pipeline\_2.joblib&0.75&a moment&a moment\\%
+0&preprocessing\_pipeline\_0.joblib&31.85&a moment&a moment\\%
+1&preprocessing\_pipeline\_1.joblib&31.82&a moment&a moment\\%
+2&preprocessing\_pipeline\_2.joblib&31.68&a moment&a moment\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -339,55 +370,8 @@ Scoring model&RandomForestClassifier\\%
 
 \begin{table}[H]%
 \begin{center}%
-\begin{tabular}{p{10mm} p{30mm} p{60mm} p{60mm}}%
-\hline%
-\textbf{step}&\textbf{name}&\textbf{description}&\textbf{params}\\%
-\hline%
-0&NAImputer&Imputes missing data.&\{"numeric\_imputer": "median", "categorical\_imputer": "most\_frequent"\}\\%
-1&UniqueFilter&Removes categorical columns with 100\% unique values. Dropped columns: {[}{]}&\{\}\\%
-2&ColumnEncoder&Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or TolerantLabelEncoder (for columns with >=5 unique values). Encodes target variable using LabelEncoder if provided.&\{\}\\%
-3&VarianceFilter&Removes columns with zero variance. Dropped columns: {[}{]}&\{\}\\%
-4&CorrelationFilter&Removes one column from pairs of columns correlated above correlation threshold: 0.8.&\{\}\\%
-5&ColumnScaler&Scales numerical columns using one of 3 scaling methods.&\{"method": "standard"\}\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{0th best pipeline overwiev on training set.}%
-\end{table}
-
-%
-
-
-\begin{table}[H]%
-\begin{center}%
-\begin{tabular}{l l l l l l l l l}%
-\hline%
-\textbf{index}&\textbf{count}&\textbf{mean}&\textbf{std}&\textbf{min}&\textbf{25\%}&\textbf{50\%}&\textbf{75\%}&\textbf{max}\\%
-\hline%
-pclass&1047.00&0.00&1.00&{-}1.55&{-}0.36&0.84&0.84&0.84\\%
-name&1047.00&0.00&1.00&{-}1.73&{-}0.87&{-}0.00&0.87&1.73\\%
-age&1047.00&{-}0.00&1.00&{-}2.27&{-}0.57&{-}0.10&0.45&3.97\\%
-sibsp&1047.00&{-}0.00&1.00&{-}0.50&{-}0.50&{-}0.50&0.46&7.13\\%
-parch&1047.00&0.00&1.00&{-}0.44&{-}0.44&{-}0.44&{-}0.44&9.63\\%
-ticket&1047.00&{-}0.00&1.00&{-}1.68&{-}0.90&0.00&0.93&1.67\\%
-fare&1047.00&0.00&1.00&{-}0.65&{-}0.49&{-}0.37&{-}0.04&9.25\\%
-home\_\_dest&1047.00&0.00&1.00&{-}2.74&{-}0.22&0.30&0.30&1.94\\%
-sex\_female&1047.00&0.00&1.00&{-}0.74&{-}0.74&{-}0.74&1.35&1.35\\%
-embarked\_C&1047.00&{-}0.00&1.00&{-}0.50&{-}0.50&{-}0.50&{-}0.50&2.00\\%
-embarked\_Q&1047.00&0.00&1.00&{-}0.32&{-}0.32&{-}0.32&{-}0.32&3.08\\%
-embarked\_S&1047.00&{-}0.00&1.00&{-}1.55&{-}1.55&0.65&0.65&0.65\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{0th best pipeline output overview.}%
-\end{table}
-
-%
-
-
-\begin{table}[H]%
-\begin{center}%
-\begin{tabular}{p{10mm} p{30mm} p{60mm} p{60mm}}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{p{7mm} p{35mm} p{80mm} p{50mm}}%
 \hline%
 \textbf{step}&\textbf{name}&\textbf{description}&\textbf{params}\\%
 \hline%
@@ -400,7 +384,7 @@ embarked\_S&1047.00&{-}0.00&1.00&{-}1.55&{-}1.55&0.65&0.65&0.65\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{1th best pipeline overwiev on training set.}%
+\caption{Best pipeline No. 0: steps overview.}%
 \end{table}
 
 %
@@ -408,26 +392,20 @@ embarked\_S&1047.00&{-}0.00&1.00&{-}1.55&{-}1.55&0.65&0.65&0.65\\%
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l l l l l l l}%
 \hline%
 \textbf{index}&\textbf{count}&\textbf{mean}&\textbf{std}&\textbf{min}&\textbf{25\%}&\textbf{50\%}&\textbf{75\%}&\textbf{max}\\%
 \hline%
-pclass&1047.00&0.65&0.42&0.00&0.50&1.00&1.00&1.00\\%
-name&1047.00&0.50&0.29&0.00&0.25&0.50&0.75&1.00\\%
-age&1047.00&0.36&0.16&0.00&0.27&0.35&0.44&1.00\\%
-sibsp&1047.00&0.07&0.13&0.00&0.00&0.00&0.12&1.00\\%
-parch&1047.00&0.04&0.10&0.00&0.00&0.00&0.00&1.00\\%
-ticket&1047.00&0.50&0.30&0.00&0.23&0.50&0.78&1.00\\%
-fare&1047.00&0.07&0.10&0.00&0.02&0.03&0.06&1.00\\%
-home\_\_dest&1047.00&0.59&0.21&0.00&0.54&0.65&0.65&1.00\\%
-sex\_female&1047.00&0.35&0.48&0.00&0.00&0.00&1.00&1.00\\%
-embarked\_C&1047.00&0.20&0.40&0.00&0.00&0.00&0.00&1.00\\%
-embarked\_Q&1047.00&0.10&0.29&0.00&0.00&0.00&0.00&1.00\\%
-embarked\_S&1047.00&0.70&0.46&0.00&0.00&1.00&1.00&1.00\\%
+P85&227.00&{-}0.00&1.00&{-}0.48&{-}0.36&{-}0.25&0.00&11.12\\%
+CS82&227.00&0.00&1.00&{-}1.64&{-}0.64&{-}0.24&0.37&4.99\\%
+SS82&227.00&0.00&1.00&{-}1.93&{-}0.69&{-}0.13&0.70&3.33\\%
+S82&227.00&{-}0.00&1.00&{-}1.53&{-}0.58&{-}0.20&0.18&5.11\\%
+REG&227.00&{-}0.00&1.00&{-}1.60&{-}1.12&{-}0.16&0.80&1.77\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{1th best pipeline output overview.}%
+\caption{Best pipeline No. 0: Output overview.}%
 \end{table}
 
 %
@@ -435,7 +413,8 @@ embarked\_S&1047.00&0.70&0.46&0.00&0.00&1.00&1.00&1.00\\%
 
 \begin{table}[H]%
 \begin{center}%
-\begin{tabular}{p{10mm} p{30mm} p{60mm} p{60mm}}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{p{7mm} p{35mm} p{80mm} p{50mm}}%
 \hline%
 \textbf{step}&\textbf{name}&\textbf{description}&\textbf{params}\\%
 \hline%
@@ -448,7 +427,7 @@ embarked\_S&1047.00&0.70&0.46&0.00&0.00&1.00&1.00&1.00\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{2th best pipeline overwiev on training set.}%
+\caption{Best pipeline No. 1: steps overview.}%
 \end{table}
 
 %
@@ -456,26 +435,96 @@ embarked\_S&1047.00&0.70&0.46&0.00&0.00&1.00&1.00&1.00\\%
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l l l l l l l}%
 \hline%
 \textbf{index}&\textbf{count}&\textbf{mean}&\textbf{std}&\textbf{min}&\textbf{25\%}&\textbf{50\%}&\textbf{75\%}&\textbf{max}\\%
 \hline%
-pclass&1047.00&{-}0.70&0.84&{-}2.00&{-}1.00&0.00&0.00&0.00\\%
-name&1047.00&0.00&0.58&{-}1.00&{-}0.50&0.00&0.50&1.00\\%
-age&1047.00&0.09&0.98&{-}2.14&{-}0.46&0.00&0.54&4.00\\%
-sibsp&1047.00&0.52&1.05&0.00&0.00&0.00&1.00&8.00\\%
-parch&1047.00&0.40&0.89&0.00&0.00&0.00&0.00&9.00\\%
-ticket&1047.00&{-}0.00&0.55&{-}0.92&{-}0.49&0.00&0.51&0.91\\%
-fare&1047.00&0.81&2.22&{-}0.62&{-}0.28&0.00&0.72&21.32\\%
-home\_\_dest&1047.00&{-}0.57&1.93&{-}5.86&{-}1.00&0.00&0.00&3.17\\%
-sex\_female&1047.00&0.35&0.48&0.00&0.00&0.00&1.00&1.00\\%
-embarked\_C&1047.00&0.20&0.40&0.00&0.00&0.00&0.00&1.00\\%
-embarked\_Q&1047.00&0.10&0.29&0.00&0.00&0.00&0.00&1.00\\%
-embarked\_S&1047.00&{-}0.30&0.46&{-}1.00&{-}1.00&0.00&0.00&0.00\\%
+P85&227.00&0.04&0.09&0.00&0.01&0.02&0.04&1.00\\%
+CS82&227.00&0.25&0.15&0.00&0.15&0.21&0.30&1.00\\%
+SS82&227.00&0.37&0.19&0.00&0.24&0.34&0.50&1.00\\%
+S82&227.00&0.23&0.15&0.00&0.14&0.20&0.26&1.00\\%
+REG&227.00&0.48&0.30&0.00&0.14&0.43&0.71&1.00\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{2th best pipeline output overview.}%
+\caption{Best pipeline No. 1: Output overview.}%
+\end{table}
+
+%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{p{7mm} p{35mm} p{80mm} p{50mm}}%
+\hline%
+\textbf{step}&\textbf{name}&\textbf{description}&\textbf{params}\\%
+\hline%
+0&NAImputer&Imputes missing data.&\{"numeric\_imputer": "median", "categorical\_imputer": "most\_frequent"\}\\%
+1&UniqueFilter&Removes categorical columns with 100\% unique values. Dropped columns: {[}{]}&\{\}\\%
+2&ColumnEncoder&Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or TolerantLabelEncoder (for columns with >=5 unique values). Encodes target variable using LabelEncoder if provided.&\{\}\\%
+3&VarianceFilter&Removes columns with zero variance. Dropped columns: {[}{]}&\{\}\\%
+4&CorrelationFilter&Removes one column from pairs of columns correlated above correlation threshold: 0.8.&\{\}\\%
+5&ColumnScaler&Scales numerical columns using one of 3 scaling methods.&\{"method": "standard"\}\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Best pipeline No. 2: steps overview.}%
+\end{table}
+
+%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{l l l l l l l l l}%
+\hline%
+\textbf{index}&\textbf{count}&\textbf{mean}&\textbf{std}&\textbf{min}&\textbf{25\%}&\textbf{50\%}&\textbf{75\%}&\textbf{max}\\%
+\hline%
+P85&227.00&0.70&2.81&{-}0.65&{-}0.30&0.00&0.70&31.85\\%
+CS82&227.00&0.24&1.00&{-}1.40&{-}0.40&0.00&0.60&5.20\\%
+SS82&227.00&0.10&0.72&{-}1.30&{-}0.40&0.00&0.60&2.50\\%
+S82&227.00&0.27&1.32&{-}1.75&{-}0.50&0.00&0.50&7.00\\%
+REG&227.00&0.08&0.52&{-}0.75&{-}0.50&0.00&0.50&1.00\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Best pipeline No. 2: Output overview.}%
+\end{table}
+
+%
+You may also find all pipelines' runtime statistic in %
+Table~\ref{tab:preprocessing_pipelines_runtime_statistics}%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{l l}%
+\hline%
+\textbf{Category}&\textbf{Value}\\%
+\hline%
+Unique created pipelines&1\\%
+All created pipelines (after exploading each step params)&3\\%
+All pipelines fit time&2 seconds\\%
+All pipelines score time&3 seconds\\%
+scores\_count&3.00\\%
+scores\_mean&31.78\\%
+scores\_std&0.09\\%
+scores\_min&31.68\\%
+scores\_25\%&31.75\\%
+scores\_50\%&31.82\\%
+scores\_75\%&31.84\\%
+scores\_max&31.85\\%
+Scoring function&<class 'str'>\\%
+Scoring model&RandomForestRegressor\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Preprocessing pipelines runtime statistics.}%
+\label{tab:preprocessing_pipelines_runtime_statistics}%
 \end{table}
 
 %
@@ -483,72 +532,48 @@ embarked\_S&1047.00&{-}0.30&0.46&{-}1.00&{-}1.00&0.00&0.00&0.00\\%
 \label{sec:Modeling}%
 
 %
-This part of the report presents the results of the modeling process. It was configured to create up to 3 models.%
 \subsection{Overview}%
 \label{subsec:Overview}%
 
 %
-
-
-\begin{table}[H]%
-\begin{center}%
-\begin{tabular}{p{40mm} p{120mm}}%
-\hline%
-\textbf{Category}&\textbf{Value}\\%
-\hline%
-task&classification\\%
-unique models param sets checked (for each dataset)&43\\%
-unique models&5\\%
-scoring function&roc\_auc\_score\\%
-search parameters&\{"cv": 3, "verbose": 0, "n\_jobs": {-}1, "random\_state": 42, "n\_iter": 10\}\\%
-train&1047 samples, 13 features\\%
-valid&131 samples, 13 features\\%
-test&131 samples, 13 features\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{General input data overview.}%
-\end{table}
+This part of the report presents the results of the modeling process. There were regression 6 models trained for each of the best preprocessing pipelines.%
+The following models were used in the modeling process.%
+\begin{itemize}%
+\item%
+LinearSVR%
+\item%
+KNeighborsRegressor%
+\item%
+RandomForestRegressor%
+\item%
+BayesianRidge%
+\item%
+GradientBoostingRegressor%
+\item%
+LinearRegression%
+\end{itemize}%
+\subsection{Hyperparameter tuning}%
+\label{subsec:Hyperparametertuning}%
 
 %
+This section presents the results of hyperparameter tuning for each of the best 3 models. using RandomizedSearchCV. Param grids used for each model are presented in the tables below.%
 
 
 \begin{table}[H]%
 \begin{center}%
-\begin{tabular}{l l}%
-\hline%
-\textbf{name}&\textbf{unique params distributions checked}\\%
-\hline%
-ModelDecisionTreeClassifier&10\\%
-ModelGaussianNaiveClassifier&3\\%
-ModelKNeighboursClassifier&10\\%
-ModelLogisticRegression&10\\%
-ModelSVC&10\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{Used models.}%
-\end{table}
-
-%
-
-
-\begin{table}[H]%
-\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l}%
 \hline%
 \textbf{Category}&\textbf{Value}\\%
 \hline%
-criterion&{[}'gini', 'entropy'{]}\\%
-splitter&{[}'best', 'random'{]}\\%
-max\_depth&{[}None, 5, 10, 15, 20{]}\\%
-min\_samples\_split&{[}2, 5, 10{]}\\%
-min\_samples\_leaf&{[}1, 2, 4{]}\\%
-random\_state&{[}42{]}\\%
+epsilon&{[}0.0, 0.1, 0.2, 0.5, 1.0{]}\\%
+C&{[}0.1, 1.0, 10.0, 100.0{]}\\%
+loss&{[}'epsilon\_insensitive', 'squared\_epsilon\_insensitive'{]}\\%
+fit\_intercept&{[}True, False{]}\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{Param grid for model ModelDecisionTreeClassifier.}%
+\caption{Param grid for model LinearSVR.}%
 \end{table}
 
 %
@@ -556,23 +581,7 @@ random\_state&{[}42{]}\\%
 
 \begin{table}[H]%
 \begin{center}%
-\begin{tabular}{l l}%
-\hline%
-\textbf{Category}&\textbf{Value}\\%
-\hline%
-priors&{[}None{]}\\%
-var\_smoothing&{[}1e{-}09, 1e{-}07, 1e{-}05{]}\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{Param grid for model ModelGaussianNaiveClassifier.}%
-\end{table}
-
-%
-
-
-\begin{table}[H]%
-\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l}%
 \hline%
 \textbf{Category}&\textbf{Value}\\%
@@ -585,7 +594,7 @@ p&{[}1, 2{]}\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{Param grid for model ModelKNeighboursClassifier.}%
+\caption{Param grid for model KNeighboursRegressor.}%
 \end{table}
 
 %
@@ -593,116 +602,107 @@ p&{[}1, 2{]}\\%
 
 \begin{table}[H]%
 \begin{center}%
+\renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l}%
 \hline%
 \textbf{Category}&\textbf{Value}\\%
 \hline%
-0&\{"penalty": {[}"l1"{]}, "C": {[}0.01, 0.1, 1, 10{]}, "solver": {[}"liblinear", "saga"{]}\}\\%
-1&\{"penalty": {[}"l2"{]}, "C": {[}0.01, 0.1, 1, 10{]}, "solver": {[}"lbfgs", "liblinear", "saga", "newton{-}cg"{]}\}\\%
-2&\{"penalty": {[}"elasticnet"{]}, "C": {[}0.01, 0.1, 1, 10{]}, "solver": {[}"saga"{]}, "l1\_ratio": {[}0.5, 0.7{]}\}\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{Param grid for model ModelLogisticRegression.}%
-\end{table}
-
-%
-
-
-\begin{table}[H]%
-\begin{center}%
-\begin{tabular}{l l}%
-\hline%
-\textbf{Category}&\textbf{Value}\\%
-\hline%
-C&{[}0.1, 1, 10, 100, 1000{]}\\%
-kernel&{[}'linear', 'poly', 'rbf', 'sigmoid'{]}\\%
-degree&{[}3, 4, 5{]}\\%
-gamma&{[}'scale', 'auto'{]}\\%
+n\_estimators&{[}100, 200, 300{]}\\%
+max\_depth&{[}None, 5, 10, 15, 20{]}\\%
+min\_samples\_split&{[}2, 5, 10{]}\\%
+min\_samples\_leaf&{[}1, 2, 4{]}\\%
+max\_features&{[}'sqrt', 'log2', None{]}\\%
+bootstrap&{[}True, False{]}\\%
 random\_state&{[}42{]}\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{Param grid for model ModelSVC.}%
+\caption{Param grid for model RandomForestRegressor.}%
 \end{table}
 
 %
-\subsection{Scores for 0th best model}%
-\label{subsec:Scoresfor0thbestmodel}%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{l l}%
+\hline%
+\textbf{Category}&\textbf{Value}\\%
+\hline%
+max\_iter&{[}300, 400, 500{]}\\%
+tol&{[}0.001, 0.0001, 1e{-}05{]}\\%
+alpha\_1&{[}1e{-}06, 1e{-}07, 1e{-}08{]}\\%
+alpha\_2&{[}1e{-}06, 1e{-}07, 1e{-}08{]}\\%
+lambda\_1&{[}1e{-}06, 1e{-}07, 1e{-}08{]}\\%
+lambda\_2&{[}1e{-}06, 1e{-}07, 1e{-}08{]}\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Param grid for model BayesianRidgeRegressor.}%
+\end{table}
 
 %
-\begin{itemize}%
-\item%
-final pipeline name: final\_pipeline\_0.joblib%
-\item%
-name: ModelDecisionTreeClassifier%
-\item%
-params: \{"splitter": "random", "random\_state": 42, "min\_samples\_split": 2, "min\_samples\_leaf": 1, "max\_depth": 5, "criterion": "gini"\}%
-\item%
-combined score (after re{-}training): 0.78%
-\item%
-mean\_test\_score: nan%
-\item%
-std\_test\_score: nan%
-\item%
-test score (after re{-}training): 0.73%
-\item%
-mean\_fit\_time: a moment%
-\item%
-re{-}training time: a moment%
-\item%
-std\_fit\_time: a moment%
-\end{itemize}%
-\subsection{Scores for 1th best model}%
-\label{subsec:Scoresfor1thbestmodel}%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{l l}%
+\hline%
+\textbf{Category}&\textbf{Value}\\%
+\hline%
+n\_estimators&{[}100, 200, 300{]}\\%
+learning\_rate&{[}0.1, 0.05, 0.02{]}\\%
+max\_depth&{[}4, 6, 8{]}\\%
+min\_samples\_split&{[}2, 5, 10{]}\\%
+min\_samples\_leaf&{[}1, 2, 4{]}\\%
+subsample&{[}1.0, 0.5{]}\\%
+random\_state&{[}42{]}\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Param grid for model GradientBoostingRegressor.}%
+\end{table}
 
 %
-\begin{itemize}%
-\item%
-final pipeline name: final\_pipeline\_1.joblib%
-\item%
-name: ModelDecisionTreeClassifier%
-\item%
-params: \{"splitter": "best", "random\_state": 42, "min\_samples\_split": 2, "min\_samples\_leaf": 2, "max\_depth": 10, "criterion": "gini"\}%
-\item%
-combined score (after re{-}training): 0.88%
-\item%
-mean\_test\_score: nan%
-\item%
-std\_test\_score: nan%
-\item%
-test score (after re{-}training): 0.52%
-\item%
-mean\_fit\_time: a moment%
-\item%
-re{-}training time: a moment%
-\item%
-std\_fit\_time: a moment%
-\end{itemize}%
-\subsection{Scores for 2th best model}%
-\label{subsec:Scoresfor2thbestmodel}%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{l l}%
+\hline%
+\textbf{Category}&\textbf{Value}\\%
+\hline%
+fit\_intercept&{[}True, False{]}\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Param grid for model LinearRegression.}%
+\end{table}
 
 %
-\begin{itemize}%
-\item%
-final pipeline name: final\_pipeline\_2.joblib%
-\item%
-name: ModelDecisionTreeClassifier%
-\item%
-params: \{"splitter": "random", "random\_state": 42, "min\_samples\_split": 5, "min\_samples\_leaf": 2, "max\_depth": 15, "criterion": "entropy"\}%
-\item%
-combined score (after re{-}training): 0.86%
-\item%
-mean\_test\_score: nan%
-\item%
-std\_test\_score: nan%
-\item%
-test score (after re{-}training): 0.62%
-\item%
-mean\_fit\_time: a moment%
-\item%
-re{-}training time: a moment%
-\item%
-std\_fit\_time: a moment%
-\end{itemize}%
+Table~\ref{tab:best_models_results} %
+presents the best models and pipelines along with their hyperparameters, mean fit time, and test score.%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{p{35mm} p{35mm} p{45mm} p{25mm} p{15mm}}%
+\hline%
+\textbf{Model}&\textbf{Pipeline}&\textbf{Best params}&\textbf{Mean fit time}&\textbf{Test score}\\%
+\hline%
+LinearSVR&final\_pipeline\_1.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": true, "epsilon": 0.0, "C": 0.1\}&0.00&250.06\\%
+LinearSVR&final\_pipeline\_2.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": false, "epsilon": 0.0, "C": 1.0\}&0.01&72.54\\%
+LinearSVR&final\_pipeline\_0.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": false, "epsilon": 0.2, "C": 1.0\}&0.00&71.53\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Best models results}%
+\label{tab:best_models_results}%
+\end{table}
+
+%
 \end{document}

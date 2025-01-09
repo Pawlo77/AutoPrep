@@ -194,10 +194,15 @@ class PreprocessingHandler:
         """Writes overview section to a raport"""
 
         preprocessing_section = raport.add_section("Preprocessing")  # noqa: F841
-
-        section_desc = f"This part of the report presents the results of the preprocessing process. It was configured to create up to {config.max_datasets_after_preprocessing} unique preprocessing pipelines."
+        section_desc = (f"This part of the report presents the results of the preprocessing process. It contains required, as well as non required, steps listed below. \n")
         raport.add_text(section_desc)
+        required_steps=['Missing data imputation', 'Removing columns with 100% unique categorical values', 'Categorical features encoding','Scaling','Removing columns with 0 variance', 'Detecting highly correlatd features']
+        non_required_steps = ['Feature selection methods : Correlation with the target or Random Forest feature importance', 'Dimention reduction techniques: PCA, VIF, UMAP']
+        raport.add_list(required_steps, caption ="Required preprocessing steps")
+        raport.add_list(non_required_steps, caption ="Additional preprocessing steps")
 
+        result_desc=(f"Preprocessing process was configured to select up to {config.max_datasets_after_preprocessing} best unique preprocessing pipelines." f" Pipelines were scored based on a simple model. Tables below show detailed description of the best pipelines as well as all step combinations that were examined. \n")
+        raport.add_text(result_desc)
         pipeline_scores_description = self._pipelines_scores.describe().to_dict()
         prefixed_pipeline_scores_description = {
             f"scores_{key}": value for key, value in pipeline_scores_description.items()
@@ -214,11 +219,8 @@ class PreprocessingHandler:
             "Scoring model": type(self._model).__name__,
         }
 
-        raport.add_table(
-            statistics,
-            caption="Preprocessing pipelines runtime statistics.",
-        )
-
+        
+         
         pipelines_overview = {}
         for i, pipeline_steps in enumerate(self._pipeline_steps):
             pipelines_overview[i] = ", ".join(step.__name__ for step in pipeline_steps)
@@ -228,8 +230,10 @@ class PreprocessingHandler:
             caption="Pipelines steps overview.",
             header=["index", "steps"],
             widths=[20, 160],
+            label="tab:pipelines_steps_overview",
         )
 
+        
         best_pipelines_overview = []
         for score_idx, idx in enumerate(self._best_pipelines_idx):
             best_pipelines_overview.append(
@@ -268,14 +272,14 @@ class PreprocessingHandler:
 
             raport.add_table(
                 pipeline_steps_overview,
-                caption=f"{score_idx}th best pipeline overwiev on training set.",
+                caption=f"Best pipeline No. {score_idx}: steps overview.",
                 header=[
                     "step",
                     "name",
                     "description",
                     "params",
                 ],
-                widths=[10, 30, 60, 60],
+                widths=[7, 35, 80, 50],
             )
 
             columns = [
@@ -284,10 +288,18 @@ class PreprocessingHandler:
             ]
             raport.add_table(
                 self._pipelines_descr[score_idx].values.tolist(),
-                caption=f"{score_idx}th best pipeline output overview.",
+                caption=f"Best pipeline No. {score_idx}: Output overview.",
                 header=columns,
             )
-
+        
+        stats_desc = "You may also find all pipelines' runtime statistic in "
+        raport.add_text(stats_desc)
+        raport.add_reference(label="tab:preprocessing_pipelines_runtime_statistics", add_space=False)
+        raport.add_table(
+            statistics,
+            caption="Preprocessing pipelines runtime statistics.",
+            label="tab:preprocessing_pipelines_runtime_statistics",
+        )
         return raport
 
     @staticmethod

@@ -108,6 +108,7 @@ class Raport:
         caption: str = None,
         header: List[dict] = ["Category", "Value"],
         widths: list = None,
+        label: str = None,
     ) -> None:
         """Add a table to the document with wrapped text, dividing columns equally across an A4 page.
 
@@ -127,6 +128,8 @@ class Raport:
 
             with self.doc.create(Table(position="H")) as table:
                 with table.create(Center()) as centered:
+                    centered.append(NoEscape(r"\renewcommand{\arraystretch}{1.5}"))  # Adjust 1.5 as needed
+
                     if widths is not None:
                         # Use provided widths for columns
                         alignment = " ".join([f"p{{{w}mm}}" for w in widths])
@@ -170,6 +173,11 @@ class Raport:
 
                 if caption is not None:
                     table.add_caption(caption)
+                    
+                if label is not None:
+                    # Add label for referencing
+                    table.append(NoEscape(f"\\label{{{label}}}"))
+
         except Exception as e:
             logger.error(f"Failed to add table {caption}: {str(e)}")
             raise
@@ -195,9 +203,26 @@ class Raport:
         """Adds plain text to the LaTeX document.
         Args:         text (str): The text to add to the document."""
         try:
-            self.doc.append(text)
+            self.doc.append(NoEscape(text))
         except Exception as e:
             logger.error(f"Failed to add text: {str(e)}")
+            raise
+
+    def add_reference(self, label: str, prefix: str = "Table", add_space: bool = True) -> None:
+        """Adds a reference to a labeled element in the document.
+
+        Args:
+            label (str): The label of the element to reference.
+            prefix (str): Text to prepend before the reference. Defaults to "Table".
+            add_space (bool): If True, adds a space after the reference. Defaults to True.
+        """
+        try:
+            reference = NoEscape(f"{prefix}~\\ref{{{label}}}")
+            if add_space:
+                reference += NoEscape(" ")  
+            self.doc.append(reference)
+        except Exception as e:
+            logger.error(f"Failed to add reference to {label}: {str(e)}")
             raise
 
     def add_list(self, items: list, caption: str = None) -> None:
@@ -210,7 +235,7 @@ class Raport:
         """
         try:
             if caption:
-                self.doc.append(NoEscape(r"\textbf{" + caption + r"}"))
+                self.doc.append(NoEscape(r"\\ \text{" + caption + r"}"))
 
             with self.doc.create(Itemize()) as itemize:
                 for item in items:
