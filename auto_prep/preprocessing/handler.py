@@ -99,6 +99,8 @@ class PreprocessingHandler:
             ("Imputting missing data.", ".imputing"),
             ("Removing redundant columns.", ".redundancy_filtering"),
             ("Encoding data.", ".encoding"),
+            ("Removing zero variance columns.", ".variance_filtering"),
+            ("Removing correlated features.", ".correlation_filtering"),
             ("Scaling data.", ".scaling"),
             ("Features selection.", ".feature_selecting"),
             # ("Binning data.", ".binning"),
