@@ -19,7 +19,7 @@ from ..utils.logging_config import setup_logger
 logger = setup_logger(__name__)
 
 
-class Report:
+class Raport:
     """
     Generates LaTeX reports with analysis results and visualizations.
     """
@@ -28,7 +28,7 @@ class Report:
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
-            cls._instance = super(Report, cls).__new__(cls, *args, **kwargs)
+            cls._instance = super(Raport, cls).__new__(cls, *args, **kwargs)
             cls._instance._initialize()
         return cls._instance
 
@@ -106,30 +106,35 @@ class Report:
         data: dict | list,
         caption: str = None,
         header: List[dict] = ["Category", "Value"],
+        widths: list = None,
     ) -> None:
-        """Add a table to the document.
+        """Add a table to the document with wrapped text, dividing columns equally across an A4 page.
 
         Args:
             data (dict | list): Data to convert to table.
             caption (str): Table caption. If None, no caption will be set.
             header (List[dict]): Table header. Defaults to ["Category", "Value"].
                 If None, no header will be set.
+            widths (list) - column widths
         """
         decimal_precision = config.raport_decimal_precision
 
         try:
             if isinstance(data, dict):
                 data = list(data.items())
+            num_columns = len(header) if header is not None else len(data[0])
 
             with self.doc.create(Table(position="H")) as table:
                 with table.create(Center()) as centered:
-                    # Determine the number of columns
-                    num_columns = len(header) if header is not None else len(data[0])
-                    # Generate column alignment string (e.g., "l r c" for 3 columns)
-                    alignment = " ".join(["l" for _ in range(num_columns)])
+                    if widths is not None:
+                        # Use provided widths for columns
+                        alignment = " ".join([f"p{{{w}mm}}" for w in widths])
+                    else:
+                        alignment = " ".join(["l" for _ in range(num_columns)])
 
                     with centered.create(Tabular(alignment)) as tabular:
                         tabular.add_hline()
+
                         if header is not None:
                             if len(header) != num_columns:
                                 raise ValueError(
@@ -160,7 +165,7 @@ class Report:
                             ]
                             tabular.add_row(formatted_row)
 
-                        tabular.add_hline()
+                    tabular.add_hline()
 
                 if caption is not None:
                     table.add_caption(caption)
@@ -224,6 +229,3 @@ class Report:
         except Exception as e:
             logger.error(f"Failed to generate PDF: {str(e)}")
             raise
-
-
-raport = Report()

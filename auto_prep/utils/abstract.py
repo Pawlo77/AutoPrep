@@ -25,6 +25,12 @@ class Categorical(ABC):
     pass
 
 
+class NumericalCategorical(ABC):
+    """Abstract interface to indicate categorical and numerical step"""
+
+    pass
+
+
 class Classifier(ABC):
     """Abstract interface to indicate classification problem."""
 
@@ -73,6 +79,7 @@ class ModulesHandler(ABC):
     supported_interfaces: List[object] = [
         Numerical,
         Categorical,
+        NumericalCategorical,
         RequiredStep,
         NonRequiredStep,
     ]
@@ -81,6 +88,8 @@ class ModulesHandler(ABC):
         ("NumericalNonRequired", (Numerical, NonRequiredStep)),
         ("CategoricalRequired", (Categorical, RequiredStep)),
         ("CategoricalNonRequired", (Categorical, NonRequiredStep)),
+        ("NumericalCategoricalRequired", (NumericalCategorical, RequiredStep)),
+        ("NumericalCategoricalNonRequired", (NumericalCategorical, NonRequiredStep)),
     ]
 
     def __init__(self):

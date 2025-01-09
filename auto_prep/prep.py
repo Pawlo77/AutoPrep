@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from .preprocessing.handler import PreprocessingHandler
 from .raporting.eda import EdaRaport
 from .raporting.overview import OverviewRaport
-from .raporting.raport import raport
+from .raporting.raport import Raport
 from .utils.config import config
 from .utils.logging_config import setup_logger
 
@@ -94,12 +94,12 @@ class AutoPrep:
             """
             Overview
             """
-            # self.overview_raport.run(X_train, y_train)
+            self.overview_raport.run(X_train, y_train)
 
             """
             Eda
             """
-            # self.eda_raport.run(X_train, y_train)
+            self.eda_raport.run(X_train, y_train)
 
             """
             Preprocessing
@@ -121,18 +121,20 @@ class AutoPrep:
     def _generate_report(self):
         """Generates and saves raport."""
 
+        raport = Raport()
+
         logger.start_operation("Generate raport.")
         raport.add_header()
 
         """
         Overview
         """
-        # self.overview_raport.write_to_raport(raport)
+        self.overview_raport.write_to_raport(raport)
 
         """
         Eda
         """
-        # self.eda_raport.write_to_raport(raport)
+        self.eda_raport.write_to_raport(raport)
 
         """
         Preprocessing

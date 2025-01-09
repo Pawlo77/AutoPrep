@@ -76,6 +76,8 @@ The generated report includes:
 
 ## Important informations
 
+- due to multiprocessing enabled, run method has to be called under name __main__ check - see example in next point. Number of cores used can be set in config.
+
 - for changes in config to be loaded, config.update must be called before any other import from autoprep package - as example:
 
     ```python
@@ -95,7 +97,9 @@ The generated report includes:
 
     # Create and run pipeline
     pipeline = AutoPrep()
-    pipeline.run(data, target_column="survived")
+
+    if __name__ == "__main__":
+        pipeline.run(data, target_column="survived")
     ```
 
     For same reason AutoPrep is not exported to top-level package. It is known implementation fault.

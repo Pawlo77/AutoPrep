@@ -2,68 +2,10 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-from ..utils.abstract import NonRequiredStep, RequiredStep
+from ..utils.abstract import NonRequiredStep
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
-
-
-class NAImputer(RequiredStep, ABC):
-    """
-    Base class for imputing missing values. Provides functionality
-    to identify columns with missing values and determine the strategy to handle them
-    (remove columns with >50% missing data).
-
-    Attributes:
-        numeric_features (list): A list of numeric feature names.
-        categorical_features (list): A list of categorical feature names.
-    """
-
-    def __init__(self):
-        self.numeric_features = []
-        self.categorical_features = []
-        self.cols_to_remove = []
-
-    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "NAImputer":
-        """
-        Identifies columns with more than 50% missing values and removes them
-        from the dataset.
-
-        Args:
-            X (pd.DataFrame): The input data with missing values.
-
-        Returns:
-            NAImputer: The fitted imputer instance.
-        """
-        logger.start_operation(
-            f"Fitting NAImputer to data with {X.shape[0]} rows and {X.shape[1]} columns."
-        )
-
-        # Removing columns with >50% missing values
-        missing_threshold = 0.5
-        cols_to_remove = [
-            col for col in X.columns if X[col].isnull().mean() > missing_threshold
-        ]
-        logger.debug(
-            f"Columns to be removed due to >50% missing values: {cols_to_remove}"
-        )
-        # Update internal state but do not modify input DataFrame
-        self.cols_to_remove = cols_to_remove
-
-        logger.end_operation()
-        return self
-
-    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
-        """
-        Removes previously identified columns with >50% missing values.
-
-        Args:
-            X (pd.DataFrame): The input data to transform.
-
-        Returns:
-            pd.DataFrame: The transformed data.
-        """
-        return X.drop(columns=self.cols_to_remove)
 
 
 class FeatureImportanceSelector(NonRequiredStep, ABC):

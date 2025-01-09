@@ -6,7 +6,7 @@ from ..utils.logging_config import setup_logger
 from ..visualization.categorical import CategoricalVisualizer
 from ..visualization.eda import EdaVisualizer
 from ..visualization.numerical import NumericalVisualizer
-from .raport import Report
+from .raport import Raport
 
 logger = setup_logger(__name__)
 
@@ -34,9 +34,10 @@ class EdaRaport:
                 for method_name in visualiser_cls.order:
                     method = getattr(visualiser_cls, method_name)
 
-                    logger.debug(f"Calling {method}...")
                     chart_dt = method(X, y)
-                    if chart_dt[0] != "":
+                    if isinstance(chart_dt, list) and len(chart_dt) > 0:
+                        self.charts_dt[visualiser_cls.__name__].extend(chart_dt)
+                    elif isinstance(chart_dt, tuple) and chart_dt[0] != "":
                         self.charts_dt[visualiser_cls.__name__].append(chart_dt)
 
                 logger.end_operation()
@@ -47,7 +48,7 @@ class EdaRaport:
 
         logger.end_operation()
 
-    def write_to_raport(self, raport: Report):
+    def write_to_raport(self, raport: Raport):
         """Writes eda section to a raport"""
 
         eda_section = raport.add_section("Eda")  # noqa: F841

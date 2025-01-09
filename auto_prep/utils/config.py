@@ -1,5 +1,6 @@
 import logging
 import os
+import warnings
 
 import numpy as np
 from pylatex import NoEscape
@@ -7,6 +8,12 @@ from sklearn import set_config
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import mean_squared_error, roc_auc_score
+
+os.environ["OMP_DISPLAY_ENV"] = "FALSE"
+# Suppress UserWarnings and RuntimeWarnings
+warnings.simplefilter("ignore", category=UserWarning)
+warnings.simplefilter("ignore", category=RuntimeWarning)
+
 
 set_config(transform_output="pandas")
 
@@ -22,7 +29,7 @@ COLORS: dict = {
 
 LOG_FORMAT: str = "%(asctime)s %(levelname)s %(name)s: %(message)s"
 LOG_DATE_FORMAT: str = "%Y-%m-%d %H:%M:%S"
-LOG_LEVEL: str = logging.INFO
+LOG_LEVEL: str = logging.CRITICAL
 
 DEFAULT_TEX_GEOMETRY: dict = {
     "margin": "0.5in",
@@ -48,8 +55,8 @@ DEFAULT_CHARTS_SETTINGS: dict = {
     "ylabel_fontsize": 12,
     "tick_label_rotation": 45,
     "palette": "pastel",
-    "plot_width": 15,
-    "plot_height_per_row": 4,
+    "plot_width": 20,
+    "plot_height_per_row": 8,
     "heatmap_cmap": "coolwarm",
     "heatmap_fmt": ".2f",
 }
@@ -122,6 +129,7 @@ class GlobalConfig:
         ),
         regression_pipeline_scoring_func: callable = mean_squared_error,
         classification_pipeline_scoring_func: callable = roc_auc_score,
+        max_workers: int = None,
     ):
         """
         Args:
@@ -190,6 +198,7 @@ class GlobalConfig:
             correlation_percent (float) - % of selected features based on their correlation with the target. Default 0.5.
             n_bins (int) - number of bins to create while binning numerical features.
             outlier_detector_method (str) - method used for outlier detection. Default "zscore".
+            max_workers (int) - maximum number of cores to evaluate on.
         """
         assert (
             isinstance(raport_name, str) and raport_name != ""
@@ -288,6 +297,8 @@ class GlobalConfig:
         ], f"Invalid value for outlier_detector_method: {outlier_detector_method}."
         "Should be one of ['zscore', 'iqr', 'isolation_forest', 'cooks_distance']."
         self.outlier_detector_method = outlier_detector_method
+
+        self.max_workers = max_workers
 
     def update(self, **kwargs):
         """Updates config's data with kwargs."""
