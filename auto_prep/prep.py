@@ -9,6 +9,7 @@ from .raporting.overview import OverviewRaport
 from .raporting.raport import Raport
 from .utils.config import config
 from .utils.logging_config import setup_logger
+from .modeling.handler import ModelHandler
 
 logger = setup_logger(__name__)
 
@@ -27,6 +28,7 @@ class AutoPrep:
         self.overview_raport: OverviewRaport = OverviewRaport()
         self.eda_raport: EdaRaport = EdaRaport()
         self.preprocessing_handler: PreprocessingHandler = PreprocessingHandler()
+        self.model_handler: ModelHandler = ModelHandler()
 
     def run(self, data: pd.DataFrame, target_column: str):
         """Run the complete pipeline on the provided dataset.
@@ -111,7 +113,14 @@ class AutoPrep:
                 y_valid=y_valid,
                 task=task,
             )
-
+            logger.info("Preprocessing finished.")
+            logger.info("Starting modeling.")
+            logger.info("Model handler created.")
+            tuned_results = self.model_handler.run(X_train, X_valid, y_train, y_valid, task)
+            logger.info(f"Tuned results: {tuned_results}")
+            
+        
+            
         except Exception as e:
             logger.error(f"Pipeline run failed: {e}")
             raise
@@ -140,7 +149,11 @@ class AutoPrep:
         Preprocessing
         """
         self.preprocessing_handler.write_to_raport(raport)
-
+    
+        """ Modeling
+        """
+        self.model_handler.write_to_raport(raport)
+        
         raport.generate()
         logger.end_operation()
 
