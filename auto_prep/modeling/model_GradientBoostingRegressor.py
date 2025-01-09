@@ -63,7 +63,6 @@ class ModelGradientBoostingRegressor(GradientBoostingRegressor, Regressor):
             random_state=random_state,
             **kwargs,
         )
-        logger.info("Gradient Boosting Regressor model initialized.")
 
     def to_tex(self) -> dict:
         """

@@ -1,5 +1,3 @@
-import warnings
-
 from sklearn.linear_model import LogisticRegression
 
 from ..utils.abstract import Classifier
@@ -43,9 +41,6 @@ class ModelLogisticRegression(LogisticRegression, Classifier):
         super().__init__(
             penalty=penalty, C=C, solver=solver, l1_ratio=l1_ratio, **kwargs
         )
-        logger.start_operation("Initializing Logistic regression model.")
-        warnings.filterwarnings("ignore")
-        logger.end_operation()
 
     def to_tex(self) -> dict:
         """

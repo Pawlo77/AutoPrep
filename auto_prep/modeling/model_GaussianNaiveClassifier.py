@@ -39,7 +39,6 @@ class ModelGaussianNaiveClassifier(GaussianNB, Classifier):
             **kwargs: Additional keyword arguments passed to the GaussianNB.
         """
         super().__init__(priors=priors, var_smoothing=var_smoothing, **kwargs)
-        logger.info("Gaussian Naive Classifier model initialized.")
 
     def to_tex(self) -> dict:
         """

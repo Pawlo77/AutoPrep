@@ -26,8 +26,6 @@ class ModelLinearRegression(LinearRegression, Regressor):
 
         """
         super().__init__(fit_intercept=fit_intercept, **kwargs)
-        logger.start_operation("Initializing Linear Regression model.")
-        logger.end_operation()
 
     def to_tex(self) -> dict:
         """

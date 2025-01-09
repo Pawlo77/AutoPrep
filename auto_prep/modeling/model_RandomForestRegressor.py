@@ -61,7 +61,6 @@ class ModelRandomForestRegressor(RandomForestRegressor, Regressor):
             random_state=random_state,
             **kwargs,
         )
-        logger.info("Random Forest Regressor model initialized.")
 
     def to_tex(self) -> dict:
         """

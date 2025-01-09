@@ -3,6 +3,7 @@ from typing import Callable
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+from .modeling.handler import ModelHandler
 from .preprocessing.handler import PreprocessingHandler
 from .raporting.eda import EdaRaport
 from .raporting.overview import OverviewRaport
@@ -27,6 +28,7 @@ class AutoPrep:
         self.overview_raport: OverviewRaport = OverviewRaport()
         self.eda_raport: EdaRaport = EdaRaport()
         self.preprocessing_handler: PreprocessingHandler = PreprocessingHandler()
+        self.model_handler: ModelHandler = ModelHandler()
 
     def run(self, data: pd.DataFrame, target_column: str):
         """Run the complete pipeline on the provided dataset.
@@ -112,6 +114,19 @@ class AutoPrep:
                 task=task,
             )
 
+            """
+            Modeling
+            """
+            self.model_handler.run(
+                X_train=X_train,
+                y_train=y_train,
+                X_valid=X_valid,
+                y_valid=y_valid,
+                X_test=X_test,
+                y_test=y_test,
+                task=task,
+            )
+
         except Exception as e:
             logger.error(f"Pipeline run failed: {e}")
             raise
@@ -140,6 +155,11 @@ class AutoPrep:
         Preprocessing
         """
         self.preprocessing_handler.write_to_raport(raport)
+
+        """
+        Modeling
+        """
+        self.model_handler.write_to_raport(raport)
 
         raport.generate()
         logger.end_operation()

@@ -5,6 +5,7 @@ from pylatex import (
     Command,
     Document,
     Figure,
+    Itemize,
     NoEscape,
     Section,
     Subsection,
@@ -188,6 +189,34 @@ class Raport:
                     fig.add_caption(caption)
         except Exception as e:
             logger.error(f"Failed to add figure {path}: {str(e)}")
+            raise
+
+    def add_text(self, text: str) -> None:
+        """Adds plain text to the LaTeX document.
+        Args:         text (str): The text to add to the document."""
+        try:
+            self.doc.append(text)
+        except Exception as e:
+            logger.error(f"Failed to add text: {str(e)}")
+            raise
+
+    def add_list(self, items: list, caption: str = None) -> None:
+        """
+        Adds a bullet-point list to the document.
+
+        Args:
+            items (list): List of items to include in the bullet-point list.
+            caption (str, optional): Optional caption or description above the list.
+        """
+        try:
+            if caption:
+                self.doc.append(NoEscape(r"\textbf{" + caption + r"}"))
+
+            with self.doc.create(Itemize()) as itemize:
+                for item in items:
+                    itemize.add_item(str(item))
+        except Exception as e:
+            logger.error(f"Failed to add list: {str(e)}")
             raise
 
     def add_verbatim(self, content: str) -> str:

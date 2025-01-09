@@ -325,17 +325,7 @@ class ModulesHandler(ABC):
         Raises:
             ValueError - if any of imported classes fits into more than one group.
         """
-        logger.debug(f"Importing classes from {module_name}")
-
-        module = importlib.import_module(module_name, package=package)
-
-        classes = [
-            cls
-            for _, cls in inspect.getmembers(module, inspect.isclass)
-            if cls.__module__.endswith(module_name)
-        ]
-
-        logger.debug(f"Found follwing classes: {classes}")
+        classes = ModulesHandler.load_classes(module_name, package)
 
         combinations = {}
         groupped = set()
@@ -359,6 +349,21 @@ class ModulesHandler(ABC):
         logger.debug(f"Retrieved follwing combinations - {combinations}")
 
         return combinations, len(groupped)
+
+    @staticmethod
+    def load_classes(module_name: str, package: str) -> List[object]:
+        logger.debug(f"Importing classes from {module_name}")
+
+        module = importlib.import_module(module_name, package=package)
+
+        classes = [
+            cls
+            for _, cls in inspect.getmembers(module, inspect.isclass)
+            if cls.__module__.endswith(module_name)
+        ]
+
+        logger.debug(f"Found following classes: {classes}")
+        return classes
 
 
 class DimentionReducer(NonRequiredStep, Numerical, ABC):

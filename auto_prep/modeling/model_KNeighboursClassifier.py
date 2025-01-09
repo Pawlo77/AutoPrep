@@ -1,19 +1,20 @@
-from sklearn.neighbors import KNeighborsRegressor
+from sklearn.neighbors import KNeighborsClassifier
 
-from ..utils.abstract import Regressor
+from ..utils.abstract import Classifier
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
 
-class ModelKNeighboursRegressor(KNeighborsRegressor, Regressor):
+class ModelKNeighboursClassifier(KNeighborsClassifier, Classifier):
     """
-    K Neighbours Regressor model.
+    K Neighbours Classifier model.
     Attributes:
         PARAM_GRID (dict): Parameter grid for hyperparameter tuning.
     Methods:
-        __init__(): Initializes the K Neighbours Regressor model.
+        __init__(): Initializes the K Neighbours Classifier model.
         to_tex() -> dict: Returns a short description in the form of a dictionary.
+
     """
 
     PARAM_GRID = {
@@ -34,7 +35,7 @@ class ModelKNeighboursRegressor(KNeighborsRegressor, Regressor):
         **kwargs,
     ):
         """
-        Initializes the K Neighbours Regressor model.
+        Initializes the K Neighbours Classifier model.
         Args:
             n_neighbors (int, optional): Number of neighbors to use. Defaults to 5.
             weights (str, optional): Weight function used in prediction. Defaults to "uniform".
@@ -51,7 +52,6 @@ class ModelKNeighboursRegressor(KNeighborsRegressor, Regressor):
             p=p,
             **kwargs,
         )
-        logger.info("K Neighbours Regressor model initialized.")
 
     def to_tex(self) -> dict:
         """
@@ -61,7 +61,7 @@ class ModelKNeighboursRegressor(KNeighborsRegressor, Regressor):
             dict: A dictionary containing the name and description of the model.
         """
         return {
-            "name": "KNeighboursRegressor",
-            "desc": "K Neighbours Regressor model.",
+            "name": "KNeighboursClassifier",
+            "desc": "K Neighbours Classifier model.",
             "params": f"{self.get_params()}",
         }

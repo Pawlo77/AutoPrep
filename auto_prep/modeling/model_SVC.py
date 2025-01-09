@@ -46,7 +46,6 @@ class ModelSVC(SVC, Classifier):
             random_state=random_state,
             **kwargs,
         )
-        logger.info("Support Vector Classifier model initialized.")
 
     def to_tex(self) -> dict:
         """
