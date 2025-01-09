@@ -42,18 +42,18 @@
 \begin{center}%
 \begin{tabular}{l l}%
 \hline%
-System&Darwin\\%
-Machine&arm64\\%
-Processor&arm\\%
+System&Windows\\%
+Machine&AMD64\\%
+Processor&Intel64 Family 6 Model 140 Stepping 2, GenuineIntel\\%
 Architecture&64bit\\%
-Python Version&3.10.5\\%
-Physical Cores&8\\%
+Python Version&3.11.5\\%
+Physical Cores&4\\%
 Logical Cores&8\\%
-CPU Frequency (MHz)&3204\\%
-Total RAM (GB)&16.00\\%
-Available RAM (GB)&3.35\\%
-Total Disk Space (GB)&228.27\\%
-Free Disk Space (GB)&9.16\\%
+CPU Frequency (MHz)&1207.00\\%
+Total RAM (GB)&15.74\\%
+Available RAM (GB)&1.48\\%
+Total Disk Space (GB)&457.28\\%
+Free Disk Space (GB)&237.54\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -208,7 +208,7 @@ home\_\_dest&594&317&New York, NY&50\\%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/target_distribution.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/target_distribution.png}%
 \caption{Target distribution.}%
 \end{figure}
 
@@ -217,7 +217,7 @@ home\_\_dest&594&317&New York, NY&50\\%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/missing_values.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/missing_values.png}%
 \caption{Missing values.}%
 \end{figure}
 
@@ -230,7 +230,7 @@ home\_\_dest&594&317&New York, NY&50\\%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/categorical_distribution_page_1.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/categorical_distribution_page_1.png}%
 \caption{Categorical Features Distribution {-} Page 1}%
 \end{figure}
 
@@ -243,7 +243,7 @@ home\_\_dest&594&317&New York, NY&50\\%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_1.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_1.png}%
 \caption{Numerical Features Distribution {-} Page 1}%
 \end{figure}
 
@@ -252,7 +252,7 @@ home\_\_dest&594&317&New York, NY&50\\%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/correlation_heatmap.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/correlation_heatmap.png}%
 \caption{Correlation heatmap.}%
 \end{figure}
 
@@ -261,7 +261,7 @@ home\_\_dest&594&317&New York, NY&50\\%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/boxplot_page_1.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/boxplot_page_1.png}%
 \caption{Boxplot page 1}%
 \end{figure}
 
@@ -281,7 +281,7 @@ home\_\_dest&594&317&New York, NY&50\\%
 Unique created pipelines&2\\%
 All created pipelines (after exploading each step params)&6\\%
 All pipelines fit time&4 seconds\\%
-All pipelines score time&4 seconds\\%
+All pipelines score time&5 seconds\\%
 scores\_count&6.00\\%
 scores\_mean&0.76\\%
 scores\_std&0.01\\%
@@ -489,7 +489,7 @@ This part of the report presents the results of the modeling process. There were
 \newline%
 \begin{itemize}%
 \item%
-XGBoost%
+DecisionTreeClassifier%
 \item%
 GaussianNaiveClassifier%
 \item%
@@ -499,7 +499,7 @@ Logistic Regression%
 \item%
 SVC%
 \item%
-DecisionTreeClassifier%
+XGBoost%
 \end{itemize}%
 The table below presents the results of the modeling process on default parameters for each of the best piplelines. The models are sorted by the ROC AUC score in descending order.%
 
@@ -511,8 +511,8 @@ The table below presents the results of the modeling process on default paramete
 \textbf{Model}&\textbf{AUC Score}&\textbf{Pipeline}\\%
 \hline%
 SVC&0.77&preprocessing\_pipeline\_0\\%
-XGBoost&0.76&preprocessing\_pipeline\_1\\%
-XGBoost&0.76&preprocessing\_pipeline\_2\\%
+XGBoost&0.77&preprocessing\_pipeline\_2\\%
+XGBoost&0.77&preprocessing\_pipeline\_1\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -575,8 +575,8 @@ The table below presents the results of the hyperparameter tuning process for th
 \hline%
 \textbf{Model}&\textbf{Params}&\textbf{Pipeline}&\textbf{ROC AUC}\\%
 \hline%
-XGBoost&\{'subsample': 1.0, 'objective': 'binary:logistic', 'max\_depth': 3, 'learning\_rate': 0.1, 'colsample\_bytree': 0.8\}&preprocessing\_pipeline\_1&0.86\\%
 XGBoost&\{'subsample': 1.0, 'objective': 'binary:logistic', 'max\_depth': 3, 'learning\_rate': 0.1, 'colsample\_bytree': 0.8\}&preprocessing\_pipeline\_2&0.86\\%
+XGBoost&\{'subsample': 1.0, 'objective': 'binary:logistic', 'max\_depth': 3, 'learning\_rate': 0.1, 'colsample\_bytree': 0.8\}&preprocessing\_pipeline\_1&0.86\\%
 SVC&\{'random\_state': 42, 'kernel': 'rbf', 'gamma': 'scale', 'degree': 3, 'C': 1\}&preprocessing\_pipeline\_0&0.84\\%
 \hline%
 \end{tabular}%
