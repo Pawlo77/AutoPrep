@@ -586,20 +586,22 @@ class ModelHandler:
                 )
                 plt.title("Summary plot for regression")
                 plt.tight_layout()
-                reg_sum = save_chart(f"shap_summ_regression.png")  # noqa: F841
+                reg_sum = save_chart("shap_summ_regression.png")  # noqa: F841
 
-                shap_values.feature_names = [str(name) for name in shap_values.feature_names]
+                shap_values.feature_names = [
+                    str(name) for name in shap_values.feature_names
+                ]
                 shap.waterfall_plot(shap_values[sample_idx], show=False)
                 plt.title(
                     f"Waterfall plot for regression, observation numer: {sample_idx}"
                 )
                 plt.tight_layout()
-                reg_waterfall = save_chart(f"shap_wat_regression.png")  # noqa: F841
+                reg_waterfall = save_chart("shap_wat_regression.png")  # noqa: F841
 
                 shap.plots.bar(shap_values, max_display=10, show=False)
                 plt.title("Bar plot for regression")
                 plt.tight_layout()
-                reg_bar = save_chart(f"shap_bar_regression.png")  # noqa: F841
+                reg_bar = save_chart("shap_bar_regression.png")  # noqa: F841
 
                 logger.info(f"SHAP plots saved for model : {model_idx}")
 
