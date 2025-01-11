@@ -1,15 +1,16 @@
 from typing import Dict, List, Tuple
- 
+
 import pandas as pd
- 
+
 from ..utils.logging_config import setup_logger
 from ..visualization.categorical import CategoricalVisualizer
 from ..visualization.eda import EdaVisualizer
 from ..visualization.numerical import NumericalVisualizer
 from .raport import Raport
- 
+
 logger = setup_logger(__name__)
- 
+
+
 class EdaRaport:
     visualizers: list = [EdaVisualizer, CategoricalVisualizer, NumericalVisualizer]
 
@@ -33,7 +34,7 @@ class EdaRaport:
                     method = getattr(visualizer_cls, method_name)
 
                     try:
-                        chart_dt = method(X, y, task=task)  
+                        chart_dt = method(X, y, task=task)
                     except TypeError:
                         chart_dt = method(X, y)
 
@@ -50,15 +51,14 @@ class EdaRaport:
         finally:
             logger.end_operation()
 
- 
     def write_to_raport(self, raport: Raport):
         """Writes eda section to a raport"""
- 
+
         eda_section = raport.add_section("Eda")  # noqa: F841
- 
+
         section_desc = "This part of the report provides basic insides to the data and the informations it holds.."
         raport.add_text(section_desc)
- 
+
         for visualizer_name, charts_dt in self.charts_dt.items():
             # raport.add_subsection(visualizer_name[: -len("Visualizer")])
             if visualizer_name == "EdaVisualizer":
@@ -69,25 +69,31 @@ class EdaRaport:
             elif visualizer_name == "NumericalVisualizer":
                 if charts_dt:
                     raport.add_subsection("EDA for numerical features")
-            
- 
+
             for path, caption in charts_dt:
                 if caption == "Target distribution.":
                     raport.add_reference(label=caption, prefix="Figure", add_space=True)
                     raport.add_text(" shows the distribution of the target variable.")
                 elif caption == "Missing values.":
                     raport.add_reference(label=caption, prefix="Figure", add_space=True)
-                    raport.add_text(" shows the distribution of missing values in the dataset.")
+                    raport.add_text(
+                        " shows the distribution of missing values in the dataset."
+                    )
                 elif caption == "Numerical Features Distribution - Page 1":
-                    raport.add_text("The distribution of numerical features is presented on histogram(s) below.")
+                    raport.add_text(
+                        "The distribution of numerical features is presented on histogram(s) below."
+                    )
                 elif caption == "Categorical Features Distribution - Page 1":
-                    raport.add_text("The distribution of categorical features is presented on barplot(s) below.")
+                    raport.add_text(
+                        "The distribution of categorical features is presented on barplot(s) below."
+                    )
                 elif caption == "Correlation heatmap.":
                     raport.add_reference(label=caption, prefix="Figure", add_space=True)
                     raport.add_text(" shows the correlation between features.")
                 elif caption == "Boxplot page 1":
-                    raport.add_text("The boxplot of numerical features is presented on chart(s) below.")
+                    raport.add_text(
+                        "The boxplot of numerical features is presented on chart(s) below."
+                    )
                 raport.add_figure(path=path, caption=caption, label=caption)
- 
+
         return raport
- 

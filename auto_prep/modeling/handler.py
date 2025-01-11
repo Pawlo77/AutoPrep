@@ -1,6 +1,8 @@
+import glob
 import json
 import logging
 import os
+import random
 from time import time
 from typing import List, Union
 
@@ -8,7 +10,10 @@ import humanize
 import joblib
 import numpy as np
 import pandas as pd
+import shap
+from matplotlib import pyplot as plt
 from sklearn.base import BaseEstimator
+from sklearn.calibration import LabelEncoder
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.pipeline import Pipeline
 from tqdm import tqdm
@@ -16,7 +21,7 @@ from tqdm import tqdm
 from ..utils.abstract import Classifier, ModulesHandler, Regressor
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
-from ..utils.other import save_model
+from ..utils.other import save_chart, save_model
 
 logger = setup_logger(__name__)
 
@@ -88,11 +93,13 @@ class ModelHandler:
         self._models_classes = ModelHandler.load_models(task)
         pipelines, pipelines_file_names = ModelHandler.load_pipelines()
 
-        self._scoring_func = (
-            config.classification_pipeline_scoring_func
-            if task == "classification"
-            else config.regression_pipeline_scoring_func
-        )
+        if task == "classification":
+            if len(y_train.unique()) > 2:
+                self._scoring_func = config.classification_pipeline_scoring_func_multi
+            else:
+                self._scoring_func = config.classification_pipeline_scoring_func
+        else:
+            self._scoring_func = config.regression_pipeline_scoring_func
 
         logger.start_operation("Tuning models...")
         logger.info(
@@ -149,25 +156,15 @@ class ModelHandler:
                     )
                     self._unique_models_params_checked += n_runs
         logger.end_operation()
-        
-        self._results = sorted(
-        self._results,
-        key=lambda x: (
-            x["mean_test_score"],
-            x["std_test_score"],
-            -x["std_fit_time"]
-        ),
-    )
 
-        # tak probowalam 
-    #     self._results = sorted(
-    #     self._results,
-    #     key=lambda x: (
-    #         -x["mean_test_score"] if task == "regression" else x["mean_test_score"],
-    #         x["std_test_score"],
-    #         -x["std_fit_time"]
-    #     ),
-    # )
+        self._results = sorted(
+            self._results,
+            key=lambda x: (
+                x["mean_test_score"],
+                x["std_test_score"],
+                -x["std_fit_time"],
+            ),
+        )
 
         logger.start_operation("Re-training best models...")
         logger.info(f"Re-training for up to {config.max_models} best models.")
@@ -187,6 +184,11 @@ class ModelHandler:
             X_combined = np.vstack([X_train_cur, X_valid_cur])
             y_combined = pd.concat([y_train, y_valid], axis=0)
 
+            if pd.api.types.is_categorical_dtype(y_combined):
+                label_encoder = LabelEncoder()
+                label_encoder.fit(y_combined)
+                y_combined = label_encoder.transform(y_combined)
+
             t0 = time()
             model.fit(X_combined, y_combined)
             result["re-training time"] = time() - t0
@@ -202,9 +204,6 @@ class ModelHandler:
             result["combined score (after re-training)"] = combined_score
             result["test score (after re-training)"] = test_score
             result["model base name"] = model_cls.__bases__[0].__name__
-            
-            logger.info(f"Model: {model_cls.__name__} | Combined Score: {combined_score} | Test Score: {test_score}")
-
 
             final_pipeline_name = f"final_pipeline_{idx}.joblib"
             result["final pipeline name"] = final_pipeline_name
@@ -212,6 +211,11 @@ class ModelHandler:
 
             final_model = Pipeline([("preprocessing", pipeline), ("predicting", model)])
             save_model(final_pipeline_name, final_model)
+
+        best_model_result = max(
+            self._best_models_results, key=lambda x: x["test score (after re-training)"]
+        )
+        self.genarate_shap(X_test_cur, best_model_result["model"], 0)
 
         logger.end_operation()
 
@@ -225,24 +229,28 @@ class ModelHandler:
             "task": self._task,
             "unique models param sets checked (for each dataset)": self._unique_models_params_checked,
             "unique models": len(self._models_classes),
-            "base model names": [model_cls.__bases__[0].__name__ for model_cls in self._models_classes],
+            "base model names": [
+                model_cls.__bases__[0].__name__ for model_cls in self._models_classes
+            ],
             "scoring function": self._scoring_func.__name__,
             "search parameters": json.dumps(config.tuning_params),
             "results": self._results,
             "best models results": self._best_models_results,
             **self._data_meta,
         }
-        section_desc = f"This part of the report presents the results of the modeling process. There were {overview['task']} {overview['unique models']} models trained for each of the best preprocessing pipelines."       
+        section_desc = f"This part of the report presents the results of the modeling process. There were {overview['unique models']} {overview['task']} models trained for each of the best preprocessing pipelines. \\newline"
         raport.add_text(section_desc)
-        used_models_desc = "The following models were used in the modeling process."
+        used_models_desc = (
+            "The following models were used in the modeling process. \\newline"
+        )
         raport.add_text(used_models_desc)
-        
+
         raport.add_list(overview["base model names"])
-        
+
         raport.add_subsection("Hyperparameter tuning")
-        section_desc = f"This section presents the results of hyperparameter tuning for each of the best {config.max_models} models using RandomizedSearchCV. Param grids used for each model are presented in the tables below."
+        section_desc = f"This section presents the results of hyperparameter tuning for each of the best {config.max_models} models using RandomizedSearchCV. Param grids used for each model are presented in the tables below. "
         raport.add_text(section_desc)
-        
+
         model_meta = pd.DataFrame(self._model_meta)
 
         for model, param_grid in model_meta[["name", "param_grid"]].values.tolist():
@@ -263,18 +271,31 @@ class ModelHandler:
         best_results = pd.DataFrame(overview["best models results"])
 
         best_results = (
-        best_results[["Model cls base name", "final pipeline name", "params", "mean_fit_time", "test score (after re-training)"]]
-        .rename(columns={
-            "Model cls base name": "Model",
-            "final pipeline name": "Pipeline",
-            "params": "Best params",
-            "mean_fit_time": "Mean fit time",
-            "test score (after re-training)": "Test score"
-        })
-        .sort_values(by="Test score", ascending= overview["task"] == "regression") # to git
-)      
+            best_results[
+                [
+                    "Model cls base name",
+                    "final pipeline name",
+                    "params",
+                    "mean_fit_time",
+                    "test score (after re-training)",
+                ]
+            ]
+            .rename(
+                columns={
+                    "Model cls base name": "Model",
+                    "final pipeline name": "Pipeline",
+                    "params": "Best params",
+                    "mean_fit_time": "Mean fit time",
+                    "test score (after re-training)": "Test score",
+                }
+            )
+            .sort_values(by="Test score", ascending=overview["task"] == "regression")
+        )
+        best_results["Mean fit time"] = best_results["Mean fit time"].apply(
+            lambda x: humanize.naturaldelta(x)
+        )
         best_results_dict = list(best_results.itertuples(index=False, name=None))
-                
+
         raport.add_reference(label="tab:best_models_results", add_space=True)
         best_models_desc = "presents the best models and pipelines along with their hyperparameters, mean fit time, and test score."
         raport.add_text(best_models_desc)
@@ -285,16 +306,31 @@ class ModelHandler:
             widths=[35, 35, 45, 25, 15],
             label="tab:best_models_results",
         )
-        
-        
-        results_df = pd.DataFrame(overview["results"])
-        # print type of each column
-        # for col in results_df.columns:
-        #     logger.info(results_df[col].apply(lambda x: type(x).__name__))
-        
-        
-        best_results_df = pd.DataFrame(overview["best models results"])
-        best_results_df.to_csv("best_results.csv", index=False)
+
+        raport.add_subsection("Interpretability")
+        interpretability_desc = "This section presents SHAP plots for the best model."
+        charts_dir = config.charts_dir
+        raport.add_text(interpretability_desc)
+
+        shap_order = ["shap_bar", "shap_summ", "shap_wat"]
+        logger.start_operation("Adding SHAP plots to raport...")
+        try:
+            for order in shap_order:
+                for file in glob.glob(os.path.join(charts_dir, "shap*.png")):
+                    if order in file:
+                        class_no = file.split("_")[2]
+                        if order == "shap_summ":
+                            caption = f"SHAP summary plot for class {class_no}."
+                        elif order == "shap_wat":
+                            caption = f"SHAP waterfall plot for class {class_no}."
+                        else:
+                            caption = f"SHAP bar plot for class {class_no}."
+
+                        raport.add_figure(file, caption=caption)
+        except Exception as e:
+            logger.error(f"Error in adding SHAP plots to raport: {e}")
+        finally:
+            logger.end_operation()
 
         return raport
 
@@ -377,7 +413,7 @@ class ModelHandler:
         y_train: pd.Series,
         X_valid: pd.DataFrame = None,
         y_valid: pd.Series = None,
-        task: str =  None,
+        task: str = None,
     ) -> Union[dict, List[dict], int]:
         """
         Tunes a model's hyperparameters using RandomizedSearchCV and returns the best model and related information.
@@ -422,7 +458,6 @@ class ModelHandler:
                 )
         random_search.fit(X_train, y_train, **fit_params)
 
-        
         info = {
             "search_time": time() - t0,
             "best_score": random_search.best_score_,
@@ -430,7 +465,6 @@ class ModelHandler:
         }
         results = pd.DataFrame(random_search.cv_results_)
         results.to_csv("results.csv", index=False)
-        logger.info(results["mean_test_score"])
         sorted_results = results.sort_values(by="mean_test_score", ascending=True)
         top_models_stats = sorted_results.head(best_k)[
             [
@@ -443,7 +477,124 @@ class ModelHandler:
         ].to_dict(orient="records")
         return info, top_models_stats, len(results)
 
-    # @staticmethod
-    # def genarate_shap(
-        
-        
+    @staticmethod
+    def genarate_shap(X_test: pd.DataFrame, model: BaseEstimator, model_idx: int):
+        """
+        Generates SHAP plots for the best model.
+
+        Args:
+            X_test (pd.DataFrame): The input DataFrame containing the test data.
+            model (BaseEstimator): The trained model used for prediction.
+            model_idx (int): The index of the model.
+
+        """
+
+        def clean_shap_files():
+            charts_dir = config.charts_dir
+            for file in glob.glob(os.path.join(charts_dir, "shap*.png")):
+                os.remove(file)
+                logger.info(f"Removed SHAP files from {charts_dir}.")
+
+        clean_shap_files()
+        logger.info(f"SHAP - X test columns : {X_test.columns}")
+        background = shap.sample(X_test, min(100, len(X_test)))
+        n = len(X_test)
+        sample_size = int(0.5 * n)
+        logger.info(f"X_test sample for shap created, sample size: {sample_size}")
+        X_sample = X_test.sample(n=sample_size, random_state=42)
+        feature_names = X_sample.columns.to_list()
+        background_np = (
+            background.values.astype(np.float64)
+            if isinstance(background, pd.DataFrame)
+            else background
+        )
+        X_sample_np = (
+            X_sample.values.astype(np.float64)
+            if isinstance(X_sample, pd.DataFrame)
+            else X_sample
+        )
+
+        try:
+            if hasattr(model, "predict_proba"):
+                explainer = shap.Explainer(model.predict_proba, background_np)
+                logger.info("SHAP explainer created")
+                shap_values = explainer(X_sample)
+                logger.info("SHAP values created")
+
+            elif hasattr(model, "predict"):
+                explainer = shap.Explainer(model.predict, background_np)
+                logger.info("SHAP explainer created")
+                shap_values = explainer(X_sample_np)
+                shap_values.feature_names = feature_names
+                logger.info("SHAP values created")
+
+            else:
+                raise TypeError(
+                    "Model must have either 'predict_proba' or 'predict' method to use SHAP."
+                )
+
+            sample_idx = random.randint(0, X_sample.shape[0] - 1)
+
+            if len(shap_values.values.shape) == 3:
+                logger.info("SHAP - classification")
+                num_classes = shap_values.values.shape[2]
+                logger.info(f" SHAP - Number of classes:{num_classes}")
+
+                for class_idx in range(num_classes):
+                    logger.info(
+                        f"\nGenerating plots for model : {model_idx}, for Class {class_idx}:"
+                    )
+
+                    shap.summary_plot(shap_values[..., class_idx], X_sample, show=False)
+                    plt.title(f"Summary plot for class {class_idx}")
+                    plt.tight_layout()
+                    shap_sum = save_chart(
+                        f"shap_summ_{class_idx}_cls.png"
+                    )  # noqa: F841
+
+                    shap.waterfall_plot(
+                        shap_values[:, :, class_idx][sample_idx], show=False
+                    )
+                    plt.title(
+                        f"Waterfall plot for class {class_idx}, observation numer: {sample_idx}"
+                    )
+                    plt.tight_layout()
+                    shap_waterfall = save_chart(
+                        f"shap_wat_{class_idx}_cls.png"
+                    )  # noqa: F841
+
+                    shap.plots.bar(
+                        shap_values[..., class_idx], max_display=10, show=False
+                    )
+                    plt.title(f"Bar plot for class {class_idx}")
+                    plt.tight_layout()
+                    shap_bar = save_chart(f"shap_bar_{class_idx}_cls.png")  # noqa: F841
+
+                logger.info(f"SHAP plots saved for model : {model_idx}")
+            else:
+                logger.info(f"\nGenerating plots for model: {model_idx}... Regression")
+
+                shap.summary_plot(
+                    shap_values, X_sample, feature_names=feature_names, show=False
+                )
+                plt.title("Summary plot for regression")
+                plt.tight_layout()
+                reg_sum = save_chart(f"shap_summ_{model_idx}.png")  # noqa: F841
+
+                shap.waterfall_plot(shap_values[sample_idx], show=False)
+                plt.title(
+                    f"Waterfall plot for regression, observation numer: {sample_idx}"
+                )
+                plt.tight_layout()
+                reg_waterfall = save_chart(f"shap_wat_{model_idx}.png")  # noqa: F841
+
+                shap.plots.bar(shap_values, max_display=10, show=False)
+                plt.title("Bar plot for regression")
+                plt.tight_layout()
+                reg_bar = save_chart(f"shap_bar_{model_idx}.png")  # noqa: F841
+
+                logger.info(f"SHAP plots saved for model : {model_idx}")
+
+        except Exception as e:
+            logger.error(f"Shap failed : {e}")
+            raise

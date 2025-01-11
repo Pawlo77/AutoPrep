@@ -5,6 +5,7 @@ from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
+
 class VarianceFilter(RequiredStep, Numerical):
     """
     Transformer to remove numerical columns with zero variance.

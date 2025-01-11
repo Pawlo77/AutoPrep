@@ -2,16 +2,12 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-from ..utils.abstract import (
-    FeatureImportanceSelector,
-    NonRequiredStep,
-    Numerical,
-    RequiredStep,
-)
+from ..utils.abstract import FeatureImportanceSelector, NonRequiredStep, Numerical
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
+
 
 class CorrelationSelector(NonRequiredStep, Numerical):
     """

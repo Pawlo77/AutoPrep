@@ -128,7 +128,9 @@ class Raport:
 
             with self.doc.create(Table(position="H")) as table:
                 with table.create(Center()) as centered:
-                    centered.append(NoEscape(r"\renewcommand{\arraystretch}{1.5}"))  # Adjust 1.5 as needed
+                    centered.append(
+                        NoEscape(r"\renewcommand{\arraystretch}{1.5}")
+                    )  # Adjust 1.5 as needed
 
                     if widths is not None:
                         # Use provided widths for columns
@@ -173,7 +175,7 @@ class Raport:
 
                 if caption is not None:
                     table.add_caption(caption)
-                    
+
                 if label is not None:
                     # Add label for referencing
                     table.append(NoEscape(f"\\label{{{label}}}"))
@@ -182,7 +184,9 @@ class Raport:
             logger.error(f"Failed to add table {caption}: {str(e)}")
             raise
 
-    def add_figure(self, path: str, caption: str = None, size: int = 0.9, label: str = None) -> None:
+    def add_figure(
+        self, path: str, caption: str = None, size: int = 0.9, label: str = None
+    ) -> None:
         """Add a figure to the document.
 
         Args:
@@ -210,7 +214,9 @@ class Raport:
             logger.error(f"Failed to add text: {str(e)}")
             raise
 
-    def add_reference(self, label: str, prefix: str = "Table", add_space: bool = True) -> None:
+    def add_reference(
+        self, label: str, prefix: str = "Table", add_space: bool = True
+    ) -> None:
         """Adds a reference to a labeled element in the document.
 
         Args:
@@ -221,7 +227,7 @@ class Raport:
         try:
             reference = NoEscape(f"{prefix}~\\ref{{{label}}}")
             if add_space:
-                reference += NoEscape(" ")  
+                reference += NoEscape(" ")
             self.doc.append(reference)
         except Exception as e:
             logger.error(f"Failed to add reference to {label}: {str(e)}")
