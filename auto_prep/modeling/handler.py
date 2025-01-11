@@ -318,14 +318,21 @@ class ModelHandler:
             for order in shap_order:
                 for file in glob.glob(os.path.join(charts_dir, "shap*.png")):
                     if order in file:
-                        class_no = file.split("_")[2]
-                        if order == "shap_summ":
-                            caption = f"SHAP summary plot for class {class_no}."
-                        elif order == "shap_wat":
-                            caption = f"SHAP waterfall plot for class {class_no}."
+                        if overview["task"] == "classification":
+                            class_no = file.split("_")[2]
+                            if order == "shap_summ":
+                                caption = f"SHAP summary plot for class {class_no}."
+                            elif order == "shap_wat":
+                                caption = f"SHAP waterfall plot for class {class_no}."
+                            else:
+                                caption = f"SHAP bar plot for class {class_no}."
                         else:
-                            caption = f"SHAP bar plot for class {class_no}."
-
+                            if order == "shap_summ":
+                                caption = "SHAP summary plot."
+                            elif order == "shap_wat":
+                                caption = "SHAP waterfall plot."
+                            else:
+                                caption = "SHAP bar plot."
                         raport.add_figure(file, caption=caption)
         except Exception as e:
             logger.error(f"Error in adding SHAP plots to raport: {e}")
@@ -579,19 +586,20 @@ class ModelHandler:
                 )
                 plt.title("Summary plot for regression")
                 plt.tight_layout()
-                reg_sum = save_chart(f"shap_summ_{model_idx}.png")  # noqa: F841
+                reg_sum = save_chart(f"shap_summ_regression.png")  # noqa: F841
 
+                shap_values.feature_names = [str(name) for name in shap_values.feature_names]
                 shap.waterfall_plot(shap_values[sample_idx], show=False)
                 plt.title(
                     f"Waterfall plot for regression, observation numer: {sample_idx}"
                 )
                 plt.tight_layout()
-                reg_waterfall = save_chart(f"shap_wat_{model_idx}.png")  # noqa: F841
+                reg_waterfall = save_chart(f"shap_wat_regression.png")  # noqa: F841
 
                 shap.plots.bar(shap_values, max_display=10, show=False)
                 plt.title("Bar plot for regression")
                 plt.tight_layout()
-                reg_bar = save_chart(f"shap_bar_{model_idx}.png")  # noqa: F841
+                reg_bar = save_chart(f"shap_bar_regression.png")  # noqa: F841
 
                 logger.info(f"SHAP plots saved for model : {model_idx}")
 
