@@ -1,0 +1,48 @@
+name: Deploy to PyPI with OIDC
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.10"
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Bump version
+      run: poetry version patch
+
+    - name: Create Git tag
+      run: |
+        VERSION=$(poetry version -s)
+        git tag "v$VERSION"
+        git push origin "v$VERSION"
+
+    - name: Authenticate with PyPI via OIDC
+      id: pypi-auth
+      uses: pypa/gh-action-pypi-publish@v1.0.1
+      with:
+        user: __token__
+
+    - name: Publish to PyPI
+      run: poetry publish --build --repository pypi
+
+    - name: Notify Success
+      run: echo "Deployment to PyPI completed successfully!"
