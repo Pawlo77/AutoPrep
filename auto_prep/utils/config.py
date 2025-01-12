@@ -7,7 +7,7 @@ from pylatex import NoEscape
 from sklearn import set_config
 from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from sklearn.metrics import mean_squared_error, roc_auc_score
+from sklearn.metrics import accuracy_score, mean_squared_error, roc_auc_score
 
 os.environ["OMP_DISPLAY_ENV"] = "FALSE"
 # Suppress UserWarnings and RuntimeWarnings
@@ -48,11 +48,11 @@ DEFAULT_ABSTRACT: str = NoEscape(
 )
 
 DEFAULT_CHARTS_SETTINGS: dict = {
-    "theme": "whitegrid",
+    "theme": "white",
     "title_fontsize": 18,
     "title_fontweight": "bold",
-    "xlabel_fontsize": 12,
-    "ylabel_fontsize": 12,
+    "xlabel_fontsize": 15,
+    "ylabel_fontsize": 15,
     "tick_label_rotation": 45,
     "palette": "pastel",
     "plot_width": 20,
@@ -138,6 +138,7 @@ class GlobalConfig:
         ),
         regression_pipeline_scoring_func: callable = mean_squared_error,
         classification_pipeline_scoring_func: callable = roc_auc_score,
+        classification_pipeline_scoring_func_multi: callable = accuracy_score,
         max_workers: int = None,
         tuning_params: dict = DEFAULT_TUNING_PARAMS,
         max_models: int = 3,
@@ -204,6 +205,7 @@ class GlobalConfig:
                 in classification regression task.
             regression_pipeline_scoring_func (callable) - metric for scoring :obj:`regression_pipeline_scoring_model` output.
             classification_pipeline_scoring_func (callable) - metric for scoring :obj:`classification_pipeline_scoring_model` output.
+            classification_pipeline_scoring_func_multi (callable) - metric for scoring :obj:`classification_pipeline_scoring_model` output
             raport_chart_color_pallete (List[str]) - Color palette for basic eda charts.
             correlation_threshold (float) - threshold used for detecting highly correlated features.Default 0.8.
             correlation_percent (float) - % of selected features based on their correlation with the target. Default 0.5.
@@ -302,6 +304,9 @@ class GlobalConfig:
         )
         self.regression_pipeline_scoring_func = regression_pipeline_scoring_func
         self.classification_pipeline_scoring_func = classification_pipeline_scoring_func
+        self.classification_pipeline_scoring_func_multi = (
+            classification_pipeline_scoring_func_multi
+        )
 
         assert outlier_detector_method in [
             "zscore",

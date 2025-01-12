@@ -138,9 +138,10 @@ class VIFDimentionReducer(DimentionReducer):
         )
         try:
             for col in X.columns:
-                vif = variance_inflation_factor(X.values, X.columns.get_loc(col))
-                if vif > 10:
-                    self.multicollinear_columns.append(col)
+                if X.shape[1] > 1:
+                    vif = variance_inflation_factor(X.values, X.columns.get_loc(col))
+                    if vif > 10:
+                        self.multicollinear_columns.append(col)
             logger.debug(f"Columns with high VIF: {self.multicollinear_columns}")
         except Exception as e:
             logger.error(f"Error in VIFDimentionReducer fit: {e}")
@@ -221,7 +222,7 @@ class UMAPDimentionReducer(DimentionReducer):
             if X.shape[1] > 100:
                 self.n_components = config.umap_components
             else:
-                self.n_components = int(X.shape[1] / 2)
+                self.n_components = max(int(X.shape[1] / 2), 1)
             self.reducer = umap.UMAP(n_components=self.n_components)
             self.reducer.fit(X)
             logger.debug(f"Number of components selected: {self.n_components}")

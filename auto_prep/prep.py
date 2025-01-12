@@ -96,12 +96,12 @@ class AutoPrep:
             """
             Overview
             """
-            self.overview_raport.run(X_train, y_train)
+            self.overview_raport.run(X_train, y_train, task)
 
             """
             Eda
             """
-            self.eda_raport.run(X_train, y_train)
+            self.eda_raport.run(X_train, y_train, task)
 
             """
             Preprocessing

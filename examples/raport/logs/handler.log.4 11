@@ -1,0 +1,74 @@
+2025-01-09 21:54:52 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:54:52 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:54:52 INFO auto_prep.modeling.handler: model
+2025-01-09 21:54:52 INFO auto_prep.modeling.handler: (255, 5)
+2025-01-09 21:54:52 INFO auto_prep.modeling.handler: (255,)
+2025-01-09 21:54:52 INFO auto_prep.modeling.handler: predict
+2025-01-09 21:55:28 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-09 21:55:30 INFO auto_prep.preprocessing.handler: Extracted 1 pipelines.
+2025-01-09 21:55:30 INFO auto_prep.preprocessing.handler: Exploded into 3 pipelines.
+2025-01-09 21:55:30 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-09 21:55:32 INFO auto_prep.preprocessing.handler: Scoring pipelines...
+2025-01-09 21:55:35 INFO auto_prep.modeling.handler: Will train 6 for each of 3 preprocessing pipelines.
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: Re-training for up to 3 best models.
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: weszlo do if
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: weszlo do for
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: model
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: (255, 5)
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: (255,)
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: predict
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: weszlo do for
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: model
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: (255, 5)
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: (255,)
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: predict
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: weszlo do for
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: model
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: (255, 5)
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: (255,)
+2025-01-09 21:55:41 INFO auto_prep.modeling.handler: predict
+2025-01-09 21:59:39 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-09 21:59:42 INFO auto_prep.preprocessing.handler: Extracted 1 pipelines.
+2025-01-09 21:59:42 INFO auto_prep.preprocessing.handler: Exploded into 3 pipelines.
+2025-01-09 21:59:42 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-09 21:59:44 INFO auto_prep.preprocessing.handler: Scoring pipelines...
+2025-01-09 21:59:47 INFO auto_prep.modeling.handler: Will train 6 for each of 3 preprocessing pipelines.
+2025-01-09 21:59:53 INFO auto_prep.modeling.handler: Re-training for up to 3 best models.
+2025-01-09 21:59:53 INFO auto_prep.modeling.handler: weszlo do if
+2025-01-09 21:59:53 INFO auto_prep.modeling.handler: weszlo do for
+2025-01-09 21:59:53 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:59:53 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: model
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: (255, 5)
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: (255,)
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: predict
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: weszlo do for
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: model
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: (255, 5)
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: (255,)
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: predict
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: weszlo do for
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: transofrming
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: model
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: (255, 5)
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: (255,)
+2025-01-09 21:59:54 INFO auto_prep.modeling.handler: predict
+2025-01-09 22:01:04 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-09 22:01:06 INFO auto_prep.preprocessing.handler: Extracted 1 pipelines.
+2025-01-09 22:01:06 INFO auto_prep.preprocessing.handler: Exploded into 3 pipelines.
+2025-01-09 22:01:06 INFO auto_prep.preprocessing.handler: Fitting pipelines...

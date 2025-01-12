@@ -2,16 +2,12 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-from ..utils.abstract import (
-    FeatureImportanceSelector,
-    NonRequiredStep,
-    Numerical,
-    RequiredStep,
-)
+from ..utils.abstract import FeatureImportanceSelector, NonRequiredStep, Numerical
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
+
 
 class CorrelationSelector(NonRequiredStep, Numerical):
     """
@@ -118,7 +114,7 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         }
 
 
-class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
+class FeatureImportanceClassSelector(FeatureImportanceSelector):
     """
     Transformer to select k% (rounded to whole number) of features
     that are most important according to Random Forest model for classification.
@@ -136,9 +132,7 @@ class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
         super().__init__()
         self.feature_importances_ = None
 
-    def fit(
-        self, X: pd.DataFrame, y: pd.Series
-    ) -> "FeatureImportanceClassificationSelector":
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> "FeatureImportanceClassSelector":
         """
         Identifies the feature importances according to the Random Forest model.
 
@@ -231,7 +225,7 @@ class FeatureImportanceClassificationSelector(FeatureImportanceSelector):
         }
 
 
-class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
+class FeatureImportanceRegressSelector(FeatureImportanceSelector):
     """
     Transformer to select k% (rounded to whole number) of features
     that are most important according to Random Forest model for regression.
@@ -249,9 +243,7 @@ class FeatureImportanceRegressionSelector(FeatureImportanceSelector):
         super().__init__()
         self.feature_importances_ = None
 
-    def fit(
-        self, X: pd.DataFrame, y: pd.Series
-    ) -> "FeatureImportanceRegressionSelector":
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> "FeatureImportanceRegressSelector":
         """
         Identifies the feature importances according to the Random Forest model.
 

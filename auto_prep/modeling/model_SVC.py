@@ -25,7 +25,14 @@ class ModelSVC(SVC, Classifier):
     }
 
     def __init__(
-        self, C=1.0, kernel="rbf", degree=3, gamma="scale", random_state=42, **kwargs
+        self,
+        C=1.0,
+        kernel="rbf",
+        degree=3,
+        gamma="scale",
+        random_state=42,
+        probability=True,
+        **kwargs,
     ):
         """
         Initializes the Support Vector Classifier model.
@@ -44,6 +51,7 @@ class ModelSVC(SVC, Classifier):
             degree=degree,
             gamma=gamma,
             random_state=random_state,
+            probability=probability,
             **kwargs,
         )
 

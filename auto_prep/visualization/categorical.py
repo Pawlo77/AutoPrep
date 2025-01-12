@@ -55,7 +55,7 @@ class CategoricalVisualizer:
                 f"for {categorical_columns} columns."
             )
 
-            max_plots_per_page = 10
+            max_plots_per_page = 6
             categorical_groups = [
                 categorical_columns[i : i + max_plots_per_page]
                 for i in range(0, len(categorical_columns), max_plots_per_page)

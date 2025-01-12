@@ -1,0 +1,7 @@
+params,mean_test_score,std_test_score,mean_fit_time,std_fit_time,Model cls base name,re-training time,model,name,combined score (after re-training),test score (after re-training),model base name,final pipeline name
+"{""tol"": 0.001, ""max_iter"": 300, ""lambda_2"": 1e-07, ""lambda_1"": 1e-08, ""alpha_2"": 1e-08, ""alpha_1"": 1e-07}",,,0.0034963289896647134,0.00040825143824804017,BayesianRidge,0.0010001659393310547,"ModelBayesianRidgeRegressor(alpha_1=1e-07, alpha_2=1e-08, lambda_1=1e-08,
+                            lambda_2=1e-07)",ModelBayesianRidgeRegressor,52.45864413845183,50.44743071632941,BayesianRidge,final_pipeline_0.joblib
+"{""tol"": 0.0001, ""max_iter"": 400, ""lambda_2"": 1e-07, ""lambda_1"": 1e-08, ""alpha_2"": 1e-07, ""alpha_1"": 1e-06}",,,0.0035892327626546225,0.00030781579610665425,BayesianRidge,0.0,"ModelBayesianRidgeRegressor(alpha_2=1e-07, lambda_1=1e-08, lambda_2=1e-07,
+                            max_iter=400, tol=0.0001)",ModelBayesianRidgeRegressor,52.45864413809669,50.447430713957466,BayesianRidge,final_pipeline_1.joblib
+"{""tol"": 1e-05, ""max_iter"": 400, ""lambda_2"": 1e-06, ""lambda_1"": 1e-08, ""alpha_2"": 1e-06, ""alpha_1"": 1e-07}",,,0.0031853516896565757,0.0009419732970465101,BayesianRidge,0.0,"ModelBayesianRidgeRegressor(alpha_1=1e-07, lambda_1=1e-08, max_iter=400,
+                            tol=1e-05)",ModelBayesianRidgeRegressor,52.458644138506166,50.44743071669236,BayesianRidge,final_pipeline_2.joblib

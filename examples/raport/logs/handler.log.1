@@ -1,47 +1,54 @@
-2025-01-09 10:52:09 INFO auto_prep.preprocessing.handler: Creating pipelines...
-2025-01-09 10:53:19 INFO auto_prep.preprocessing.handler: Creating pipelines...
-2025-01-09 10:54:01 INFO auto_prep.preprocessing.handler: Extracted 2 pipelines.
-2025-01-09 10:54:01 INFO auto_prep.preprocessing.handler: Exploded into 6 pipelines.
-2025-01-09 10:54:01 INFO auto_prep.preprocessing.handler: Fitting pipelines...
-2025-01-09 10:54:06 INFO auto_prep.preprocessing.handler: Scoring pipelines...
-2025-01-09 10:54:11 ERROR auto_prep.modeling.handler: Loaded 2 pipelines.
-2025-01-09 10:54:20 INFO auto_prep.modeling.handler: Hyperparameter tuning for model: ModelSVC()
-2025-01-09 10:54:20 INFO auto_prep.modeling.handler: Parameters: {'C': [0.1, 1, 10, 100, 1000], 'kernel': ['linear', 'poly', 'rbf', 'sigmoid'], 'degree': [3, 4, 5], 'gamma': ['scale', 'auto'], 'random_state': [42]}
-2025-01-09 10:54:23 INFO auto_prep.modeling.handler: random search fitted
-2025-01-09 10:54:23 INFO auto_prep.modeling.handler: Best params: {'random_state': 42, 'kernel': 'rbf', 'gamma': 'scale', 'degree': 3, 'C': 1}
-2025-01-09 10:54:23 INFO auto_prep.modeling.handler: Hyperparameter tuning for model: ModelXGBoost(base_score=None, booster=None, callbacks=None,
-             colsample_bylevel=None, colsample_bynode=None, device=None,
-             early_stopping_rounds=None, enable_categorical=False,
-             eval_metric=None, feature_types=None, gamma=None, grow_policy=None,
-             importance_type=None, interaction_constraints=None, max_bin=None,
-             max_cat_threshold=None, max_cat_to_onehot=None,
-             max_delta_step=None, max_leaves=None, min_child_weight=None,
-             missing=nan, monotone_constraints=None, multi_strategy=None,
-             n_estimators=None, n_jobs=None, num_parallel_tree=None,
-             random_state=None, reg_alpha=None, reg_lambda=None,
-             sampling_method=None, ...)
-2025-01-09 10:54:23 INFO auto_prep.modeling.handler: Parameters: {'max_depth': [3, 6, 7], 'learning_rate': [0.01, 0.1, 0.3], 'subsample': [0.5, 0.8, 1.0], 'colsample_bytree': [0.8, 1.0], 'objective': ['binary:logistic', 'multi:softprob', 'reg:squarederror']}
-2025-01-09 10:54:24 INFO auto_prep.modeling.handler: random search fitted
-2025-01-09 10:54:24 INFO auto_prep.modeling.handler: Best params: {'subsample': 1.0, 'objective': 'binary:logistic', 'max_depth': 3, 'learning_rate': 0.1, 'colsample_bytree': 0.8}
-2025-01-09 10:54:24 INFO auto_prep.modeling.handler: Hyperparameter tuning for model: ModelXGBoost(base_score=None, booster=None, callbacks=None,
-             colsample_bylevel=None, colsample_bynode=None, device=None,
-             early_stopping_rounds=None, enable_categorical=False,
-             eval_metric=None, feature_types=None, gamma=None, grow_policy=None,
-             importance_type=None, interaction_constraints=None, max_bin=None,
-             max_cat_threshold=None, max_cat_to_onehot=None,
-             max_delta_step=None, max_leaves=None, min_child_weight=None,
-             missing=nan, monotone_constraints=None, multi_strategy=None,
-             n_estimators=None, n_jobs=None, num_parallel_tree=None,
-             random_state=None, reg_alpha=None, reg_lambda=None,
-             sampling_method=None, ...)
-2025-01-09 10:54:24 INFO auto_prep.modeling.handler: Parameters: {'max_depth': [3, 6, 7], 'learning_rate': [0.01, 0.1, 0.3], 'subsample': [0.5, 0.8, 1.0], 'colsample_bytree': [0.8, 1.0], 'objective': ['binary:logistic', 'multi:softprob', 'reg:squarederror']}
-2025-01-09 10:54:24 INFO auto_prep.modeling.handler: random search fitted
-2025-01-09 10:54:24 INFO auto_prep.modeling.handler: Best params: {'subsample': 1.0, 'objective': 'binary:logistic', 'max_depth': 3, 'learning_rate': 0.1, 'colsample_bytree': 0.8}
-2025-01-09 10:54:25 INFO auto_prep.modeling.handler: modified_results: [('SVC', 0.7726, 'preprocessing_pipeline_0'), ('XGBoost', 0.76636, 'preprocessing_pipeline_2'), ('XGBoost', 0.76636, 'preprocessing_pipeline_1')]
-2025-01-09 10:54:25 INFO auto_prep.modeling.handler: modified_results: [('XGBoost', {'subsample': 1.0, 'objective': 'binary:logistic', 'max_depth': 3, 'learning_rate': 0.1, 'colsample_bytree': 0.8}, 'preprocessing_pipeline_2', 0.85613), ('XGBoost', {'subsample': 1.0, 'objective': 'binary:logistic', 'max_depth': 3, 'learning_rate': 0.1, 'colsample_bytree': 0.8}, 'preprocessing_pipeline_1', 0.85613), ('SVC', {'random_state': 42, 'kernel': 'rbf', 'gamma': 'scale', 'degree': 3, 'C': 1}, 'preprocessing_pipeline_0', 0.83507)]
-2025-01-09 11:09:10 INFO auto_prep.preprocessing.handler: Creating pipelines...
-2025-01-09 11:09:24 INFO auto_prep.preprocessing.handler: Extracted 1 pipelines.
-2025-01-09 11:09:24 INFO auto_prep.preprocessing.handler: Exploded into 3 pipelines.
-2025-01-09 11:09:24 INFO auto_prep.preprocessing.handler: Fitting pipelines...
-2025-01-09 11:09:27 INFO auto_prep.preprocessing.handler: Scoring pipelines...
-2025-01-09 11:09:30 INFO auto_prep.modeling.handler: Will train 5 for each of 3 preprocessing pipelines.
+2025-01-12 10:24:19 INFO auto_prep.modeling.handler: Will train 1 for each of 3 preprocessing pipelines.
+2025-01-12 10:24:21 INFO auto_prep.modeling.handler: Re-training for up to 3 best models.
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: Charts directory: C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: SHAP - X test columns : Index(['pclass', 'name', 'age', 'sibsp', 'parch', 'ticket', 'fare',
+       'home__dest', 'sex_female', 'embarked_C', 'embarked_Q', 'embarked_S'],
+      dtype='object')
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: X_test sample for shap created, sample size: 65
+2025-01-12 10:24:22 INFO auto_prep.modeling.handler: SHAP explainer created
+2025-01-12 10:24:26 INFO auto_prep.modeling.handler: SHAP values created
+2025-01-12 10:24:26 INFO auto_prep.modeling.handler: SHAP - classification
+2025-01-12 10:24:26 INFO auto_prep.modeling.handler:  SHAP - Number of classes:2
+2025-01-12 10:24:26 INFO auto_prep.modeling.handler: 
+Generating plots for model : 0, for Class 0:
+2025-01-12 10:24:27 INFO auto_prep.modeling.handler: 
+Generating plots for model : 0, for Class 1:
+2025-01-12 10:24:29 INFO auto_prep.modeling.handler: SHAP plots saved for model : 0
+2025-01-12 10:25:15 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-12 10:25:18 INFO auto_prep.preprocessing.handler: Extracted 1 pipelines.
+2025-01-12 10:25:18 INFO auto_prep.preprocessing.handler: Exploded into 3 pipelines.
+2025-01-12 10:25:18 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-12 10:25:21 INFO auto_prep.preprocessing.handler: Scoring pipelines...
+2025-01-12 10:25:24 INFO auto_prep.modeling.handler: Will train 1 for each of 3 preprocessing pipelines.
+2025-01-12 10:25:26 INFO auto_prep.modeling.handler: Re-training for up to 3 best models.
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: Charts directory: C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: Removed SHAP files from C:\Users\rogal\MojGithub\AutoPrep\examples\raport\raport\charts.
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: SHAP - X test columns : Index(['pclass', 'name', 'age', 'sibsp', 'parch', 'ticket', 'fare',
+       'home__dest', 'sex_female', 'embarked_C', 'embarked_Q', 'embarked_S'],
+      dtype='object')
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: X_test sample for shap created, sample size: 65
+2025-01-12 10:25:27 INFO auto_prep.modeling.handler: SHAP explainer created
+2025-01-12 10:25:29 INFO auto_prep.modeling.handler: SHAP values created
+2025-01-12 10:25:29 INFO auto_prep.modeling.handler: SHAP - classification
+2025-01-12 10:25:29 INFO auto_prep.modeling.handler:  SHAP - Number of classes:2
+2025-01-12 10:25:29 INFO auto_prep.modeling.handler: 
+Generating plots for model : 0, for Class 0:
+2025-01-12 10:25:30 INFO auto_prep.modeling.handler: 
+Generating plots for model : 0, for Class 1:
+2025-01-12 10:25:31 INFO auto_prep.modeling.handler: SHAP plots saved for model : 0
+2025-01-12 10:26:33 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-12 10:26:37 INFO auto_prep.preprocessing.handler: Extracted 1 pipelines.
+2025-01-12 10:26:37 INFO auto_prep.preprocessing.handler: Exploded into 3 pipelines.
+2025-01-12 10:26:37 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-12 10:26:40 INFO auto_prep.preprocessing.handler: Scoring pipelines...
