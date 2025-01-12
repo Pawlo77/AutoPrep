@@ -502,6 +502,8 @@ class ModelHandler:
                 os.remove(file)
                 logger.info(f"Removed SHAP files from {charts_dir}.")
 
+        logger.info(f"Charts directory: {config.charts_dir}")
+
         clean_shap_files()
         logger.info(f"SHAP - X test columns : {X_test.columns}")
         background = shap.sample(X_test, min(100, len(X_test)))
@@ -532,7 +534,7 @@ class ModelHandler:
                 explainer = shap.Explainer(model.predict, background_np)
                 logger.info("SHAP explainer created")
                 shap_values = explainer(X_sample_np)
-                shap_values.feature_names = feature_names
+                # shap_values.feature_names = feature_names
                 logger.info("SHAP values created")
 
             else:
@@ -581,16 +583,14 @@ class ModelHandler:
             else:
                 logger.info(f"\nGenerating plots for model: {model_idx}... Regression")
 
-                shap.summary_plot(
-                    shap_values, X_sample, feature_names=feature_names, show=False
-                )
+                shap.summary_plot(shap_values, X_sample, show=False)
                 plt.title("Summary plot for regression")
                 plt.tight_layout()
                 reg_sum = save_chart("shap_summ_regression.png")  # noqa: F841
 
-                shap_values.feature_names = [
-                    str(name) for name in shap_values.feature_names
-                ]
+                # shap_values.feature_names = [
+                #     str(name) for name in shap_values.feature_names
+                # ]
                 shap.waterfall_plot(shap_values[sample_idx], show=False)
                 plt.title(
                     f"Waterfall plot for regression, observation numer: {sample_idx}"

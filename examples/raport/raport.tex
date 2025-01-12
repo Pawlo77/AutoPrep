@@ -43,18 +43,18 @@
 \renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l}%
 \hline%
-System&Darwin\\%
-Machine&arm64\\%
-Processor&arm\\%
+System&Windows\\%
+Machine&AMD64\\%
+Processor&Intel64 Family 6 Model 140 Stepping 2, GenuineIntel\\%
 Architecture&64bit\\%
-Python Version&3.10.5\\%
-Physical Cores&8\\%
+Python Version&3.11.5\\%
+Physical Cores&4\\%
 Logical Cores&8\\%
-CPU Frequency (MHz)&3204\\%
-Total RAM (GB)&16.00\\%
-Available RAM (GB)&4.57\\%
-Total Disk Space (GB)&228.27\\%
-Free Disk Space (GB)&8.06\\%
+CPU Frequency (MHz)&2918.00\\%
+Total RAM (GB)&15.74\\%
+Available RAM (GB)&4.27\\%
+Total Disk Space (GB)&457.28\\%
+Free Disk Space (GB)&239.79\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -66,6 +66,7 @@ Free Disk Space (GB)&8.06\\%
 \label{subsec:Dataset}%
 
 %
+Task detected for the dataset: regression. \newline%
 Table~\ref{tab:dataset_summary} %
 presents an overview of the dataset including the number of samples, features, and their types.%
 
@@ -96,7 +97,7 @@ presents the distribution of missing values in the dataset.%
 \renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l}%
 \hline%
-\textbf{classgit}&\textbf{number of observations}&\textbf{Percentage}\\%
+\textbf{feature}&\textbf{number of observations}&\textbf{fraction}\\%
 \hline%
 P85&0&0.00\\%
 P75&0&0.00\\%
@@ -124,7 +125,7 @@ presents the description of features in the dataset.%
 \renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l l}%
 \hline%
-\textbf{class}&\textbf{type}&\textbf{dtype}&\textbf{space usage}\\%
+\textbf{feature}&\textbf{type}&\textbf{dtype}&\textbf{space usage}\\%
 \hline%
 P85&numerical&int64&3.6 kB\\%
 P75&numerical&int64&3.6 kB\\%
@@ -186,7 +187,7 @@ Figure~\ref{Target distribution.} %
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/target_distribution_regression.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/target_distribution_regression.png}%
 \caption{Target distribution.}%
 \label{Target distribution.}%
 \end{figure}
@@ -201,7 +202,7 @@ The distribution of numerical features is presented on histogram(s) below.%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_1.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_1.png}%
 \caption{Numerical Features Distribution {-} Page 1}%
 \label{Numerical Features Distribution - Page 1}%
 \end{figure}
@@ -211,7 +212,7 @@ The distribution of numerical features is presented on histogram(s) below.%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_2.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/numerical_distribution_page_2.png}%
 \caption{Numerical Features Distribution {-} Page 2}%
 \label{Numerical Features Distribution - Page 2}%
 \end{figure}
@@ -223,7 +224,7 @@ Figure~\ref{Correlation heatmap.} %
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/correlation_heatmap.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/correlation_heatmap.png}%
 \caption{Correlation heatmap.}%
 \label{Correlation heatmap.}%
 \end{figure}
@@ -234,7 +235,7 @@ The boxplot of numerical features is presented on chart(s) below.%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/boxplot_page_1.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/boxplot_page_1.png}%
 \caption{Boxplot page 1}%
 \label{Boxplot page 1}%
 \end{figure}
@@ -244,7 +245,7 @@ The boxplot of numerical features is presented on chart(s) below.%
 
 \begin{figure}[H]%
 \centering%
-\includegraphics[width=0.9\textwidth]{/Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts/boxplot_page_2.png}%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/boxplot_page_2.png}%
 \caption{Boxplot page 2}%
 \label{Boxplot page 2}%
 \end{figure}
@@ -290,6 +291,21 @@ Preprocessing process was configured to select up to 3 best unique preprocessing
 \textbf{index}&\textbf{steps}\\%
 \hline%
 0&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler\\%
+1&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, CorrelationSelector\\%
+2&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, FeatureImportanceClassSelector\\%
+3&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, FeatureImportanceRegressSelector\\%
+4&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, PCADimentionReducer\\%
+5&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, CorrelationSelector, PCADimentionReducer\\%
+6&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, FeatureImportanceClassSelector, PCADimentionReducer\\%
+7&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, FeatureImportanceRegressSelector, PCADimentionReducer\\%
+8&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, UMAPDimentionReducer\\%
+9&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, CorrelationSelector, UMAPDimentionReducer\\%
+10&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, FeatureImportanceClassSelector, UMAPDimentionReducer\\%
+11&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, FeatureImportanceRegressSelector, UMAPDimentionReducer\\%
+12&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, VIFDimentionReducer\\%
+13&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, CorrelationSelector, VIFDimentionReducer\\%
+14&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, FeatureImportanceClassSelector, VIFDimentionReducer\\%
+15&NAImputer, UniqueFilter, ColumnEncoder, VarianceFilter, CorrelationFilter, ColumnScaler, FeatureImportanceRegressSelector, VIFDimentionReducer\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -305,11 +321,11 @@ Preprocessing process was configured to select up to 3 best unique preprocessing
 \renewcommand{\arraystretch}{1.5}%
 \begin{tabular}{l l l l l}%
 \hline%
-\textbf{score index}&\textbf{file name}&\textbf{score}&\textbf{fit duration}&\textbf{score duration}\\%
+\textbf{index}&\textbf{file name}&\textbf{score}&\textbf{fit duration}&\textbf{score duration}\\%
 \hline%
-0&preprocessing\_pipeline\_0.joblib&31.85&a moment&a moment\\%
-1&preprocessing\_pipeline\_1.joblib&31.82&a moment&a moment\\%
-2&preprocessing\_pipeline\_2.joblib&31.68&a moment&a moment\\%
+0&preprocessing\_pipeline\_0.joblib&200.45&16 seconds&17 seconds\\%
+1&preprocessing\_pipeline\_1.joblib&192.80&a moment&a moment\\%
+2&preprocessing\_pipeline\_2.joblib&192.80&a moment&a moment\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -322,7 +338,7 @@ Preprocessing process was configured to select up to 3 best unique preprocessing
 \begin{table}[H]%
 \begin{center}%
 \renewcommand{\arraystretch}{1.5}%
-\begin{tabular}{p{7mm} p{35mm} p{80mm} p{50mm}}%
+\begin{tabular}{p{7mm} p{50mm} p{80mm} p{40mm}}%
 \hline%
 \textbf{step}&\textbf{name}&\textbf{description}&\textbf{params}\\%
 \hline%
@@ -331,7 +347,9 @@ Preprocessing process was configured to select up to 3 best unique preprocessing
 2&ColumnEncoder&Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or TolerantLabelEncoder (for columns with >=5 unique values). Encodes target variable using LabelEncoder if provided.&\{\}\\%
 3&VarianceFilter&Removes columns with zero variance. Dropped columns: {[}{]}&\{\}\\%
 4&CorrelationFilter&Removes one column from pairs of columns correlated above correlation threshold: 0.8.&\{\}\\%
-5&ColumnScaler&Scales numerical columns using one of 3 scaling methods.&\{"method": "minmax"\}\\%
+5&ColumnScaler&Scales numerical columns using one of 3 scaling methods.&\{"method": "standard"\}\\%
+6&FeatureImportanceClassSelector&Selects the top 10.0\% (rounded to whole number) of features most important according to Random Forest model for classification. Number of features that were selected: 0&\{"k": 10.0\}\\%
+7&UMAPDimentionReducer&Reduces the dimensionality of the data using UMAP.&\{"n\_components": null\}\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -356,7 +374,7 @@ REG&227.00&{-}0.00&1.00&{-}1.60&{-}1.12&{-}0.16&0.80&1.77\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{Best pipeline No. 0: Output overview.}%
+\caption{Best pipeline No. 0: output overview.}%
 \end{table}
 
 %
@@ -365,7 +383,7 @@ REG&227.00&{-}0.00&1.00&{-}1.60&{-}1.12&{-}0.16&0.80&1.77\\%
 \begin{table}[H]%
 \begin{center}%
 \renewcommand{\arraystretch}{1.5}%
-\begin{tabular}{p{7mm} p{35mm} p{80mm} p{50mm}}%
+\begin{tabular}{p{7mm} p{50mm} p{80mm} p{40mm}}%
 \hline%
 \textbf{step}&\textbf{name}&\textbf{description}&\textbf{params}\\%
 \hline%
@@ -374,7 +392,9 @@ REG&227.00&{-}0.00&1.00&{-}1.60&{-}1.12&{-}0.16&0.80&1.77\\%
 2&ColumnEncoder&Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or TolerantLabelEncoder (for columns with >=5 unique values). Encodes target variable using LabelEncoder if provided.&\{\}\\%
 3&VarianceFilter&Removes columns with zero variance. Dropped columns: {[}{]}&\{\}\\%
 4&CorrelationFilter&Removes one column from pairs of columns correlated above correlation threshold: 0.8.&\{\}\\%
-5&ColumnScaler&Scales numerical columns using one of 3 scaling methods.&\{"method": "robust"\}\\%
+5&ColumnScaler&Scales numerical columns using one of 3 scaling methods.&\{"method": "minmax"\}\\%
+6&FeatureImportanceClassSelector&Selects the top 10.0\% (rounded to whole number) of features most important according to Random Forest model for classification. Number of features that were selected: 0&\{"k": 10.0\}\\%
+7&PCADimentionReducer&Combines PCA with automatic selection of the number of components to preserve 95\% of the variance.&\{"n\_components": null\}\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -399,7 +419,7 @@ REG&227.00&0.48&0.30&0.00&0.14&0.43&0.71&1.00\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{Best pipeline No. 1: Output overview.}%
+\caption{Best pipeline No. 1: output overview.}%
 \end{table}
 
 %
@@ -408,7 +428,7 @@ REG&227.00&0.48&0.30&0.00&0.14&0.43&0.71&1.00\\%
 \begin{table}[H]%
 \begin{center}%
 \renewcommand{\arraystretch}{1.5}%
-\begin{tabular}{p{7mm} p{35mm} p{80mm} p{50mm}}%
+\begin{tabular}{p{7mm} p{50mm} p{80mm} p{40mm}}%
 \hline%
 \textbf{step}&\textbf{name}&\textbf{description}&\textbf{params}\\%
 \hline%
@@ -417,7 +437,9 @@ REG&227.00&0.48&0.30&0.00&0.14&0.43&0.71&1.00\\%
 2&ColumnEncoder&Encodes categorical columns using OneHotEncoder (for columns with <5 unique values) or TolerantLabelEncoder (for columns with >=5 unique values). Encodes target variable using LabelEncoder if provided.&\{\}\\%
 3&VarianceFilter&Removes columns with zero variance. Dropped columns: {[}{]}&\{\}\\%
 4&CorrelationFilter&Removes one column from pairs of columns correlated above correlation threshold: 0.8.&\{\}\\%
-5&ColumnScaler&Scales numerical columns using one of 3 scaling methods.&\{"method": "standard"\}\\%
+5&ColumnScaler&Scales numerical columns using one of 3 scaling methods.&\{"method": "minmax"\}\\%
+6&FeatureImportanceRegressSelector&Selects the top 10.0\% (rounded to whole number) of features most important according to Random Forest model for regression. Number of features that were selected: 0&\{"k": 10.0\}\\%
+7&PCADimentionReducer&Combines PCA with automatic selection of the number of components to preserve 95\% of the variance.&\{"n\_components": null\}\\%
 \hline%
 \end{tabular}%
 \end{center}%
@@ -442,7 +464,7 @@ REG&227.00&0.08&0.52&{-}0.75&{-}0.50&0.00&0.50&1.00\\%
 \hline%
 \end{tabular}%
 \end{center}%
-\caption{Best pipeline No. 2: Output overview.}%
+\caption{Best pipeline No. 2: output overview.}%
 \end{table}
 
 %
@@ -457,18 +479,18 @@ Table~\ref{tab:preprocessing_pipelines_runtime_statistics}%
 \hline%
 \textbf{Category}&\textbf{Value}\\%
 \hline%
-Unique created pipelines&1\\%
-All created pipelines (after exploading each step params)&3\\%
-All pipelines fit time&2 seconds\\%
-All pipelines score time&2 seconds\\%
-scores\_count&3.00\\%
-scores\_mean&31.78\\%
-scores\_std&0.09\\%
-scores\_min&31.68\\%
-scores\_25\%&31.75\\%
-scores\_50\%&31.82\\%
-scores\_75\%&31.84\\%
-scores\_max&31.85\\%
+Unique created pipelines&16\\%
+All created pipelines (after exploading each step params)&48\\%
+All pipelines fit time&29 seconds\\%
+All pipelines score time&37 seconds\\%
+scores\_count&48.00\\%
+scores\_mean&116.57\\%
+scores\_std&72.67\\%
+scores\_min&23.88\\%
+scores\_25\%&33.56\\%
+scores\_50\%&135.79\\%
+scores\_75\%&186.58\\%
+scores\_max&200.45\\%
 Scoring function&<class 'str'>\\%
 Scoring model&RandomForestRegressor\\%
 \hline%
@@ -487,91 +509,27 @@ Scoring model&RandomForestRegressor\\%
 \label{subsec:Overview}%
 
 %
-This part of the report presents the results of the modeling process. There were regression 6 models trained for each of the best preprocessing pipelines.%
-The following models were used in the modeling process.%
+This part of the report presents the results of the modeling process. There were 6 regression models trained for each of the best preprocessing pipelines. \newline%
+The following models were used in the modeling process. \newline%
 \begin{itemize}%
-\item%
-LinearSVR%
-\item%
-KNeighborsRegressor%
-\item%
-RandomForestRegressor%
 \item%
 BayesianRidge%
 \item%
 GradientBoostingRegressor%
 \item%
+KNeighborsRegressor%
+\item%
 LinearRegression%
+\item%
+LinearSVR%
+\item%
+RandomForestRegressor%
 \end{itemize}%
 \subsection{Hyperparameter tuning}%
 \label{subsec:Hyperparametertuning}%
 
 %
-This section presents the results of hyperparameter tuning for each of the best 3 models using RandomizedSearchCV. Param grids used for each model are presented in the tables below.%
-
-
-\begin{table}[H]%
-\begin{center}%
-\renewcommand{\arraystretch}{1.5}%
-\begin{tabular}{l l}%
-\hline%
-\textbf{Category}&\textbf{Value}\\%
-\hline%
-epsilon&{[}0.0, 0.1, 0.2, 0.5, 1.0{]}\\%
-C&{[}0.1, 1.0, 10.0, 100.0{]}\\%
-loss&{[}'epsilon\_insensitive', 'squared\_epsilon\_insensitive'{]}\\%
-fit\_intercept&{[}True, False{]}\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{Param grid for model LinearSVR.}%
-\end{table}
-
-%
-
-
-\begin{table}[H]%
-\begin{center}%
-\renewcommand{\arraystretch}{1.5}%
-\begin{tabular}{l l}%
-\hline%
-\textbf{Category}&\textbf{Value}\\%
-\hline%
-n\_neighbors&{[}5, 10, 15{]}\\%
-weights&{[}'uniform', 'distance'{]}\\%
-algorithm&{[}'auto', 'ball\_tree', 'kd\_tree', 'brute'{]}\\%
-leaf\_size&{[}30, 40, 50{]}\\%
-p&{[}1, 2{]}\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{Param grid for model KNeighboursRegressor.}%
-\end{table}
-
-%
-
-
-\begin{table}[H]%
-\begin{center}%
-\renewcommand{\arraystretch}{1.5}%
-\begin{tabular}{l l}%
-\hline%
-\textbf{Category}&\textbf{Value}\\%
-\hline%
-n\_estimators&{[}100, 200, 300{]}\\%
-max\_depth&{[}None, 5, 10, 15, 20{]}\\%
-min\_samples\_split&{[}2, 5, 10{]}\\%
-min\_samples\_leaf&{[}1, 2, 4{]}\\%
-max\_features&{[}'sqrt', 'log2', None{]}\\%
-bootstrap&{[}True, False{]}\\%
-random\_state&{[}42{]}\\%
-\hline%
-\end{tabular}%
-\end{center}%
-\caption{Param grid for model RandomForestRegressor.}%
-\end{table}
-
-%
+This section presents the results of hyperparameter tuning for each of the best 3 models using RandomizedSearchCV. Param grids used for each model are presented in the tables below. %
 
 
 \begin{table}[H]%
@@ -626,11 +584,75 @@ random\_state&{[}42{]}\\%
 \hline%
 \textbf{Category}&\textbf{Value}\\%
 \hline%
+n\_neighbors&{[}5, 10, 15{]}\\%
+weights&{[}'uniform', 'distance'{]}\\%
+algorithm&{[}'auto', 'ball\_tree', 'kd\_tree', 'brute'{]}\\%
+leaf\_size&{[}30, 40, 50{]}\\%
+p&{[}1, 2{]}\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Param grid for model KNeighboursRegressor.}%
+\end{table}
+
+%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{l l}%
+\hline%
+\textbf{Category}&\textbf{Value}\\%
+\hline%
 fit\_intercept&{[}True, False{]}\\%
 \hline%
 \end{tabular}%
 \end{center}%
 \caption{Param grid for model LinearRegression.}%
+\end{table}
+
+%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{l l}%
+\hline%
+\textbf{Category}&\textbf{Value}\\%
+\hline%
+epsilon&{[}0.0, 0.1, 0.2, 0.5, 1.0{]}\\%
+C&{[}0.1, 1.0, 10.0, 100.0{]}\\%
+loss&{[}'epsilon\_insensitive', 'squared\_epsilon\_insensitive'{]}\\%
+fit\_intercept&{[}True, False{]}\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Param grid for model LinearSVR.}%
+\end{table}
+
+%
+
+
+\begin{table}[H]%
+\begin{center}%
+\renewcommand{\arraystretch}{1.5}%
+\begin{tabular}{l l}%
+\hline%
+\textbf{Category}&\textbf{Value}\\%
+\hline%
+n\_estimators&{[}100, 200, 300{]}\\%
+max\_depth&{[}None, 5, 10, 15, 20{]}\\%
+min\_samples\_split&{[}2, 5, 10{]}\\%
+min\_samples\_leaf&{[}1, 2, 4{]}\\%
+max\_features&{[}'sqrt', 'log2', None{]}\\%
+bootstrap&{[}True, False{]}\\%
+random\_state&{[}42{]}\\%
+\hline%
+\end{tabular}%
+\end{center}%
+\caption{Param grid for model RandomForestRegressor.}%
 \end{table}
 
 %
@@ -645,15 +667,47 @@ presents the best models and pipelines along with their hyperparameters, mean fi
 \hline%
 \textbf{Model}&\textbf{Pipeline}&\textbf{Best params}&\textbf{Mean fit time}&\textbf{Test score}\\%
 \hline%
-LinearSVR&final\_pipeline\_0.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": false, "epsilon": 0.2, "C": 1.0\}&0.00&71.53\\%
-LinearSVR&final\_pipeline\_2.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": false, "epsilon": 0.0, "C": 1.0\}&0.00&72.54\\%
-LinearSVR&final\_pipeline\_1.joblib&\{"loss": "epsilon\_insensitive", "fit\_intercept": true, "epsilon": 0.0, "C": 0.1\}&0.00&250.06\\%
+BayesianRidge&final\_pipeline\_1.joblib&\{"tol": 0.0001, "max\_iter": 400, "lambda\_2": 1e{-}07, "lambda\_1": 1e{-}08, "alpha\_2": 1e{-}07, "alpha\_1": 1e{-}06\}&a moment&234.22\\%
+BayesianRidge&final\_pipeline\_2.joblib&\{"tol": 1e{-}05, "max\_iter": 400, "lambda\_2": 1e{-}06, "lambda\_1": 1e{-}08, "alpha\_2": 1e{-}06, "alpha\_1": 1e{-}07\}&a moment&234.25\\%
+BayesianRidge&final\_pipeline\_0.joblib&\{"tol": 0.001, "max\_iter": 300, "lambda\_2": 1e{-}07, "lambda\_1": 1e{-}08, "alpha\_2": 1e{-}08, "alpha\_1": 1e{-}07\}&a moment&234.32\\%
 \hline%
 \end{tabular}%
 \end{center}%
 \caption{Best models results}%
 \label{tab:best_models_results}%
 \end{table}
+
+%
+\subsection{Interpretability}%
+\label{subsec:Interpretability}%
+
+%
+This section presents SHAP plots for the best model.%
+
+
+\begin{figure}[H]%
+\centering%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/shap_bar_regression.png}%
+\caption{SHAP bar plot.}%
+\end{figure}
+
+%
+
+
+\begin{figure}[H]%
+\centering%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/shap_summ_regression.png}%
+\caption{SHAP summary plot.}%
+\end{figure}
+
+%
+
+
+\begin{figure}[H]%
+\centering%
+\includegraphics[width=0.9\textwidth]{C:/Users/rogal/MojGithub/AutoPrep/examples/raport/raport/charts/shap_wat_regression.png}%
+\caption{SHAP waterfall plot.}%
+\end{figure}
 
 %
 \end{document}

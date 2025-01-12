@@ -33,6 +33,6 @@ X, _, _, _ = data.get_data(dataset_format="dataframe")
 pipeline = AutoPrep()
 
 if __name__ == "__main__":
-    # pipeline.run(data, target_column="survived") # 40945
-    # pipeline.run(X, target_column="GG_new") # 338
+    #pipeline.run(data, target_column="survived") # 40945
+    #pipeline.run(X, target_column="GG_new") # 338
     pipeline.run(X, target_column="CL") # 540
