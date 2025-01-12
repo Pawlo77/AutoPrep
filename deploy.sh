@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Get the new version
+BRANCH='main'
 VERSION=$(poetry version -s)
 
 echo "Pushing tag to remote $BRANCH"
