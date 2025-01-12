@@ -109,9 +109,11 @@ class OverviewRaport:
                     "Task detected for the dataset: multiclass classfication.  \\newline"
                 )
             else:
-                raport.add_text("Task detected for the dataset: binary classfication.")
+                raport.add_text(
+                    "Task detected for the dataset: binary classfication. \\newline"
+                )
         elif self.task == "regression":
-            raport.add_text("Task detected for the dataset: regression.")
+            raport.add_text("Task detected for the dataset: regression. \\newline")
         raport.add_reference(label="tab:dataset_summary", add_space=True)
         dataset_desc = "presents an overview of the dataset including the number of samples, features, and their types."
         raport.add_text(dataset_desc)

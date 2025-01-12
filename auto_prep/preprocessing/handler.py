@@ -292,7 +292,7 @@ class PreprocessingHandler:
                     "description",
                     "params",
                 ],
-                widths=[7, 35, 80, 50],
+                widths=[7, 50, 80, 40],
             )
 
             columns = [
@@ -301,7 +301,7 @@ class PreprocessingHandler:
             ]
             raport.add_table(
                 self._pipelines_descr[score_idx].values.tolist(),
-                caption=f"Best pipeline No. {score_idx}: Output overview.",
+                caption=f"Best pipeline No. {score_idx}: output overview.",
                 header=columns,
             )
 
