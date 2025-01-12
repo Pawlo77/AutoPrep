@@ -2,7 +2,7 @@
 
 **Auto-Prep** is an automated data preprocessing and analysis pipeline that generates comprehensive LaTeX reports. It handles common preprocessing tasks, creates insightful visualizations, and documents the entire process in a professional PDF report. It focuses on tabular data, supporting numerous explainable AI models. Emphasizing interpretability and ease of use, it includes subsections for each model, explaining their strengths, weaknesses, and providing usage examples.
 
-For detailed product description [see this notebook](./examples/walkthrough/walkthrough.ipynb)
+For detailed product description [see this notebook](https://github.com/Pawlo77/AutoPrep/tree/main/examples/walkthrough/walkthrough.ipynb)
 
 ## [Docs](https://pawlo77.github.io/AutoPrep/)
 
@@ -116,11 +116,7 @@ In order to use our tool, you need to have latex intalled on your local machine.
 
 ## Examples
 
-Refer to [this folder](./examples/).
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+Refer to [this folder](https://github.com/Pawlo77/AutoPrep/tree/main/examples/).
 
 ## Author
 
