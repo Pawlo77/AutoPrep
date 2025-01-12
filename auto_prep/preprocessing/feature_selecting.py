@@ -2,9 +2,10 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-from ..utils.abstract import FeatureImportanceSelector, NonRequiredStep, Numerical
+from ..utils.abstract import Categorical, NonRequiredStep, Numerical
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
+from .abstract import FeatureImportanceSelector
 
 logger = setup_logger(__name__)
 
@@ -114,7 +115,7 @@ class CorrelationSelector(NonRequiredStep, Numerical):
         }
 
 
-class FeatureImportanceClassSelector(FeatureImportanceSelector):
+class FeatureImportanceClassSelector(FeatureImportanceSelector, Categorical):
     """
     Transformer to select k% (rounded to whole number) of features
     that are most important according to Random Forest model for classification.
@@ -225,7 +226,7 @@ class FeatureImportanceClassSelector(FeatureImportanceSelector):
         }
 
 
-class FeatureImportanceRegressSelector(FeatureImportanceSelector):
+class FeatureImportanceRegressSelector(FeatureImportanceSelector, Numerical):
     """
     Transformer to select k% (rounded to whole number) of features
     that are most important according to Random Forest model for regression.

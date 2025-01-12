@@ -2,6 +2,8 @@
 
 **Auto-Prep** is an automated data preprocessing and analysis pipeline that generates comprehensive LaTeX reports. It handles common preprocessing tasks, creates insightful visualizations, and documents the entire process in a professional PDF report. It focuses on tabular data, supporting numerous explainable AI models. Emphasizing interpretability and ease of use, it includes subsections for each model, explaining their strengths, weaknesses, and providing usage examples.
 
+For detailed product description [see this notebook](./examples/walkthrough/walkthrough.ipynb)
+
 ## [Docs](https://pawlo77.github.io/AutoPrep/)
 
 ## Features
@@ -13,7 +15,7 @@
 - **Automated visualization generation**
 - **Professional LaTeX report generation**
 - **Modular and extensible design**
-- **Support for numerous explainable AI models**
+- **Support for numerous explainable ML models**
 - **Explainability with model-specific examples**
 
 ## Report Contents
@@ -78,7 +80,13 @@ In order to use our tool, you need to have latex intalled on your local machine.
 
 ## Important informations
 
-- due to multiprocessing enabled, run method has to be called under name __main__ check - see example in next point. Number of cores used can be set in config.
+- due to multiprocessing enabled, run method is recommended to be called under name __main__ check - see example in next point. Number of cores used can be set in config.
+
+- difference between `config.set` vs `config.update` - first one can be used to see default values for each setting, and it will overwritte all non-passed values to their defaults. Second option will just overwritte provied arguments without validation, can be used to create new fields in config.
+
+- `config.root_dir` if exists is cleared on call of `AutoPrep().run()`. If logs are pointed to be stored there, it will delete their file handlers causing errors.
+
+- logs returned to console might be very unreadable due to many warnings in dependencies. Please refer to stored log files for clean logs.
 
 - for changes in config to be loaded, config.update must be called before any other import from autoprep package - as example:
 
@@ -106,6 +114,10 @@ In order to use our tool, you need to have latex intalled on your local machine.
 
     For same reason AutoPrep is not exported to top-level package. It is known implementation fault.
 
+## Examples
+
+Refer to [this folder](./examples/).
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
@@ -116,11 +128,6 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 - **Katarzyna Rogalska**
 - **Julia Kruk**
 - **Gaspar Sekula**
-
-## Acknowledgments
-
-- Inspired by the need for automated preprocessing and reporting in data science workflows
-- Built with modern Python tools and best practices
 
 ## Notes for Developers
 

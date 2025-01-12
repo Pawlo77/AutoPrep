@@ -37,6 +37,8 @@ class AutoPrep:
             data (pd.DataFrame): Input dataset to process.
             target_column (str): Name of the target variable column.
         """
+        config.prepare_dir()
+
         logger.info(f"Starting pipeline run with target column: {target_column}")
         logger.debug(f"Input data shape: {data.shape}")
 

@@ -49,6 +49,9 @@ format = "scripts.format:main"
 lint = "scripts.lint:main"
 check = "scripts.check:main"
 
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+
 [tool.black]
 line-length = 88
 target-version = ['py38']

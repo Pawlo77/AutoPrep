@@ -1,6 +1,8 @@
 import logging
 import os
+import shutil
 import warnings
+from typing import Union
 
 import numpy as np
 from pylatex import NoEscape
@@ -95,10 +97,10 @@ class GlobalConfig:
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
             cls._instance = super(GlobalConfig, cls).__new__(cls, *args, **kwargs)
-            cls._instance._initialize()
+            cls._instance.set()
         return cls._instance
 
-    def _initialize(
+    def set(
         self,
         raport_name: str = "raport",
         raport_title: str = "ML Raport",
@@ -136,9 +138,18 @@ class GlobalConfig:
         classification_pipeline_scoring_model: BaseEstimator = RandomForestClassifier(
             n_estimators=100, random_state=42, max_depth=5, n_jobs=-1, warm_start=True
         ),
-        regression_pipeline_scoring_func: callable = mean_squared_error,
-        classification_pipeline_scoring_func: callable = roc_auc_score,
-        classification_pipeline_scoring_func_multi: callable = accuracy_score,
+        regression_pipeline_scoring_func: Union[callable, str] = (
+            mean_squared_error,
+            "min",
+        ),
+        classification_pipeline_scoring_func_bin: Union[callable, str] = (
+            roc_auc_score,
+            "max",
+        ),
+        classification_pipeline_scoring_func_multi: Union[callable, str] = (
+            accuracy_score,
+            "max",
+        ),
         max_workers: int = None,
         tuning_params: dict = DEFAULT_TUNING_PARAMS,
         max_models: int = 3,
@@ -163,7 +174,7 @@ class GlobalConfig:
             log_level (str) - Log level for logging liblary.
                 Defaults to :obj:`LOG_LEVEL`.
             log_dir (str) - Log directory for storing the logs.
-                If None provided, will default to "logs" in root dir.
+                If None provided, will default to "logs" in directory from which program was called.
                 -1 means no logging to file.
             max_log_file_size_in_mb (int) - Maximum file size in mb for
                 each logger. Defaults to 5.
@@ -203,9 +214,9 @@ class GlobalConfig:
                 in classification regression task.
             classification_pipeline_scoring_model (BaseEstimator) - model used for scoring processing pipelines
                 in classification regression task.
-            regression_pipeline_scoring_func (callable) - metric for scoring :obj:`regression_pipeline_scoring_model` output.
-            classification_pipeline_scoring_func (callable) - metric for scoring :obj:`classification_pipeline_scoring_model` output.
-            classification_pipeline_scoring_func_multi (callable) - metric for scoring :obj:`classification_pipeline_scoring_model` output
+            regression_pipeline_scoring_func Union[callable, str] - pair (metric, direction) for scoring :obj:`regression_pipeline_scoring_model` output. Available directions are ['max', 'min'].
+            classification_pipeline_scoring_func_bin Union[callable, str] - pair (metric, direction) for scoring :obj:`classification_pipeline_scoring_model` output. Available directions are ['max', 'min'].
+            classification_pipeline_scoring_func_multi Union[callable, str] - pair (metric, direction) for scoring :obj:`classification_pipeline_scoring_model` output. Available directions are ['max', 'min'].
             raport_chart_color_pallete (List[str]) - Color palette for basic eda charts.
             correlation_threshold (float) - threshold used for detecting highly correlated features.Default 0.8.
             correlation_percent (float) - % of selected features based on their correlation with the target. Default 0.5.
@@ -222,13 +233,12 @@ class GlobalConfig:
         self.raport_title = raport_title
         self.raport_author = raport_author
         self.raport_abstract = raport_abstract
-        os.makedirs(root_dir, exist_ok=True)
+
         self.root_dir = root_dir
         self.raport_path = os.path.abspath(os.path.join(root_dir, raport_name))
         self.charts_dir = os.path.join(self.raport_path, "charts")
-        os.makedirs(self.charts_dir, exist_ok=True)
         self.pipelines_dir = os.path.join(self.raport_path, "pipelines")
-        os.makedirs(self.pipelines_dir, exist_ok=True)
+
         self.return_tex_ = return_tex_
 
         self.logger_colors_map = logger_colors_map
@@ -244,7 +254,7 @@ class GlobalConfig:
         self.max_log_file_size_in_mb = max_log_file_size_in_mb
 
         if log_dir is None:
-            log_dir = os.path.join(root_dir, "logs")
+            log_dir = os.path.abspath("logs")
         if log_dir != -1:
             os.makedirs(log_dir, exist_ok=True)
         self.log_dir = log_dir
@@ -268,7 +278,9 @@ class GlobalConfig:
 
         self.raport_decimal_precision = raport_decimal_precision
 
-        self.root_project_dir = os.path.abspath("./..")
+        self.root_project_dir = os.path.abspath(
+            os.path.join(__file__, "..", "..", "..")
+        )
 
         assert 0 <= correlation_threshold <= 1, (
             f"Invalid value for correlation_threshold: {correlation_threshold}. "
@@ -302,8 +314,20 @@ class GlobalConfig:
         self.classification_pipeline_scoring_model = (
             classification_pipeline_scoring_model
         )
+
+        for func_ in (
+            regression_pipeline_scoring_func,
+            classification_pipeline_scoring_func_bin,
+            classification_pipeline_scoring_func_multi,
+        ):
+            assert func_[1] in (
+                "min",
+                "max",
+            ), f"Unknown direction choosen for {func_.__name__}"
         self.regression_pipeline_scoring_func = regression_pipeline_scoring_func
-        self.classification_pipeline_scoring_func = classification_pipeline_scoring_func
+        self.classification_pipeline_scoring_func = (
+            classification_pipeline_scoring_func_bin
+        )
         self.classification_pipeline_scoring_func_multi = (
             classification_pipeline_scoring_func_multi
         )
@@ -326,6 +350,14 @@ class GlobalConfig:
         """Updates config's data with kwargs."""
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+    def prepare_dir(self):
+        """Clears and creates all neccessary directories."""
+        if os.path.exists(self.root_dir):
+            shutil.rmtree(self.root_dir)
+        os.makedirs(self.root_dir, exist_ok=True)
+        os.makedirs(self.charts_dir, exist_ok=True)
+        os.makedirs(self.pipelines_dir, exist_ok=True)
 
 
 config = GlobalConfig()

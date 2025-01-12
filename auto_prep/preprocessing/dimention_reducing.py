@@ -4,9 +4,9 @@ import umap.umap_ as umap
 from sklearn.decomposition import PCA
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
-from ..utils.abstract import DimentionReducer
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
+from .abstract import DimentionReducer
 
 logger = setup_logger(__name__)
 

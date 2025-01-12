@@ -49,6 +49,7 @@ class Raport:
             self.doc.packages.append(Package("hyperref"))
             self.doc.packages.append(Package("caption"))
             self.doc.packages.append(Package("subcaption"))
+            self.doc.packages.append(Package("amsmath"))
             logger.debug("Initialized LaTeX document with packages")
         except Exception as e:
             logger.error("Failed to initialize ReportGenerator: %s", str(e))
@@ -243,7 +244,7 @@ class Raport:
         """
         try:
             if caption:
-                self.doc.append(NoEscape(r"\\ \text{" + caption + r"}"))
+                self.doc.append(NoEscape(r"\text{" + caption + r"}"))
 
             with self.doc.create(Itemize()) as itemize:
                 for item in items:

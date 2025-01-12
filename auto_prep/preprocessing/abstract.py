@@ -2,13 +2,39 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-from ..utils.abstract import NonRequiredStep
+from ..utils.abstract import NonRequiredStep, Numerical
 from ..utils.logging_config import setup_logger
 
 logger = setup_logger(__name__)
 
 
-class FeatureImportanceSelector(NonRequiredStep, ABC):
+class DimentionReducer(NonRequiredStep, Numerical, ABC):
+    """
+    Abstract class for dimensionality reduction techniques.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.reducer = None
+
+    @abstractmethod
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "DimentionReducer":
+        pass
+
+    @abstractmethod
+    def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
+        pass
+
+    @abstractmethod
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
+        pass
+
+    @abstractmethod
+    def to_tex(self) -> dict:
+        pass
+
+
+class FeatureImportanceSelector(NonRequiredStep):
     """
     Transformer to select k% (rounded to whole number) of features
     that are most important according to Random Forest model.
@@ -30,11 +56,7 @@ class FeatureImportanceSelector(NonRequiredStep, ABC):
         self.k = k
         self.selected_columns = []
 
-    def fit(
-        self,
-        X,  # noqa: F841
-        y,  # noqa: F841
-    ):
+    def fit(self, X: pd.DataFrame, y: pd.Series = None) -> "FeatureImportanceSelector":
         """
         Identifies the top k% (rounded to whole value) of features most important according to the model.
 
@@ -47,11 +69,7 @@ class FeatureImportanceSelector(NonRequiredStep, ABC):
         """
         pass
 
-    def transform(
-        self,
-        X: pd.DataFrame,  # noqa: F841
-        y: pd.Series = None,  # noqa: F841
-    ):
+    def transform(self, X: pd.DataFrame, y: pd.Series = None) -> pd.DataFrame:
         """
         Selects the top k% of features most important according to the model.
 
@@ -64,7 +82,7 @@ class FeatureImportanceSelector(NonRequiredStep, ABC):
         """
         pass
 
-    def fit_transform(self, X: pd.DataFrame, y: pd.Series):
+    def fit_transform(self, X: pd.DataFrame, y: pd.Series) -> pd.DataFrame:
         """
         Fits and transforms the data by selecting the top k% most important features. Performs fit and transform in one step.
 
@@ -77,29 +95,3 @@ class FeatureImportanceSelector(NonRequiredStep, ABC):
         """
         self.fit(X, y)
         return self.transform(X)
-
-
-class DimentionReducer(NonRequiredStep, ABC):
-    """
-    Abstract class for dimensionality reduction techniques.
-    """
-
-    def __init__(self):
-        super().__init__()
-        self.reducer = None
-
-    @abstractmethod
-    def fit(self, X, y=None) -> "DimentionReducer":
-        pass
-
-    @abstractmethod
-    def transform(self, X, y=None) -> pd.DataFrame:
-        pass
-
-    @abstractmethod
-    def fit_transform(self, X, y=None) -> pd.DataFrame:
-        pass
-
-    @abstractmethod
-    def to_tex(self) -> dict:
-        pass

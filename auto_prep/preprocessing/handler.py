@@ -9,6 +9,7 @@ from typing import Dict, List
 
 import humanize
 import pandas as pd
+from pylatex.utils import NoEscape
 from sklearn.base import BaseEstimator
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
@@ -17,7 +18,7 @@ from tqdm import tqdm
 from ..utils.abstract import ModulesHandler, Step
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
-from ..utils.other import save_model
+from ..utils.other import get_scoring, save_json, save_model
 
 logger = setup_logger(__name__)
 
@@ -59,7 +60,8 @@ class PreprocessingHandler:
         self._pipelines_descr: List[pd.DataFrame] = []
         self._best_pipelines_idx: List[int] = []
         self._model = None
-        self._score_func = None
+        self._scoring_func = None
+        self._scoring_direction = None
         self._target_encoder = LabelEncoder()
 
     def run(
@@ -83,15 +85,11 @@ class PreprocessingHandler:
 
         logger.start_operation("Preprocessing.")
 
+        self._scoring_func, self._scoring_direction = get_scoring(task, y_train)
         if task == "regression":
             self._model = config.regression_pipeline_scoring_model
-            self._score_func = config.regression_pipeline_scoring_func
         else:
             self._model = config.classification_pipeline_scoring_model
-            if len(y_train.unique()) > 2:
-                self._score_func = config.classification_pipeline_scoring_func_multi
-            else:
-                self._score_func = config.classification_pipeline_scoring_func
             y_train = pd.Series(self._target_encoder.fit_transform(y_train))
             y_valid = pd.Series(self._target_encoder.transform(y_valid))
 
@@ -165,7 +163,7 @@ class PreprocessingHandler:
                     X_valid=X_valid,
                     y_valid=y_valid,
                     model=self._model,
-                    score_func=self._score_func,
+                    score_func=self._scoring_func,
                 ),
                 self._pipelines,
             )
@@ -197,8 +195,11 @@ class PreprocessingHandler:
         """Writes overview section to a raport"""
 
         preprocessing_section = raport.add_section("Preprocessing")  # noqa: F841
-        section_desc = "This part of the report presents the results of the preprocessing process. It contains required, as well as non required, steps listed below. \n"
+        section_desc = "This part of the report presents the results of the preprocessing process. It contains required, as well as non required, steps listed below."
         raport.add_text(section_desc)
+        raport.doc.append(NoEscape(r"\\"))
+        raport.doc.append(NoEscape(r"\\"))
+
         required_steps = [
             "Missing data imputation",
             "Removing columns with 100% unique categorical values",
@@ -211,12 +212,12 @@ class PreprocessingHandler:
             "Feature selection methods : Correlation with the target or Random Forest feature importance",
             "Dimention reduction techniques: PCA, VIF, UMAP",
         ]
-        raport.add_list(required_steps, caption="Required preprocessing steps")
-        raport.add_list(non_required_steps, caption="Additional preprocessing steps")
+        raport.add_list(required_steps, caption="Required preprocessing steps:")
+        raport.add_list(non_required_steps, caption="Additional preprocessing steps:")
 
         result_desc = (
             f"Preprocessing process was configured to select up to {config.max_datasets_after_preprocessing} best unique preprocessing pipelines."
-            f" Pipelines were scored based on a simple model. Tables below show detailed description of the best pipelines as well as all step combinations that were examined. \n"
+            f" Pipelines were scored based on a simple model. Tables below show detailed description of the best pipelines as well as all step combinations that were examined."
         )
         raport.add_text(result_desc)
         pipeline_scores_description = self._pipelines_scores.describe().to_dict()
@@ -231,7 +232,7 @@ class PreprocessingHandler:
             "All pipelines fit time": humanize.naturaldelta(self._fit_time),
             "All pipelines score time": humanize.naturaldelta(self._score_time),
             **prefixed_pipeline_scores_description,
-            "Scoring function": type(self._score_func.__name__),
+            "Scoring function": type(self._scoring_func).__name__,
             "Scoring model": type(self._model).__name__,
         }
 
@@ -244,7 +245,6 @@ class PreprocessingHandler:
             caption="Pipelines steps overview.",
             header=["index", "steps"],
             widths=[20, 160],
-            label="tab:pipelines_steps_overview",
         )
 
         best_pipelines_overview = []
@@ -270,6 +270,12 @@ class PreprocessingHandler:
             ],
         )
 
+        overview = {
+            "pipelines_overview": pipelines_overview,
+            "best_pipelines_overview": best_pipelines_overview,
+            "statistics": statistics,
+        }
+
         for score_idx, idx in enumerate(self._best_pipelines_idx):
             pipeline_steps_overview = []
             for i, step in enumerate(self._pipeline_steps_exploded[idx]):
@@ -282,6 +288,8 @@ class PreprocessingHandler:
                         json.dumps(tex.pop("params", {})),
                     ]
                 )
+
+            overview[f"pipeline_{score_idx}"] = pipeline_steps_overview
 
             raport.add_table(
                 pipeline_steps_overview,
@@ -305,16 +313,13 @@ class PreprocessingHandler:
                 header=columns,
             )
 
-        stats_desc = "You may also find all pipelines' runtime statistic in "
-        raport.add_text(stats_desc)
-        raport.add_reference(
-            label="tab:preprocessing_pipelines_runtime_statistics", add_space=False
-        )
         raport.add_table(
             statistics,
             caption="Preprocessing pipelines runtime statistics.",
-            label="tab:preprocessing_pipelines_runtime_statistics",
         )
+
+        save_json("preprocessing_scores.json", overview)
+
         return raport
 
     @staticmethod

@@ -11,7 +11,6 @@ import joblib
 import numpy as np
 import pandas as pd
 import shap
-from matplotlib import pyplot as plt
 from sklearn.base import BaseEstimator
 from sklearn.calibration import LabelEncoder
 from sklearn.model_selection import RandomizedSearchCV
@@ -21,7 +20,7 @@ from tqdm import tqdm
 from ..utils.abstract import Classifier, ModulesHandler, Regressor
 from ..utils.config import config
 from ..utils.logging_config import setup_logger
-from ..utils.other import save_chart, save_model
+from ..utils.other import get_scoring, save_chart, save_json, save_model
 
 logger = setup_logger(__name__)
 
@@ -53,6 +52,7 @@ class ModelHandler:
         self._model_meta: List[dict] = []
         self._unique_models_params_checked: int = 0
         self._scoring_func = None
+        self._scoring_direction = None
 
         self._models_classes: List[BaseEstimator] = []
         self._pipelines: List[BaseEstimator] = []
@@ -92,14 +92,7 @@ class ModelHandler:
 
         self._models_classes = ModelHandler.load_models(task)
         pipelines, pipelines_file_names = ModelHandler.load_pipelines()
-
-        if task == "classification":
-            if len(y_train.unique()) > 2:
-                self._scoring_func = config.classification_pipeline_scoring_func_multi
-            else:
-                self._scoring_func = config.classification_pipeline_scoring_func
-        else:
-            self._scoring_func = config.regression_pipeline_scoring_func
+        self._scoring_func, self._scoring_direction = get_scoring(task, y_train)
 
         logger.start_operation("Tuning models...")
         logger.info(
@@ -131,7 +124,6 @@ class ModelHandler:
                         y_train=y_train,
                         X_valid=X_valid_cur,
                         y_valid=y_valid,
-                        task=task,
                     )
                 except Exception as e:
                     raise Exception(f"Failed to tune {model_cls.__name__}") from e
@@ -157,11 +149,12 @@ class ModelHandler:
                     self._unique_models_params_checked += n_runs
         logger.end_operation()
 
+        direction = 1 if self._scoring_direction == "max" else -1
         self._results = sorted(
             self._results,
             key=lambda x: (
-                x["mean_test_score"],
-                x["std_test_score"],
+                direction * x["mean_test_score"],
+                direction * x["std_test_score"],
                 -x["std_fit_time"],
             ),
         )
@@ -215,7 +208,7 @@ class ModelHandler:
         best_model_result = max(
             self._best_models_results, key=lambda x: x["test score (after re-training)"]
         )
-        self.genarate_shap(X_test_cur, best_model_result["model"], 0)
+        ModelHandler.generate_shap(X_test_cur, best_model_result["model"], 0, task=task)
 
         logger.end_operation()
 
@@ -223,6 +216,11 @@ class ModelHandler:
         """Writes overview section to a raport"""
 
         modeling_section = raport.add_section("Modeling")  # noqa: F841
+        for r in self._results:
+            # remove non-serializable fields
+            r.pop("model", None)
+            r.pop("Preprocessing pipeline", None)
+            r.pop("Model cls", None)
 
         raport.add_subsection("Overview")
         overview = {
@@ -232,12 +230,16 @@ class ModelHandler:
             "base model names": [
                 model_cls.__bases__[0].__name__ for model_cls in self._models_classes
             ],
-            "scoring function": self._scoring_func.__name__,
+            "scoring function": type(self._scoring_func).__name__,
+            "scoring direction": self._scoring_direction,
             "search parameters": json.dumps(config.tuning_params),
             "results": self._results,
             "best models results": self._best_models_results,
             **self._data_meta,
         }
+
+        save_json("modeling_scores.json", overview)
+
         section_desc = f"This part of the report presents the results of the modeling process. There were {overview['unique models']} {overview['task']} models trained for each of the best preprocessing pipelines. \\newline"
         raport.add_text(section_desc)
         used_models_desc = (
@@ -266,10 +268,7 @@ class ModelHandler:
                     caption=f"Param grid for model {model_base_name}.",
                 )
 
-        results_df = pd.DataFrame(overview["results"])
-        results_df.to_csv("results.csv", index=False)
         best_results = pd.DataFrame(overview["best models results"])
-
         best_results = (
             best_results[
                 [
@@ -420,7 +419,6 @@ class ModelHandler:
         y_train: pd.Series,
         X_valid: pd.DataFrame = None,
         y_valid: pd.Series = None,
-        task: str = None,
     ) -> Union[dict, List[dict], int]:
         """
         Tunes a model's hyperparameters using RandomizedSearchCV and returns the best model and related information.
@@ -471,7 +469,6 @@ class ModelHandler:
             "best_index": random_search.best_index_,
         }
         results = pd.DataFrame(random_search.cv_results_)
-        results.to_csv("results.csv", index=False)
         sorted_results = results.sort_values(by="mean_test_score", ascending=True)
         top_models_stats = sorted_results.head(best_k)[
             [
@@ -485,126 +482,88 @@ class ModelHandler:
         return info, top_models_stats, len(results)
 
     @staticmethod
-    def genarate_shap(X_test: pd.DataFrame, model: BaseEstimator, model_idx: int):
+    def generate_shap(
+        X_test: pd.DataFrame, model: BaseEstimator, model_idx: int, task: str
+    ):
         """
-        Generates SHAP plots for the best model.
+        Generates SHAP plots for a given model.
 
         Args:
-            X_test (pd.DataFrame): The input DataFrame containing the test data.
-            model (BaseEstimator): The trained model used for prediction.
-            model_idx (int): The index of the model.
-
+            X_test (pd.DataFrame): Test data for SHAP analysis.
+            model (BaseEstimator): Trained model for generating SHAP values.
+            model_idx (int): Identifier for the model.
+            task (str): regiression / classification
         """
 
-        def clean_shap_files():
-            charts_dir = config.charts_dir
-            for file in glob.glob(os.path.join(charts_dir, "shap*.png")):
-                os.remove(file)
-                logger.info(f"Removed SHAP files from {charts_dir}.")
+        def create_explainer(
+            model: BaseEstimator, background_data: np.ndarray
+        ) -> shap.Explainer:
+            """Creates a SHAP explainer based on the model's prediction method."""
+            if hasattr(model, "predict_proba"):
+                return shap.Explainer(model.predict_proba, background_data)
+            elif hasattr(model, "predict"):
+                return shap.Explainer(model.predict, background_data)
+            else:
+                raise TypeError("Model must implement 'predict_proba' or 'predict'.")
 
-        logger.info(f"Charts directory: {config.charts_dir}")
-
-        clean_shap_files()
-        logger.info(f"SHAP - X test columns : {X_test.columns}")
-        background = shap.sample(X_test, min(100, len(X_test)))
-        n = len(X_test)
-        sample_size = int(0.5 * n)
-        logger.info(f"X_test sample for shap created, sample size: {sample_size}")
-        X_sample = X_test.sample(n=sample_size, random_state=42)
-        feature_names = X_sample.columns.to_list()
-        background_np = (
-            background.values.astype(np.float64)
-            if isinstance(background, pd.DataFrame)
-            else background
-        )
-        X_sample_np = (
-            X_sample.values.astype(np.float64)
-            if isinstance(X_sample, pd.DataFrame)
-            else X_sample
-        )
+        def log_and_plot_shap(
+            shap_values: Union[shap.Explanation, np.ndarray],
+            sample_idx: int,
+            plot_type: str,
+            class_idx: Union[int, None] = None,
+        ):
+            """Logs information and generates SHAP plots."""
+            if plot_type == "classification":
+                suffix = (
+                    f"class_{class_idx}" if class_idx is not None else "classification"
+                )
+                logger.debug(f"Generating plots for class {class_idx}...")
+                shap.summary_plot(shap_values[..., class_idx], X_sample, show=False)
+                save_chart(f"shap_summary_{suffix}.png")
+                shap.waterfall_plot(
+                    shap_values[:, :, class_idx][sample_idx], show=False
+                )
+                save_chart(f"shap_waterfall_{suffix}.png")
+                shap.plots.bar(shap_values[..., class_idx], max_display=10, show=False)
+                save_chart(f"shap_bar_{suffix}.png")
+            else:  # Regression
+                logger.debug("Generating regression SHAP plots...")
+                shap.summary_plot(shap_values, X_sample, show=False)
+                save_chart("shap_summary_regression.png")
+                shap.waterfall_plot(shap_values[sample_idx], show=False)
+                save_chart("shap_waterfall_regression.png")
+                shap.plots.bar(shap_values, max_display=10, show=False)
+                save_chart("shap_bar_regression.png")
 
         try:
-            if hasattr(model, "predict_proba"):
-                explainer = shap.Explainer(model.predict_proba, background_np)
-                logger.info("SHAP explainer created")
-                shap_values = explainer(X_sample)
-                logger.info("SHAP values created")
+            logger.start_operation("SHAP")
 
-            elif hasattr(model, "predict"):
-                explainer = shap.Explainer(model.predict, background_np)
-                logger.info("SHAP explainer created")
-                shap_values = explainer(X_sample_np)
-                # shap_values.feature_names = feature_names
-                logger.info("SHAP values created")
+            logger.info("Sampling data for SHAP analysis...")
+            background = shap.sample(X_test, min(100, len(X_test)))
+            sample_size = int(0.5 * len(X_test))
+            X_sample = X_test.sample(n=sample_size, random_state=42)
 
-            else:
-                raise TypeError(
-                    "Model must have either 'predict_proba' or 'predict' method to use SHAP."
-                )
+            logger.debug(
+                f"Sample size: {sample_size}, columns: {X_sample.columns.tolist()}"
+            )
+            explainer = create_explainer(model, background.values.astype(np.float64))
+            logger.debug("SHAP explainer created successfully.")
+            shap_values = explainer(X_sample.values.astype(np.float64))
 
             sample_idx = random.randint(0, X_sample.shape[0] - 1)
 
-            if len(shap_values.values.shape) == 3:
-                logger.info("SHAP - classification")
+            if task == "classification":
                 num_classes = shap_values.values.shape[2]
-                logger.info(f" SHAP - Number of classes:{num_classes}")
-
                 for class_idx in range(num_classes):
-                    logger.info(
-                        f"\nGenerating plots for model : {model_idx}, for Class {class_idx}:"
+                    log_and_plot_shap(
+                        shap_values, sample_idx, "classification", class_idx
                     )
-
-                    shap.summary_plot(shap_values[..., class_idx], X_sample, show=False)
-                    plt.title(f"Summary plot for class {class_idx}")
-                    plt.tight_layout()
-                    shap_sum = save_chart(
-                        f"shap_summ_{class_idx}_cls.png"
-                    )  # noqa: F841
-
-                    shap.waterfall_plot(
-                        shap_values[:, :, class_idx][sample_idx], show=False
-                    )
-                    plt.title(
-                        f"Waterfall plot for class {class_idx}, observation numer: {sample_idx}"
-                    )
-                    plt.tight_layout()
-                    shap_waterfall = save_chart(
-                        f"shap_wat_{class_idx}_cls.png"
-                    )  # noqa: F841
-
-                    shap.plots.bar(
-                        shap_values[..., class_idx], max_display=10, show=False
-                    )
-                    plt.title(f"Bar plot for class {class_idx}")
-                    plt.tight_layout()
-                    shap_bar = save_chart(f"shap_bar_{class_idx}_cls.png")  # noqa: F841
-
-                logger.info(f"SHAP plots saved for model : {model_idx}")
             else:
-                logger.info(f"\nGenerating plots for model: {model_idx}... Regression")
+                log_and_plot_shap(shap_values, sample_idx, "regression")
 
-                shap.summary_plot(shap_values, X_sample, show=False)
-                plt.title("Summary plot for regression")
-                plt.tight_layout()
-                reg_sum = save_chart("shap_summ_regression.png")  # noqa: F841
-
-                # shap_values.feature_names = [
-                #     str(name) for name in shap_values.feature_names
-                # ]
-                shap.waterfall_plot(shap_values[sample_idx], show=False)
-                plt.title(
-                    f"Waterfall plot for regression, observation numer: {sample_idx}"
-                )
-                plt.tight_layout()
-                reg_waterfall = save_chart("shap_wat_regression.png")  # noqa: F841
-
-                shap.plots.bar(shap_values, max_display=10, show=False)
-                plt.title("Bar plot for regression")
-                plt.tight_layout()
-                reg_bar = save_chart("shap_bar_regression.png")  # noqa: F841
-
-                logger.info(f"SHAP plots saved for model : {model_idx}")
-
+            logger.info(f"SHAP plots generated for model: {model_idx}")
         except Exception as e:
-            logger.error(f"Shap failed : {e}")
-            raise
+            logger.error(f"Failed to generate SHAP plots: {e}")
+            raise e
+        finally:
+            logger.end_operation()
