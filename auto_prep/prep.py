@@ -2,6 +2,7 @@ from typing import Callable
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from tqdm import tqdm
 
 from .modeling.handler import ModelHandler
 from .preprocessing.handler import PreprocessingHandler
@@ -54,6 +55,7 @@ class AutoPrep:
         self._run(data, target_column)
 
         self._generate_report()
+        tqdm.write(f"Report has been generated and saved in: {config.root_dir}. \nCharts are available in: {config.root_dir}/{config.raport_name}/charts. \nPipelines are saved in: {config.root_dir}/{config.raport_name}/pipelines")
 
     def _run(self, data: pd.DataFrame, target_column: str, task: str = "auto"):
         """

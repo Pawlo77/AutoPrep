@@ -1,0 +1,53 @@
+2025-01-10 21:31:31 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:31:31 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:31:31 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:31:31 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:31:31 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:31:31 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:31:31 INFO auto_prep.modeling.handler: SHAP - X TEST COLUMNS : Index(['pclass', 'name', 'age', 'sibsp', 'parch', 'ticket', 'fare',
+       'home__dest', 'sex_female', 'embarked_C', 'embarked_Q', 'embarked_S'],
+      dtype='object')
+2025-01-10 21:31:31 INFO auto_prep.modeling.handler: X_test sample for shap created, sample size: 65
+2025-01-10 21:31:31 INFO auto_prep.modeling.handler: SHAP EXPLAINER CREATED
+2025-01-10 21:31:54 INFO auto_prep.modeling.handler: SHAP VALUES CREATED
+2025-01-10 21:31:54 INFO auto_prep.modeling.handler: SHAP - CLASSIFICATION
+2025-01-10 21:31:54 INFO auto_prep.modeling.handler:  SHAP - Number of classes:2
+2025-01-10 21:31:54 INFO auto_prep.modeling.handler: 
+Generating plots for model : 0, for Class 0:
+2025-01-10 21:31:54 INFO auto_prep.modeling.handler: 
+Generating plots for model : 0, for Class 1:
+2025-01-10 21:31:55 INFO auto_prep.modeling.handler: SHAP PLOTS SAVED FOR MODEL : 0
+2025-01-10 21:33:09 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-10 21:33:11 INFO auto_prep.preprocessing.handler: Extracted 1 pipelines.
+2025-01-10 21:33:11 INFO auto_prep.preprocessing.handler: Exploded into 3 pipelines.
+2025-01-10 21:33:11 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-10 21:33:14 INFO auto_prep.preprocessing.handler: Scoring pipelines...
+2025-01-10 21:33:17 INFO auto_prep.modeling.handler: Will train 5 for each of 3 preprocessing pipelines.
+2025-01-10 21:33:20 INFO auto_prep.modeling.handler: Re-training for up to 3 best models.
+2025-01-10 21:33:21 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:33:21 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:33:21 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:33:21 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:33:21 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:33:21 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.
+2025-01-10 21:33:21 INFO auto_prep.modeling.handler: SHAP - X TEST COLUMNS : Index(['pclass', 'name', 'age', 'sibsp', 'parch', 'ticket', 'fare',
+       'home__dest', 'sex_female', 'embarked_C', 'embarked_Q', 'embarked_S'],
+      dtype='object')
+2025-01-10 21:33:21 INFO auto_prep.modeling.handler: X_test sample for shap created, sample size: 65
+2025-01-10 21:33:21 INFO auto_prep.modeling.handler: SHAP EXPLAINER CREATED
+2025-01-10 21:33:43 INFO auto_prep.modeling.handler: SHAP VALUES CREATED
+2025-01-10 21:33:43 INFO auto_prep.modeling.handler: SHAP - CLASSIFICATION
+2025-01-10 21:33:43 INFO auto_prep.modeling.handler:  SHAP - Number of classes:2
+2025-01-10 21:33:43 INFO auto_prep.modeling.handler: 
+Generating plots for model : 0, for Class 0:
+2025-01-10 21:33:44 INFO auto_prep.modeling.handler: 
+Generating plots for model : 0, for Class 1:
+2025-01-10 21:33:44 INFO auto_prep.modeling.handler: SHAP PLOTS SAVED FOR MODEL : 0
+2025-01-10 21:35:58 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-10 21:36:00 INFO auto_prep.preprocessing.handler: Extracted 1 pipelines.
+2025-01-10 21:36:00 INFO auto_prep.preprocessing.handler: Exploded into 3 pipelines.
+2025-01-10 21:36:00 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-10 21:36:03 INFO auto_prep.preprocessing.handler: Scoring pipelines...
+2025-01-10 21:36:06 INFO auto_prep.modeling.handler: Will train 5 for each of 3 preprocessing pipelines.
+2025-01-10 21:36:10 INFO auto_prep.modeling.handler: Re-training for up to 3 best models.
+2025-01-10 21:36:10 INFO auto_prep.modeling.handler: Removed SHAP files from /Users/julia/Desktop/semestr-5/automl/AutoPrep/examples/raport/raport/charts.

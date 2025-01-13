@@ -1,0 +1,842 @@
+{
+  "task": "regression",
+  "unique models param sets checked (for each dataset)": 52,
+  "unique models": 6,
+  "base model names": [
+    "LinearSVR",
+    "KNeighborsRegressor",
+    "RandomForestRegressor",
+    "BayesianRidge",
+    "GradientBoostingRegressor",
+    "LinearRegression"
+  ],
+  "scoring function": "function",
+  "scoring direction": "min",
+  "search parameters": "{\"cv\": 3, \"verbose\": 0, \"n_jobs\": -1, \"random_state\": 42, \"n_iter\": 10}",
+  "results": [
+    {
+      "params": "{\"loss\": \"epsilon_insensitive\", \"fit_intercept\": false, \"epsilon\": 0.2, \"C\": 1.0}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0030024051666259766,
+      "std_fit_time": 0.00023511892089570784,
+      "Model cls base name": "LinearSVR",
+      "re-training time": 0.0008151531219482422,
+      "name": "ModelLinearSVR",
+      "combined score (after re-training)": 864.0411518259712,
+      "test score (after re-training)": 872.7018640973279,
+      "model base name": "LinearSVR",
+      "final pipeline name": "final_pipeline_0.joblib"
+    },
+    {
+      "params": "{\"loss\": \"epsilon_insensitive\", \"fit_intercept\": true, \"epsilon\": 0.0, \"C\": 0.1}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008053779602050781,
+      "std_fit_time": 7.475021329186765e-05,
+      "Model cls base name": "LinearSVR",
+      "re-training time": 0.0003719329833984375,
+      "name": "ModelLinearSVR",
+      "combined score (after re-training)": 367.4002244836662,
+      "test score (after re-training)": 384.67485618025904,
+      "model base name": "LinearSVR",
+      "final pipeline name": "final_pipeline_1.joblib"
+    },
+    {
+      "params": "{\"loss\": \"epsilon_insensitive\", \"fit_intercept\": false, \"epsilon\": 0.0, \"C\": 1.0}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008249282836914062,
+      "std_fit_time": 9.713443280419337e-05,
+      "Model cls base name": "LinearSVR",
+      "re-training time": 0.0002868175506591797,
+      "name": "ModelLinearSVR",
+      "combined score (after re-training)": 864.0411518259712,
+      "test score (after re-training)": 872.7018640973279,
+      "model base name": "LinearSVR",
+      "final pipeline name": "final_pipeline_2.joblib"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 1,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "brute"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0013963381449381511,
+      "std_fit_time": 0.0007565553193768681,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "KNeighborsRegressor"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 2,
+        "n_neighbors": 10,
+        "leaf_size": 40,
+        "algorithm": "auto"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.000981728235880534,
+      "std_fit_time": 0.00015324391136428193,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "KNeighborsRegressor"
+    },
+    {
+      "params": {
+        "weights": "uniform",
+        "p": 2,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "kd_tree"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0015330314636230469,
+      "std_fit_time": 0.0003952862124645749,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "KNeighborsRegressor"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "n_estimators": 200,
+        "min_samples_split": 5,
+        "min_samples_leaf": 1,
+        "max_features": "sqrt",
+        "max_depth": 15,
+        "bootstrap": true
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.1724100112915039,
+      "std_fit_time": 0.003022753778113458,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "RandomForestRegressor"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "n_estimators": 200,
+        "min_samples_split": 5,
+        "min_samples_leaf": 4,
+        "max_features": "sqrt",
+        "max_depth": 15,
+        "bootstrap": false
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.11203296979268391,
+      "std_fit_time": 0.006814065279400457,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "RandomForestRegressor"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "n_estimators": 300,
+        "min_samples_split": 2,
+        "min_samples_leaf": 2,
+        "max_features": null,
+        "max_depth": 10,
+        "bootstrap": true
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.26828940709431964,
+      "std_fit_time": 0.016963034872496032,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "RandomForestRegressor"
+    },
+    {
+      "params": {
+        "tol": 0.001,
+        "max_iter": 300,
+        "lambda_2": 1e-07,
+        "lambda_1": 1e-08,
+        "alpha_2": 1e-08,
+        "alpha_1": 1e-07
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0014632542928059895,
+      "std_fit_time": 0.00028869305807922933,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "BayesianRidge"
+    },
+    {
+      "params": {
+        "tol": 0.0001,
+        "max_iter": 400,
+        "lambda_2": 1e-07,
+        "lambda_1": 1e-08,
+        "alpha_2": 1e-07,
+        "alpha_1": 1e-06
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.001073280970255534,
+      "std_fit_time": 4.070577841106638e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "BayesianRidge"
+    },
+    {
+      "params": {
+        "tol": 1e-05,
+        "max_iter": 400,
+        "lambda_2": 1e-06,
+        "lambda_1": 1e-08,
+        "alpha_2": 1e-06,
+        "alpha_1": 1e-07
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.001024007797241211,
+      "std_fit_time": 7.399149446344975e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "BayesianRidge"
+    },
+    {
+      "params": {
+        "subsample": 1.0,
+        "random_state": 42,
+        "n_estimators": 100,
+        "min_samples_split": 5,
+        "min_samples_leaf": 4,
+        "max_depth": 6,
+        "learning_rate": 0.02
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.02337201436360677,
+      "std_fit_time": 0.0007214301250059132,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "GradientBoostingRegressor"
+    },
+    {
+      "params": {
+        "subsample": 1.0,
+        "random_state": 42,
+        "n_estimators": 300,
+        "min_samples_split": 5,
+        "min_samples_leaf": 4,
+        "max_depth": 6,
+        "learning_rate": 0.05
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.08668684959411621,
+      "std_fit_time": 0.0052373370289113316,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "GradientBoostingRegressor"
+    },
+    {
+      "params": {
+        "subsample": 0.5,
+        "random_state": 42,
+        "n_estimators": 300,
+        "min_samples_split": 10,
+        "min_samples_leaf": 4,
+        "max_depth": 6,
+        "learning_rate": 0.02
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.09350935618082683,
+      "std_fit_time": 0.006491003622496876,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "GradientBoostingRegressor"
+    },
+    {
+      "params": {
+        "fit_intercept": true
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0011513233184814453,
+      "std_fit_time": 0.0002751727081156809,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "LinearRegression"
+    },
+    {
+      "params": {
+        "fit_intercept": false
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0007236798604329427,
+      "std_fit_time": 2.8272016063219944e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "LinearRegression"
+    },
+    {
+      "params": {
+        "loss": "epsilon_insensitive",
+        "fit_intercept": false,
+        "epsilon": 0.2,
+        "C": 1.0
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.001296679178873698,
+      "std_fit_time": 0.0003034162419405168,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "LinearSVR"
+    },
+    {
+      "params": {
+        "loss": "epsilon_insensitive",
+        "fit_intercept": true,
+        "epsilon": 0.0,
+        "C": 0.1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0010266304016113281,
+      "std_fit_time": 9.451545189889017e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "LinearSVR"
+    },
+    {
+      "params": {
+        "loss": "epsilon_insensitive",
+        "fit_intercept": false,
+        "epsilon": 0.0,
+        "C": 1.0
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0013105074564615886,
+      "std_fit_time": 0.000426337635374131,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "LinearSVR"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 1,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "brute"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0007313092549641927,
+      "std_fit_time": 0.00010562352669348094,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "KNeighborsRegressor"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 2,
+        "n_neighbors": 10,
+        "leaf_size": 40,
+        "algorithm": "auto"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008107026418050131,
+      "std_fit_time": 0.00014386242829241575,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "KNeighborsRegressor"
+    },
+    {
+      "params": {
+        "weights": "uniform",
+        "p": 2,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "kd_tree"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0007247130076090494,
+      "std_fit_time": 0.00010194103631783172,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "KNeighborsRegressor"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "n_estimators": 200,
+        "min_samples_split": 5,
+        "min_samples_leaf": 1,
+        "max_features": "sqrt",
+        "max_depth": 15,
+        "bootstrap": true
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.17086251576741537,
+      "std_fit_time": 0.0057945464872273915,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "RandomForestRegressor"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "n_estimators": 200,
+        "min_samples_split": 5,
+        "min_samples_leaf": 4,
+        "max_features": "sqrt",
+        "max_depth": 15,
+        "bootstrap": false
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.12352267901102702,
+      "std_fit_time": 0.006458057902964753,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "RandomForestRegressor"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "n_estimators": 300,
+        "min_samples_split": 2,
+        "min_samples_leaf": 2,
+        "max_features": null,
+        "max_depth": 10,
+        "bootstrap": true
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.2618156274159749,
+      "std_fit_time": 0.012176836610632933,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "RandomForestRegressor"
+    },
+    {
+      "params": {
+        "tol": 0.001,
+        "max_iter": 300,
+        "lambda_2": 1e-07,
+        "lambda_1": 1e-08,
+        "alpha_2": 1e-08,
+        "alpha_1": 1e-07
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0011263688405354817,
+      "std_fit_time": 0.0001548446636867421,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "BayesianRidge"
+    },
+    {
+      "params": {
+        "tol": 0.0001,
+        "max_iter": 400,
+        "lambda_2": 1e-07,
+        "lambda_1": 1e-08,
+        "alpha_2": 1e-07,
+        "alpha_1": 1e-06
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.001077890396118164,
+      "std_fit_time": 9.449640503456681e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "BayesianRidge"
+    },
+    {
+      "params": {
+        "tol": 1e-05,
+        "max_iter": 400,
+        "lambda_2": 1e-06,
+        "lambda_1": 1e-08,
+        "alpha_2": 1e-06,
+        "alpha_1": 1e-07
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008854071299235026,
+      "std_fit_time": 6.001153453475599e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "BayesianRidge"
+    },
+    {
+      "params": {
+        "subsample": 1.0,
+        "random_state": 42,
+        "n_estimators": 100,
+        "min_samples_split": 5,
+        "min_samples_leaf": 4,
+        "max_depth": 6,
+        "learning_rate": 0.02
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.017270406087239582,
+      "std_fit_time": 0.00012364316917139767,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "GradientBoostingRegressor"
+    },
+    {
+      "params": {
+        "subsample": 1.0,
+        "random_state": 42,
+        "n_estimators": 300,
+        "min_samples_split": 5,
+        "min_samples_leaf": 4,
+        "max_depth": 6,
+        "learning_rate": 0.05
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.08075777689615886,
+      "std_fit_time": 0.003850707853851414,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "GradientBoostingRegressor"
+    },
+    {
+      "params": {
+        "subsample": 0.5,
+        "random_state": 42,
+        "n_estimators": 300,
+        "min_samples_split": 10,
+        "min_samples_leaf": 4,
+        "max_depth": 6,
+        "learning_rate": 0.02
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.09389567375183105,
+      "std_fit_time": 0.008163384078628108,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "GradientBoostingRegressor"
+    },
+    {
+      "params": {
+        "fit_intercept": true
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0009848276774088542,
+      "std_fit_time": 0.00014089607897283324,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "LinearRegression"
+    },
+    {
+      "params": {
+        "fit_intercept": false
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.000766595204671224,
+      "std_fit_time": 1.2930896123114642e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "LinearRegression"
+    },
+    {
+      "params": {
+        "loss": "epsilon_insensitive",
+        "fit_intercept": false,
+        "epsilon": 0.2,
+        "C": 1.0
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.001508633295694987,
+      "std_fit_time": 0.0002589578713765871,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "LinearSVR"
+    },
+    {
+      "params": {
+        "loss": "epsilon_insensitive",
+        "fit_intercept": true,
+        "epsilon": 0.0,
+        "C": 0.1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.001031637191772461,
+      "std_fit_time": 0.00012798540873169275,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "LinearSVR"
+    },
+    {
+      "params": {
+        "loss": "epsilon_insensitive",
+        "fit_intercept": false,
+        "epsilon": 0.0,
+        "C": 1.0
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0013063748677571614,
+      "std_fit_time": 9.016979594531778e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "LinearSVR"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 1,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "brute"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0007293224334716797,
+      "std_fit_time": 8.681121347918254e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "KNeighborsRegressor"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 2,
+        "n_neighbors": 10,
+        "leaf_size": 40,
+        "algorithm": "auto"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0007571379343668619,
+      "std_fit_time": 7.483896367168255e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "KNeighborsRegressor"
+    },
+    {
+      "params": {
+        "weights": "uniform",
+        "p": 2,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "kd_tree"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0007406075795491537,
+      "std_fit_time": 0.00012746549869677634,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "KNeighborsRegressor"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "n_estimators": 200,
+        "min_samples_split": 5,
+        "min_samples_leaf": 1,
+        "max_features": "sqrt",
+        "max_depth": 15,
+        "bootstrap": true
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.18616445859273276,
+      "std_fit_time": 0.00570571214677982,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "RandomForestRegressor"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "n_estimators": 200,
+        "min_samples_split": 5,
+        "min_samples_leaf": 4,
+        "max_features": "sqrt",
+        "max_depth": 15,
+        "bootstrap": false
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.11141721407572429,
+      "std_fit_time": 0.008442868312878733,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "RandomForestRegressor"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "n_estimators": 300,
+        "min_samples_split": 2,
+        "min_samples_leaf": 2,
+        "max_features": null,
+        "max_depth": 10,
+        "bootstrap": true
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.282881498336792,
+      "std_fit_time": 0.01425465333873662,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "RandomForestRegressor"
+    },
+    {
+      "params": {
+        "tol": 0.001,
+        "max_iter": 300,
+        "lambda_2": 1e-07,
+        "lambda_1": 1e-08,
+        "alpha_2": 1e-08,
+        "alpha_1": 1e-07
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0011753241221110027,
+      "std_fit_time": 0.00019165713467909416,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "BayesianRidge"
+    },
+    {
+      "params": {
+        "tol": 0.0001,
+        "max_iter": 400,
+        "lambda_2": 1e-07,
+        "lambda_1": 1e-08,
+        "alpha_2": 1e-07,
+        "alpha_1": 1e-06
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0011123021443684895,
+      "std_fit_time": 0.00012422566388091197,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "BayesianRidge"
+    },
+    {
+      "params": {
+        "tol": 1e-05,
+        "max_iter": 400,
+        "lambda_2": 1e-06,
+        "lambda_1": 1e-08,
+        "alpha_2": 1e-06,
+        "alpha_1": 1e-07
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0010276635487874348,
+      "std_fit_time": 0.00011405105765506891,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "BayesianRidge"
+    },
+    {
+      "params": {
+        "subsample": 1.0,
+        "random_state": 42,
+        "n_estimators": 100,
+        "min_samples_split": 5,
+        "min_samples_leaf": 4,
+        "max_depth": 6,
+        "learning_rate": 0.02
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.024142106374104817,
+      "std_fit_time": 0.004220940013627622,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "GradientBoostingRegressor"
+    },
+    {
+      "params": {
+        "subsample": 1.0,
+        "random_state": 42,
+        "n_estimators": 300,
+        "min_samples_split": 5,
+        "min_samples_leaf": 4,
+        "max_depth": 6,
+        "learning_rate": 0.05
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.09716129302978516,
+      "std_fit_time": 0.004139918263252532,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "GradientBoostingRegressor"
+    },
+    {
+      "params": {
+        "subsample": 0.5,
+        "random_state": 42,
+        "n_estimators": 300,
+        "min_samples_split": 10,
+        "min_samples_leaf": 4,
+        "max_depth": 6,
+        "learning_rate": 0.02
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.10173432032267253,
+      "std_fit_time": 0.004411286485342546,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "GradientBoostingRegressor"
+    },
+    {
+      "params": {
+        "fit_intercept": true
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0010450681050618489,
+      "std_fit_time": 0.00016836261085151802,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "LinearRegression"
+    },
+    {
+      "params": {
+        "fit_intercept": false
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0007565021514892578,
+      "std_fit_time": 2.512121884369249e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "LinearRegression"
+    }
+  ],
+  "best models results": [
+    {
+      "params": "{\"loss\": \"epsilon_insensitive\", \"fit_intercept\": false, \"epsilon\": 0.2, \"C\": 1.0}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0030024051666259766,
+      "std_fit_time": 0.00023511892089570784,
+      "Model cls base name": "LinearSVR",
+      "re-training time": 0.0008151531219482422,
+      "name": "ModelLinearSVR",
+      "combined score (after re-training)": 864.0411518259712,
+      "test score (after re-training)": 872.7018640973279,
+      "model base name": "LinearSVR",
+      "final pipeline name": "final_pipeline_0.joblib"
+    },
+    {
+      "params": "{\"loss\": \"epsilon_insensitive\", \"fit_intercept\": true, \"epsilon\": 0.0, \"C\": 0.1}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008053779602050781,
+      "std_fit_time": 7.475021329186765e-05,
+      "Model cls base name": "LinearSVR",
+      "re-training time": 0.0003719329833984375,
+      "name": "ModelLinearSVR",
+      "combined score (after re-training)": 367.4002244836662,
+      "test score (after re-training)": 384.67485618025904,
+      "model base name": "LinearSVR",
+      "final pipeline name": "final_pipeline_1.joblib"
+    },
+    {
+      "params": "{\"loss\": \"epsilon_insensitive\", \"fit_intercept\": false, \"epsilon\": 0.0, \"C\": 1.0}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008249282836914062,
+      "std_fit_time": 9.713443280419337e-05,
+      "Model cls base name": "LinearSVR",
+      "re-training time": 0.0002868175506591797,
+      "name": "ModelLinearSVR",
+      "combined score (after re-training)": 864.0411518259712,
+      "test score (after re-training)": 872.7018640973279,
+      "model base name": "LinearSVR",
+      "final pipeline name": "final_pipeline_2.joblib"
+    }
+  ],
+  "train": "227 samples, 9 features",
+  "valid": "28 samples, 9 features",
+  "test": "29 samples, 9 features"
+}

@@ -1,0 +1,706 @@
+{
+  "task": "classification",
+  "unique models param sets checked (for each dataset)": 43,
+  "unique models": 5,
+  "base model names": [
+    "KNeighborsClassifier",
+    "LogisticRegression",
+    "GaussianNB",
+    "SVC",
+    "DecisionTreeClassifier"
+  ],
+  "scoring function": "function",
+  "scoring direction": "max",
+  "search parameters": "{\"cv\": 3, \"verbose\": 0, \"n_jobs\": -1, \"random_state\": 42, \"n_iter\": 10}",
+  "results": [
+    {
+      "params": "{\"weights\": \"distance\", \"p\": 1, \"n_neighbors\": 15, \"leaf_size\": 30, \"algorithm\": \"brute\"}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0015358924865722656,
+      "std_fit_time": 8.870388788294889e-05,
+      "Model cls base name": "KNeighborsClassifier",
+      "re-training time": 0.0002319812774658203,
+      "name": "ModelKNeighboursClassifier",
+      "combined score (after re-training)": 0.9965986394557823,
+      "test score (after re-training)": 0.7341101694915254,
+      "model base name": "KNeighborsClassifier",
+      "final pipeline name": "final_pipeline_0.joblib"
+    },
+    {
+      "params": "{\"weights\": \"distance\", \"p\": 2, \"n_neighbors\": 10, \"leaf_size\": 40, \"algorithm\": \"auto\"}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0017631053924560547,
+      "std_fit_time": 0.0001119648780141562,
+      "Model cls base name": "KNeighborsClassifier",
+      "re-training time": 0.0004858970642089844,
+      "name": "ModelKNeighboursClassifier",
+      "combined score (after re-training)": 0.9965986394557823,
+      "test score (after re-training)": 0.7356403013182675,
+      "model base name": "KNeighborsClassifier",
+      "final pipeline name": "final_pipeline_1.joblib"
+    },
+    {
+      "params": "{\"weights\": \"uniform\", \"p\": 2, \"n_neighbors\": 15, \"leaf_size\": 30, \"algorithm\": \"kd_tree\"}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0014873345692952473,
+      "std_fit_time": 0.00022306877958484043,
+      "Model cls base name": "KNeighborsClassifier",
+      "re-training time": 0.0004611015319824219,
+      "name": "ModelKNeighboursClassifier",
+      "combined score (after re-training)": 0.7833344102000818,
+      "test score (after re-training)": 0.7610640301318268,
+      "model base name": "KNeighborsClassifier",
+      "final pipeline name": "final_pipeline_2.joblib"
+    },
+    {
+      "params": {
+        "solver": "saga",
+        "penalty": "elasticnet",
+        "l1_ratio": 0.7,
+        "C": 1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0027730464935302734,
+      "std_fit_time": 9.130342134669948e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "LogisticRegression"
+    },
+    {
+      "params": {
+        "solver": "newton-cg",
+        "penalty": "l2",
+        "C": 0.1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.004650990168253581,
+      "std_fit_time": 0.0007042140996026014,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "LogisticRegression"
+    },
+    {
+      "params": {
+        "solver": "saga",
+        "penalty": "elasticnet",
+        "l1_ratio": 0.5,
+        "C": 0.01
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0025179386138916016,
+      "std_fit_time": 0.00015580588778178932,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "LogisticRegression"
+    },
+    {
+      "params": {
+        "var_smoothing": 1e-09,
+        "priors": null
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0013136863708496094,
+      "std_fit_time": 9.08705341672795e-06,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "GaussianNB"
+    },
+    {
+      "params": {
+        "var_smoothing": 1e-07,
+        "priors": null
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0012826919555664062,
+      "std_fit_time": 5.245353234352672e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "GaussianNB"
+    },
+    {
+      "params": {
+        "var_smoothing": 1e-05,
+        "priors": null
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.001112222671508789,
+      "std_fit_time": 6.900725013826686e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "GaussianNB"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "kernel": "linear",
+        "gamma": "auto",
+        "degree": 5,
+        "C": 1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.7502929369608561,
+      "std_fit_time": 0.3165219584663294,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "SVC"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "kernel": "sigmoid",
+        "gamma": "auto",
+        "degree": 5,
+        "C": 1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.05166125297546387,
+      "std_fit_time": 0.004073427946822145,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "SVC"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "kernel": "linear",
+        "gamma": "auto",
+        "degree": 3,
+        "C": 0.1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.1334249178568522,
+      "std_fit_time": 0.044992560258320886,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "SVC"
+    },
+    {
+      "params": {
+        "splitter": "random",
+        "random_state": 42,
+        "min_samples_split": 2,
+        "min_samples_leaf": 1,
+        "max_depth": 5,
+        "criterion": "gini"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.000957330067952474,
+      "std_fit_time": 0.00013694144616934647,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "DecisionTreeClassifier"
+    },
+    {
+      "params": {
+        "splitter": "best",
+        "random_state": 42,
+        "min_samples_split": 2,
+        "min_samples_leaf": 2,
+        "max_depth": 10,
+        "criterion": "gini"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.003756443659464518,
+      "std_fit_time": 0.00016044257580915291,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "DecisionTreeClassifier"
+    },
+    {
+      "params": {
+        "splitter": "random",
+        "random_state": 42,
+        "min_samples_split": 5,
+        "min_samples_leaf": 2,
+        "max_depth": 15,
+        "criterion": "entropy"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.001467307408650716,
+      "std_fit_time": 2.1488849924635064e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_0.joblib",
+      "Model cls base name": "DecisionTreeClassifier"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 1,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "brute"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0014334519704182942,
+      "std_fit_time": 0.00024374467291483497,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "KNeighborsClassifier"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 2,
+        "n_neighbors": 10,
+        "leaf_size": 40,
+        "algorithm": "auto"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0021369457244873047,
+      "std_fit_time": 0.0009894136249866637,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "KNeighborsClassifier"
+    },
+    {
+      "params": {
+        "weights": "uniform",
+        "p": 2,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "kd_tree"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0039017200469970703,
+      "std_fit_time": 0.000804040232418088,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "KNeighborsClassifier"
+    },
+    {
+      "params": {
+        "solver": "saga",
+        "penalty": "elasticnet",
+        "l1_ratio": 0.7,
+        "C": 1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.004875659942626953,
+      "std_fit_time": 0.0010175024721611379,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "LogisticRegression"
+    },
+    {
+      "params": {
+        "solver": "newton-cg",
+        "penalty": "l2",
+        "C": 0.1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.019907315572102863,
+      "std_fit_time": 0.0052754609292702875,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "LogisticRegression"
+    },
+    {
+      "params": {
+        "solver": "saga",
+        "penalty": "elasticnet",
+        "l1_ratio": 0.5,
+        "C": 0.01
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.004305044809977214,
+      "std_fit_time": 0.0010368085137649082,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "LogisticRegression"
+    },
+    {
+      "params": {
+        "var_smoothing": 1e-09,
+        "priors": null
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0013360977172851562,
+      "std_fit_time": 0.00018150226682387536,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "GaussianNB"
+    },
+    {
+      "params": {
+        "var_smoothing": 1e-07,
+        "priors": null
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0018342336018880208,
+      "std_fit_time": 0.00048750057859398835,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "GaussianNB"
+    },
+    {
+      "params": {
+        "var_smoothing": 1e-05,
+        "priors": null
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0018544197082519531,
+      "std_fit_time": 0.0003449300279425023,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "GaussianNB"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "kernel": "linear",
+        "gamma": "auto",
+        "degree": 5,
+        "C": 1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.3626264731089274,
+      "std_fit_time": 0.012570404771442861,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "SVC"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "kernel": "sigmoid",
+        "gamma": "auto",
+        "degree": 5,
+        "C": 1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0346673329671224,
+      "std_fit_time": 0.003980848207694651,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "SVC"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "kernel": "linear",
+        "gamma": "auto",
+        "degree": 3,
+        "C": 0.1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.07991433143615723,
+      "std_fit_time": 0.009661907204475887,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "SVC"
+    },
+    {
+      "params": {
+        "splitter": "random",
+        "random_state": 42,
+        "min_samples_split": 2,
+        "min_samples_leaf": 1,
+        "max_depth": 5,
+        "criterion": "gini"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008706251780192057,
+      "std_fit_time": 0.00014747255034604136,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "DecisionTreeClassifier"
+    },
+    {
+      "params": {
+        "splitter": "best",
+        "random_state": 42,
+        "min_samples_split": 2,
+        "min_samples_leaf": 2,
+        "max_depth": 10,
+        "criterion": "gini"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0012865861256917317,
+      "std_fit_time": 0.00013383621268985065,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "DecisionTreeClassifier"
+    },
+    {
+      "params": {
+        "splitter": "random",
+        "random_state": 42,
+        "min_samples_split": 5,
+        "min_samples_leaf": 2,
+        "max_depth": 15,
+        "criterion": "entropy"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0010232130686442058,
+      "std_fit_time": 0.00014402828453478694,
+      "Preprocessing pipeline name": "preprocessing_pipeline_1.joblib",
+      "Model cls base name": "DecisionTreeClassifier"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 1,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "brute"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0006480216979980469,
+      "std_fit_time": 9.097223224029825e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "KNeighborsClassifier"
+    },
+    {
+      "params": {
+        "weights": "distance",
+        "p": 2,
+        "n_neighbors": 10,
+        "leaf_size": 40,
+        "algorithm": "auto"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0006489753723144531,
+      "std_fit_time": 1.4282579685937447e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "KNeighborsClassifier"
+    },
+    {
+      "params": {
+        "weights": "uniform",
+        "p": 2,
+        "n_neighbors": 15,
+        "leaf_size": 30,
+        "algorithm": "kd_tree"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0007283687591552734,
+      "std_fit_time": 6.328325561469022e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "KNeighborsClassifier"
+    },
+    {
+      "params": {
+        "solver": "saga",
+        "penalty": "elasticnet",
+        "l1_ratio": 0.7,
+        "C": 1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0021163622538248696,
+      "std_fit_time": 0.00010388218484860538,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "LogisticRegression"
+    },
+    {
+      "params": {
+        "solver": "newton-cg",
+        "penalty": "l2",
+        "C": 0.1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.004763603210449219,
+      "std_fit_time": 0.001661929616619786,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "LogisticRegression"
+    },
+    {
+      "params": {
+        "solver": "saga",
+        "penalty": "elasticnet",
+        "l1_ratio": 0.5,
+        "C": 0.01
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.002866983413696289,
+      "std_fit_time": 0.001088708430977588,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "LogisticRegression"
+    },
+    {
+      "params": {
+        "var_smoothing": 1e-09,
+        "priors": null
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0009986559549967449,
+      "std_fit_time": 1.352953955619554e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "GaussianNB"
+    },
+    {
+      "params": {
+        "var_smoothing": 1e-07,
+        "priors": null
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008842945098876953,
+      "std_fit_time": 0.00011122390685213543,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "GaussianNB"
+    },
+    {
+      "params": {
+        "var_smoothing": 1e-05,
+        "priors": null
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008673667907714844,
+      "std_fit_time": 0.00017261636849422418,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "GaussianNB"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "kernel": "linear",
+        "gamma": "auto",
+        "degree": 5,
+        "C": 1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.2571260134379069,
+      "std_fit_time": 0.0020779921647136237,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "SVC"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "kernel": "sigmoid",
+        "gamma": "auto",
+        "degree": 5,
+        "C": 1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.02710103988647461,
+      "std_fit_time": 0.007525700762191817,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "SVC"
+    },
+    {
+      "params": {
+        "random_state": 42,
+        "kernel": "linear",
+        "gamma": "auto",
+        "degree": 3,
+        "C": 0.1
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.06937599182128906,
+      "std_fit_time": 0.004011269135769412,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "SVC"
+    },
+    {
+      "params": {
+        "splitter": "random",
+        "random_state": 42,
+        "min_samples_split": 2,
+        "min_samples_leaf": 1,
+        "max_depth": 5,
+        "criterion": "gini"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.000823815663655599,
+      "std_fit_time": 0.00010788580476149331,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "DecisionTreeClassifier"
+    },
+    {
+      "params": {
+        "splitter": "best",
+        "random_state": 42,
+        "min_samples_split": 2,
+        "min_samples_leaf": 2,
+        "max_depth": 10,
+        "criterion": "gini"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.001092990239461263,
+      "std_fit_time": 0.00011032750872662581,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "DecisionTreeClassifier"
+    },
+    {
+      "params": {
+        "splitter": "random",
+        "random_state": 42,
+        "min_samples_split": 5,
+        "min_samples_leaf": 2,
+        "max_depth": 15,
+        "criterion": "entropy"
+      },
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0008365313212076823,
+      "std_fit_time": 2.0766913659991015e-05,
+      "Preprocessing pipeline name": "preprocessing_pipeline_2.joblib",
+      "Model cls base name": "DecisionTreeClassifier"
+    }
+  ],
+  "best models results": [
+    {
+      "params": "{\"weights\": \"distance\", \"p\": 1, \"n_neighbors\": 15, \"leaf_size\": 30, \"algorithm\": \"brute\"}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0015358924865722656,
+      "std_fit_time": 8.870388788294889e-05,
+      "Model cls base name": "KNeighborsClassifier",
+      "re-training time": 0.0002319812774658203,
+      "name": "ModelKNeighboursClassifier",
+      "combined score (after re-training)": 0.9965986394557823,
+      "test score (after re-training)": 0.7341101694915254,
+      "model base name": "KNeighborsClassifier",
+      "final pipeline name": "final_pipeline_0.joblib"
+    },
+    {
+      "params": "{\"weights\": \"distance\", \"p\": 2, \"n_neighbors\": 10, \"leaf_size\": 40, \"algorithm\": \"auto\"}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0017631053924560547,
+      "std_fit_time": 0.0001119648780141562,
+      "Model cls base name": "KNeighborsClassifier",
+      "re-training time": 0.0004858970642089844,
+      "name": "ModelKNeighboursClassifier",
+      "combined score (after re-training)": 0.9965986394557823,
+      "test score (after re-training)": 0.7356403013182675,
+      "model base name": "KNeighborsClassifier",
+      "final pipeline name": "final_pipeline_1.joblib"
+    },
+    {
+      "params": "{\"weights\": \"uniform\", \"p\": 2, \"n_neighbors\": 15, \"leaf_size\": 30, \"algorithm\": \"kd_tree\"}",
+      "mean_test_score": NaN,
+      "std_test_score": NaN,
+      "mean_fit_time": 0.0014873345692952473,
+      "std_fit_time": 0.00022306877958484043,
+      "Model cls base name": "KNeighborsClassifier",
+      "re-training time": 0.0004611015319824219,
+      "name": "ModelKNeighboursClassifier",
+      "combined score (after re-training)": 0.7833344102000818,
+      "test score (after re-training)": 0.7610640301318268,
+      "model base name": "KNeighborsClassifier",
+      "final pipeline name": "final_pipeline_2.joblib"
+    }
+  ],
+  "train": "1047 samples, 13 features",
+  "valid": "131 samples, 13 features",
+  "test": "131 samples, 13 features"
+}

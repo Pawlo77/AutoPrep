@@ -1,0 +1,190 @@
+2025-01-09 23:11:21 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:22 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:22 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:23 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:23 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:23 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:23 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:23 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:23 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:24 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:24 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:24 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:24 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:25 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:25 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:25 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+2   NaN
+3   NaN
+4   NaN
+5   NaN
+6   NaN
+7   NaN
+8   NaN
+9   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:25 INFO auto_prep.modeling.handler: 0   NaN
+1   NaN
+Name: mean_test_score, dtype: float64
+2025-01-09 23:11:25 INFO auto_prep.modeling.handler: Re-training for up to 3 best models.
+2025-01-09 23:11:25 INFO auto_prep.modeling.handler: Model: ModelLinearSVR | Combined Score: 71.8711223837236 | Test Score: 71.53221198303031
+2025-01-09 23:11:25 INFO auto_prep.modeling.handler: Model: ModelLinearSVR | Combined Score: 232.86130331740168 | Test Score: 250.06343641253582
+2025-01-09 23:11:25 INFO auto_prep.modeling.handler: Model: ModelLinearSVR | Combined Score: 72.72056325590532 | Test Score: 72.5352127629098
+2025-01-10 14:42:25 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-10 14:42:33 INFO auto_prep.preprocessing.handler: Extracted 16 pipelines.
+2025-01-10 14:42:33 INFO auto_prep.preprocessing.handler: Exploded into 48 pipelines.
+2025-01-10 14:42:33 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-10 14:49:38 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-10 14:49:42 INFO auto_prep.preprocessing.handler: Extracted 16 pipelines.
+2025-01-10 14:49:42 INFO auto_prep.preprocessing.handler: Exploded into 48 pipelines.
+2025-01-10 14:49:42 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-10 14:51:15 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-10 14:51:19 INFO auto_prep.preprocessing.handler: Extracted 16 pipelines.
+2025-01-10 14:51:19 INFO auto_prep.preprocessing.handler: Exploded into 48 pipelines.
+2025-01-10 14:51:19 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-10 14:53:54 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-10 14:53:57 INFO auto_prep.preprocessing.handler: Extracted 16 pipelines.
+2025-01-10 14:53:57 INFO auto_prep.preprocessing.handler: Exploded into 48 pipelines.
+2025-01-10 14:53:57 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-10 14:55:08 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-10 14:55:11 INFO auto_prep.preprocessing.handler: Extracted 16 pipelines.
+2025-01-10 14:55:11 INFO auto_prep.preprocessing.handler: Exploded into 48 pipelines.
+2025-01-10 14:55:11 INFO auto_prep.preprocessing.handler: Fitting pipelines...
+2025-01-10 14:56:11 INFO auto_prep.preprocessing.handler: Creating pipelines...
+2025-01-10 14:56:15 INFO auto_prep.preprocessing.handler: Extracted 16 pipelines.
+2025-01-10 14:56:16 INFO auto_prep.preprocessing.handler: Exploded into 48 pipelines.
