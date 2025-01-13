@@ -55,7 +55,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="auto_prep.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="auto_prep.html#module-auto_prep.prep">auto_prep.prep module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_prep.html#auto-prep-prep-module">auto_prep.prep module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_prep.html#module-auto_prep">Module contents</a></li>
 </ul>
 </li>
@@ -94,131 +94,8 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="module-auto_prep.modeling.handler">
-<span id="auto-prep-modeling-handler-module"></span><h2>auto_prep.modeling.handler module<a class="headerlink" href="#module-auto_prep.modeling.handler" title="Link to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.ModelHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">auto_prep.modeling.handler.</span></span><span class="sig-name descname"><span class="pre">ModelHandler</span></span><a class="reference internal" href="_modules/auto_prep/modeling/handler.html#ModelHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.modeling.handler.ModelHandler" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class responsible for loading and handling machine learning models and pipelines.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.ModelHandler.generate_shap">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_shap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseEstimator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/auto_prep/modeling/handler.html#ModelHandler.generate_shap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.modeling.handler.ModelHandler.generate_shap" title="Link to this definition"></a></dt>
-<dd><p>Generates SHAP plots for a given model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X_test</strong> (<em>pd.DataFrame</em>) – Test data for SHAP analysis.</p></li>
-<li><p><strong>model</strong> (<em>BaseEstimator</em>) – Trained model for generating SHAP values.</p></li>
-<li><p><strong>model_idx</strong> (<em>int</em>) – Identifier for the model.</p></li>
-<li><p><strong>task</strong> (<em>str</em>) – regiression / classification</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.ModelHandler.load_models">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseEstimator</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/auto_prep/modeling/handler.html#ModelHandler.load_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.modeling.handler.ModelHandler.load_models" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.ModelHandler.load_modules">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/auto_prep/modeling/handler.html#ModelHandler.load_modules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.modeling.handler.ModelHandler.load_modules" title="Link to this definition"></a></dt>
-<dd><p>Loads modules from the specified package that contains models
-(start with <a href="#id10"><span class="problematic" id="id11">model_</span></a>).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>package</strong> (<em>str</em>) – The package to load modules from.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>found module names.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[str]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.ModelHandler.load_pipelines">
-<span class="sig-name descname"><span class="pre">load_pipelines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseEstimator</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/auto_prep/modeling/handler.html#ModelHandler.load_pipelines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.modeling.handler.ModelHandler.load_pipelines" title="Link to this definition"></a></dt>
-<dd><p>Loads pipelines from the directory specified in config.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>loaded pipelines.
-List[str]: pipelines file names.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>List[BaseEstimator]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.ModelHandler.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_valid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_valid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/auto_prep/modeling/handler.html#ModelHandler.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.modeling.handler.ModelHandler.run" title="Link to this definition"></a></dt>
-<dd><p>Performs models fitting and selection.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X_train</strong> (<em>pd.DataFrame</em>) – Training feature dataset.</p></li>
-<li><p><strong>y_train</strong> (<em>pd.Series</em>) – Training target dataset.</p></li>
-<li><p><strong>X_valid</strong> (<em>pd.DataFrame</em>) – Validation feature dataset.</p></li>
-<li><p><strong>y_valid</strong> (<em>pd.Series</em>) – Validation target dataset.</p></li>
-<li><p><strong>X_test</strong> (<em>pd.DataFrame</em>) – Test feature dataset.</p></li>
-<li><p><strong>y_test</strong> (<em>pd.Series</em>) – Test target dataset.</p></li>
-<li><p><strong>task</strong> (<em>str</em>) – regiression / classification</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.ModelHandler.tune_model">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tune_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scoring_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_cls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseEstimator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_valid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_valid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Series</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></span><a class="reference internal" href="_modules/auto_prep/modeling/handler.html#ModelHandler.tune_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.modeling.handler.ModelHandler.tune_model" title="Link to this definition"></a></dt>
-<dd><p>Tunes a model’s hyperparameters using RandomizedSearchCV and returns the best model and related information.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scoring_func</strong> (<em>Callable</em>) – Scoring function for evaluating models.</p></li>
-<li><p><strong>model_cls</strong> (<em>BaseEstimator</em>) – Model class to be trained.</p></li>
-<li><p><strong>best_k</strong> (<em>int</em>) – Return up to k best models params.</p></li>
-<li><p><strong>X_train</strong> (<em>pd.DataFrame</em>) – Training feature dataset.</p></li>
-<li><p><strong>y_train</strong> (<em>pd.Series</em>) – Training target dataset.</p></li>
-<li><p><strong>X_valid</strong> (<em>pd.DataFrame</em><em>, </em><em>optional</em>) – Validation feature dataset. Defaults to None.</p></li>
-<li><p><strong>y_valid</strong> (<em>pd.Series</em><em>, </em><em>optional</em>) – Validation target dataset. Defaults to None.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>training meta info
-List[dict]: results
-int: models tested</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.ModelHandler.write_to_raport">
-<span class="sig-name descname"><span class="pre">write_to_raport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raport</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/auto_prep/modeling/handler.html#ModelHandler.write_to_raport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.modeling.handler.ModelHandler.write_to_raport" title="Link to this definition"></a></dt>
-<dd><p>Writes overview section to a raport</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.custom_sort">
-<span class="sig-prename descclassname"><span class="pre">auto_prep.modeling.handler.</span></span><span class="sig-name descname"><span class="pre">custom_sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/auto_prep/modeling/handler.html#custom_sort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.modeling.handler.custom_sort" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="auto_prep.modeling.handler.format_shape">
-<span class="sig-prename descclassname"><span class="pre">auto_prep.modeling.handler.</span></span><span class="sig-name descname"><span class="pre">format_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#auto_prep.modeling.handler.format_shape" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
+<section id="auto-prep-modeling-handler-module">
+<h2>auto_prep.modeling.handler module<a class="headerlink" href="#auto-prep-modeling-handler-module" title="Link to this heading"></a></h2>
 </section>
 <section id="module-auto_prep.modeling.model_BayesianRidgeRegressor">
 <span id="auto-prep-modeling-model-bayesianridgeregressor-module"></span><h2>auto_prep.modeling.model_BayesianRidgeRegressor module<a class="headerlink" href="#module-auto_prep.modeling.model_BayesianRidgeRegressor" title="Link to this heading"></a></h2>
