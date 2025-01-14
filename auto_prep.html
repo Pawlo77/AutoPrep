@@ -55,7 +55,11 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#auto-prep-prep-module">auto_prep.prep module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-auto_prep.prep">auto_prep.prep module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#auto_prep.prep.AutoPrep"><code class="docutils literal notranslate"><span class="pre">AutoPrep</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#auto_prep.prep.format_column_name"><code class="docutils literal notranslate"><span class="pre">format_column_name()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-auto_prep">Module contents</a></li>
 </ul>
 </li>
@@ -96,7 +100,21 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="auto_prep.modeling.html">auto_prep.modeling package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="auto_prep.modeling.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_prep.modeling.html#auto-prep-modeling-handler-module">auto_prep.modeling.handler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auto_prep.modeling.html#module-auto_prep.modeling.handler">auto_prep.modeling.handler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.ModelHandler"><code class="docutils literal notranslate"><span class="pre">ModelHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.ModelHandler.generate_shap"><code class="docutils literal notranslate"><span class="pre">ModelHandler.generate_shap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.ModelHandler.load_models"><code class="docutils literal notranslate"><span class="pre">ModelHandler.load_models()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.ModelHandler.load_modules"><code class="docutils literal notranslate"><span class="pre">ModelHandler.load_modules()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.ModelHandler.load_pipelines"><code class="docutils literal notranslate"><span class="pre">ModelHandler.load_pipelines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.ModelHandler.run"><code class="docutils literal notranslate"><span class="pre">ModelHandler.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.ModelHandler.tune_model"><code class="docutils literal notranslate"><span class="pre">ModelHandler.tune_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.ModelHandler.write_to_raport"><code class="docutils literal notranslate"><span class="pre">ModelHandler.write_to_raport()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.custom_sort"><code class="docutils literal notranslate"><span class="pre">custom_sort()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.handler.format_shape"><code class="docutils literal notranslate"><span class="pre">format_shape()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="auto_prep.modeling.html#module-auto_prep.modeling.model_BayesianRidgeRegressor">auto_prep.modeling.model_BayesianRidgeRegressor module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.model_BayesianRidgeRegressor.ModelBayesianRidgeRegressor"><code class="docutils literal notranslate"><span class="pre">ModelBayesianRidgeRegressor</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="auto_prep.modeling.html#auto_prep.modeling.model_BayesianRidgeRegressor.ModelBayesianRidgeRegressor.PARAM_GRID"><code class="docutils literal notranslate"><span class="pre">ModelBayesianRidgeRegressor.PARAM_GRID</span></code></a></li>
@@ -556,8 +574,36 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="auto-prep-prep-module">
-<h2>auto_prep.prep module<a class="headerlink" href="#auto-prep-prep-module" title="Link to this heading"></a></h2>
+<section id="module-auto_prep.prep">
+<span id="auto-prep-prep-module"></span><h2>auto_prep.prep module<a class="headerlink" href="#module-auto_prep.prep" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="auto_prep.prep.AutoPrep">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">auto_prep.prep.</span></span><span class="sig-name descname"><span class="pre">AutoPrep</span></span><a class="reference internal" href="_modules/auto_prep/prep.html#AutoPrep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.prep.AutoPrep" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Main pipeline orchestrating the entire preprocessing process.</p>
+<p>This class handles the complete workflow from data preprocessing to
+report generation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="auto_prep.prep.AutoPrep.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/auto_prep/prep.html#AutoPrep.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#auto_prep.prep.AutoPrep.run" title="Link to this definition"></a></dt>
+<dd><p>Run the complete pipeline on the provided dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – Input dataset to process.</p></li>
+<li><p><strong>target_column</strong> (<em>str</em>) – Name of the target variable column.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="auto_prep.prep.format_column_name">
+<span class="sig-prename descclassname"><span class="pre">auto_prep.prep.</span></span><span class="sig-name descname"><span class="pre">format_column_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#auto_prep.prep.format_column_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-auto_prep">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-auto_prep" title="Link to this heading"></a></h2>
